@@ -1,7 +1,7 @@
 import { Location } from './../models/location';
+import Controller from './controller';
 import { Response } from 'express';
 import { Request } from 'express';
-import express from 'express';
 import { param, check, validationResult } from 'express-validator';
 
 let locations: Location[] = [
@@ -10,16 +10,16 @@ let locations: Location[] = [
 let temp: number = 1;
 
 //TODO: make checks in diffrent file?
-class LocationController {
+class LocationController extends Controller {
   public path = '/location';
   public idPrefix: string = '/:id';
-  public router = express.Router();
 
   constructor() {
+    super();
     this.intializeRoutes();
   }
 
-  public intializeRoutes() {
+  public intializeRoutes(): void {
     this.router.get(this.path, this.getLocations);
     this.router.get(
       this.path + this.idPrefix,
