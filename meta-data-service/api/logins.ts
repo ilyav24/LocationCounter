@@ -11,7 +11,7 @@ class LoginController extends Controller {
   public router = express.Router();
 
   constructor() {
-      super()
+    super()
     this.intializeRoutes();
   }
 
