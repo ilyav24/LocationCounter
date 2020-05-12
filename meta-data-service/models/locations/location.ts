@@ -1,7 +1,7 @@
 export interface Location {
-  id: number;
+  id: number,
   floor: number;
-  room_number: number;
-  build_number: number;
+  room_num: number;
+  building_id: number;
   entry: number;
 }
