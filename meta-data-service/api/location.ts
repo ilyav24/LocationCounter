@@ -3,7 +3,7 @@ import Controller from './controller';
 import { Response } from 'express';
 import { Request } from 'express';
 import { param, check, validationResult } from 'express-validator';
-import { getAllLocations, insetLocation } from '../models/locations/location-models';
+import { getAllLocations, insertLocation } from '../models/locations/location-models';
 
 
 //TODO: make checks in diffrent file?
@@ -71,7 +71,7 @@ class LocationController extends Controller {
 
     let location: Location = req.body;
     location.building_id = 1;
-    let results = await insetLocation(location);
+    let results = await insertLocation(location);
     return res.status(200).send(results).json();
   };
 

@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { getAllBuilding, insertBuilding } from './building-queries';
+import { getAllBuildingQuery, insertBuildingQuery } from './building-queries';
 import { Building } from './building';
 
 import * as dotenv from 'dotenv';
@@ -19,7 +19,7 @@ const pool = new Pool({
 
 export async function getAllBuildings() {
   try {
-    return (await pool.query(getAllBuilding)).rows;
+    return (await pool.query(getAllBuildingQuery)).rows;
   } catch (err) {
     console.log(err);
     pool.end();
@@ -29,9 +29,9 @@ export async function getAllBuildings() {
 export async function insertBuilding(building: Building) {
   try {
     return (
-      await pool.query(insertLocation, [
-        building.bui,
-        location.floor,
+      await pool.query(insertBuildingQuery, [
+        building.name,
+        building.num_of_floors,
       ])
     ).rows;
   } catch (err) {
