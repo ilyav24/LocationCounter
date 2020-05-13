@@ -1,5 +1,9 @@
 import { Pool } from 'pg';
-import { getAllLocationQuery, insertLocationQuery } from './location-queries';
+import {
+  getAllLocationQuery,
+  insertLocationQuery,
+  deleteLocationQuery,
+} from './location-queries';
 import { Location } from './location';
 
 import * as dotenv from 'dotenv';
@@ -21,8 +25,7 @@ export async function getAllLocations() {
   try {
     return (await pool.query(getAllLocationQuery)).rows;
   } catch (err) {
-    console.log(err);
-    pool.end();
+    throw err;
   }
 }
 
@@ -37,7 +40,14 @@ export async function insertLocation(location: Location) {
       ])
     ).rows;
   } catch (err) {
-    console.log(err);
-    pool.end();
+    throw err;
+  }
+}
+
+export async function deleteLocation(id: string) {
+  try {
+    return (await pool.query(deleteLocationQuery, [id])).rows;
+  } catch (err) {
+    throw err;
   }
 }

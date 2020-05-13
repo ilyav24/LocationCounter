@@ -51,6 +51,7 @@ async function createAllTables() {
     console.log('+++++ sensorLocationTable was successfully created');
     await pool.query(schema.usagesTable);
     console.log('+++++ usagesTable was successfully created');
+    pool.end();
   } catch (err) {
     console.log(err);
     console.log('----- database could not be created :(');
@@ -68,6 +69,7 @@ async function dropAllTables() {
 
     await client.query(schema.dropSchema);
     console.log('+++++ database successfully dropped');
+    client.end();
   } catch (err) {
     console.log(err);
     console.log('----- failed to drop database :(');

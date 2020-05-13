@@ -1,6 +1,7 @@
 import App from './app';
 import LocationController from './api/location';
-const app = new App([new LocationController()], 5000);
+import BuildingContoller from './api/building';
+const app = new App([new LocationController, new BuildingContoller()], 5000);
 
 app.listen();
 export = app;

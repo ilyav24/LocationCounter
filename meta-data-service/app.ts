@@ -27,6 +27,10 @@ class App {
     this.app.get('/', (req: Request, res: Response): void => {
       res.send("I'm up and running!");
     });
+
+    this.app.listen(this.port, () => {
+      console.log(`App listening on the port ${this.port}`);
+    });
   }
 }
 

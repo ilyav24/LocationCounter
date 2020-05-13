@@ -1,5 +1,10 @@
 import { Pool } from 'pg';
-import { getAllBuildingQuery, insertBuildingQuery } from './building-queries';
+import {
+  getAllBuildingQuery,
+  insertBuildingQuery,
+  deleteBuildingQuery,
+  deleteAllLocationsAndBuilding,
+} from './building-queries';
 import { Building } from './building';
 
 import * as dotenv from 'dotenv';
@@ -21,8 +26,7 @@ export async function getAllBuildings() {
   try {
     return (await pool.query(getAllBuildingQuery)).rows;
   } catch (err) {
-    console.log(err);
-    pool.end();
+    throw err;
   }
 }
 
@@ -31,11 +35,20 @@ export async function insertBuilding(building: Building) {
     return (
       await pool.query(insertBuildingQuery, [
         building.name,
-        building.num_of_floors,
+        building.number_of_floors,
       ])
     ).rows;
   } catch (err) {
+    throw err;
+  }
+}
+
+export async function deleteBuilding(id: string) {
+  try {
+    await pool.query(deleteAllLocationsAndBuilding, [id]);
+    return await pool.query(deleteBuildingQuery, [id]);
+  } catch (err) {
     console.log(err);
-    pool.end();
+    throw err;
   }
 }

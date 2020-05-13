@@ -3,8 +3,11 @@ import Controller from './controller';
 import { Response } from 'express';
 import { Request } from 'express';
 import { param, check, validationResult } from 'express-validator';
-import { getAllLocations, insertLocation } from '../models/locations/location-models';
-
+import {
+  getAllLocations,
+  insertLocation,
+  deleteLocation,
+} from '../models/locations/location-models';
 
 //TODO: make checks in diffrent file?
 class LocationController extends Controller {
@@ -35,14 +38,14 @@ class LocationController extends Controller {
     //   this.patchLocation
     // );
 
-    // this.router.delete(
-    //   this.path + this.idPrefix,
-    //   [param('id').isNumeric()],
-    //   this.deleteLocation
-    // );
+    this.router.delete(
+      this.path + this.idPrefix,
+      [param('id').isNumeric()],
+      this.deleteLocation
+    );
   }
 
-  getLocations = async(req: Request, res: Response) => {
+  getLocations = async (req: Request, res: Response) => {
     let locations = await getAllLocations();
     res.status(200).send(locations).json();
   };
@@ -63,16 +66,20 @@ class LocationController extends Controller {
   //   return res.status(200).send(item);
   // };
 
-  generateLocation = async(req: Request, res: Response) => {
+  generateLocation = async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
 
     let location: Location = req.body;
-    location.building_id = 1;
-    let results = await insertLocation(location);
-    return res.status(200).send(results).json();
+    let results;
+    try {
+      let results = await insertLocation(location);
+      return res.status(200).send(results).json();
+    } catch (err) {
+      return res.status(404).send(err.details).json();
+    }
   };
 
   // patchLocation = (req: Request, res: Response): Response => {
@@ -96,15 +103,19 @@ class LocationController extends Controller {
   //   return res.status(200).send(item);
   // };
 
-  // deleteLocation = (req: Request, res: Response): Response => {
-  //   const errors = validationResult(req);
-  //   if (!errors.isEmpty()) {
-  //     return res.status(404).json({ errors: errors.array() });
-  //   }
-  //   let id: string = req.params.id;
-  //   locations = locations.filter((x: Location) => {
-  //     return x.id !== parseInt(id);
-  //   });
+  deleteLocation = async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+    let id: string = req.params.id;
+    try {
+      await deleteLocation(id);
+      return res.status(200).send({ data: true }).json();
+    } catch (err) {
+      return res.status(404).send(err.details).json();
+    }
+  };
 
   //   return res.status(200).json();
   // };
