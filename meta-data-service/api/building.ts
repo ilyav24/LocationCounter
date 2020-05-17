@@ -8,6 +8,7 @@ import {
   insertBuilding,
   deleteBuilding,
 } from '../models/building/building-models';
+import { wrap } from '../util/wrapper';
 
 class BuildingContoller extends Controller {
   public path = '/building';
@@ -28,7 +29,7 @@ class BuildingContoller extends Controller {
     this.router.post(
       this.path,
       [check('number_of_floors').isNumeric()],
-      this.generateLocation
+      this.generateBuilding
     );
 
     // this.router.patch(
@@ -44,9 +45,13 @@ class BuildingContoller extends Controller {
     );
   }
 
-  getBuildings = async (req: Request, res: Response) => {
-    let locations = await getAllBuildings();
-    res.status(200).send(locations).json();
+  getBuildings = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      let buildings = await getAllBuildings();
+      return res.status(200).send(wrap(buildings)).json();
+    } catch (err) {
+      return res.status(500).send({ errors: err.detail }).json();
+    }
   };
 
   // getLocationById = (req: Request, res: Response): Response => {
@@ -65,7 +70,7 @@ class BuildingContoller extends Controller {
   //   return res.status(200).send(item);
   // };
 
-  generateLocation = async (req: Request, res: Response) => {
+  generateBuilding = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
@@ -74,9 +79,9 @@ class BuildingContoller extends Controller {
     let buidling: Building = req.body;
     try {
       let results = await insertBuilding(buidling);
-      return res.status(200).send(results).json();
+      return res.status(200).send(wrap(results)).json();
     } catch (err) {
-      return res.status(404).send(err.detail).json();
+      return res.status(500).send({ errors: err.detail }).json();
     }
   };
 
@@ -101,7 +106,7 @@ class BuildingContoller extends Controller {
   //   return res.status(200).send(item);
   // };
 
-  deleteBuilding = async (req: Request, res: Response) => {
+  deleteBuilding = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
@@ -109,9 +114,9 @@ class BuildingContoller extends Controller {
     let id: string = req.params.id;
     try {
       await deleteBuilding(id);
-      return res.status(200).send({ data: true }).json();
+      return res.status(200).send(wrap(true)).json();
     } catch (err) {
-      return res.status(404).send(err.details).json();
+      return res.status(500).send({ errors: err.detail }).json();
     }
   };
   //   return res.status(200).json();

@@ -1,3 +1,4 @@
+import { wrap } from '../util/wrapper';
 import { Location } from '../models/locations/location';
 import Controller from './controller';
 import { Response } from 'express';
@@ -45,9 +46,13 @@ class LocationController extends Controller {
     );
   }
 
-  getLocations = async (req: Request, res: Response) => {
-    let locations = await getAllLocations();
-    res.status(200).send(locations).json();
+  getLocations = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      let locations = await getAllLocations();
+      return res.status(200).send(wrap(locations)).json();
+    } catch (err) {
+      return res.status(500).send({ errors: err.detail }).json();
+    }
   };
 
   // getLocationById = (req: Request, res: Response): Response => {
@@ -66,7 +71,7 @@ class LocationController extends Controller {
   //   return res.status(200).send(item);
   // };
 
-  generateLocation = async (req: Request, res: Response) => {
+  generateLocation = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
@@ -76,9 +81,9 @@ class LocationController extends Controller {
     let results;
     try {
       let results = await insertLocation(location);
-      return res.status(200).send(results).json();
+      return res.status(200).send(wrap(results)).json();
     } catch (err) {
-      return res.status(404).send(err.details).json();
+      return res.status(500).send({ errors: err.detail }).json();
     }
   };
 
@@ -103,7 +108,7 @@ class LocationController extends Controller {
   //   return res.status(200).send(item);
   // };
 
-  deleteLocation = async (req: Request, res: Response) => {
+  deleteLocation = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
@@ -111,9 +116,9 @@ class LocationController extends Controller {
     let id: string = req.params.id;
     try {
       await deleteLocation(id);
-      return res.status(200).send({ data: true }).json();
+      return res.status(200).send(wrap(true)).json();
     } catch (err) {
-      return res.status(404).send(err.details).json();
+      return res.status(500).send({ errors: err.detail }).json();
     }
   };
 
