@@ -1,5 +1,5 @@
 export interface Location {
-  id: number,
+  id: string;
   floor: number;
   room_num: number;
   building_id: number;

@@ -4,6 +4,8 @@ import {
   insertBuildingQuery,
   deleteBuildingQuery,
   deleteAllLocationsAndBuilding,
+  updateBuildingQuery,
+  getBuildingByIdQuery,
 } from './building-queries';
 import { Building } from './building';
 
@@ -47,6 +49,30 @@ export async function deleteBuilding(id: string) {
   try {
     await pool.query(deleteAllLocationsAndBuilding, [id]);
     return await pool.query(deleteBuildingQuery, [id]);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function updateBuilding(building: Building) {
+  try {
+    return (
+      await pool.query(updateBuildingQuery, [
+        building.id,
+        building.name,
+        building.number_of_floors,
+      ])
+    ).rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function getBuildingById(id: string) {
+  try {
+    return (await pool.query(getBuildingByIdQuery, [id])).rows;
   } catch (err) {
     console.log(err);
     throw err;

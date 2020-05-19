@@ -3,6 +3,8 @@ import {
   getAllLocationQuery,
   insertLocationQuery,
   deleteLocationQuery,
+  updateLocationQuery,
+  getLocationByIdQuery,
 } from './location-queries';
 import { Location } from './location';
 
@@ -48,6 +50,32 @@ export async function deleteLocation(id: string) {
   try {
     return (await pool.query(deleteLocationQuery, [id])).rows;
   } catch (err) {
+    throw err;
+  }
+}
+
+export async function updateLocation(location: Location) {
+  try {
+    return (
+      await pool.query(updateLocationQuery, [
+        location.id,
+        location.building_id,
+        location.floor,
+        location.room_num,
+        location.entry,
+      ])
+    ).rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function getLocationById(id: string) {
+  try {
+    return (await pool.query(getLocationByIdQuery, [id])).rows;
+  } catch (err) {
+    console.log(err);
     throw err;
   }
 }

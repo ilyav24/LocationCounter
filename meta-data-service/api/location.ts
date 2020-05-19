@@ -8,6 +8,8 @@ import {
   getAllLocations,
   insertLocation,
   deleteLocation,
+  updateLocation,
+  getLocationById,
 } from '../models/locations/location-models';
 
 //TODO: make checks in diffrent file?
@@ -22,22 +24,24 @@ class LocationController extends Controller {
 
   public intializeRoutes(): void {
     this.router.get(this.path, this.getLocations);
-    // this.router.get(
-    //   this.path + this.idPrefix,
-    //   [param('id').isNumeric()],
-    //   this.getLocationById
-    // );
+    
+    this.router.get(
+      this.path + this.idPrefix,
+      [param('id').isNumeric()],
+      this.getLocationByID
+    );
+
     this.router.post(
       this.path,
       [check('floor').isNumeric()],
       this.generateLocation
     );
 
-    // this.router.patch(
-    //   this.path + this.idPrefix,
-    //   [param('id').isNumeric()],
-    //   this.patchLocation
-    // );
+    this.router.patch(
+      this.path + this.idPrefix,
+      [param('id').isNumeric()],
+      this.patchLocation
+    );
 
     this.router.delete(
       this.path + this.idPrefix,
@@ -55,21 +59,20 @@ class LocationController extends Controller {
     }
   };
 
-  // getLocationById = (req: Request, res: Response): Response => {
-  //   const errors = validationResult(req);
-  //   if (!errors.isEmpty()) {
-  //     return res.status(404).json({ errors: errors.array() });
-  //   }
+  getLocationByID = async (req: Request, res: Response): Promise<Response> => {
+    const errors = validationResult(req);
 
-  //   let id: string = req.params.id;
-  //   let item: Location | undefined = locations.find(
-  //     (x: Location) => x.id == parseInt(id)
-  //   );
-  //   if (!item) {
-  //     return res.status(404).json({ error: 'Not found' });
-  //   }
-  //   return res.status(200).send(item);
-  // };
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+    let id: string = req.params.id;
+    try {
+      let results = await getLocationById(id);
+      return res.status(200).send(wrap(results)).json();
+    } catch (err) {
+      return res.status(500).send({ errors: err.detail }).json();
+    }
+  };
 
   generateLocation = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
@@ -80,33 +83,29 @@ class LocationController extends Controller {
     let location: Location = req.body;
     let results;
     try {
-      let results = await insertLocation(location);
+      results = await insertLocation(location);
       return res.status(200).send(wrap(results)).json();
     } catch (err) {
       return res.status(500).send({ errors: err.detail }).json();
     }
   };
 
-  // patchLocation = (req: Request, res: Response): Response => {
-  //   const errors = validationResult(req);
-  //   if (!errors.isEmpty()) {
-  //     return res.status(404).json({ errors: errors.array() });
-  //   }
-  //   let id: string = req.params.id;
-  //   let item: Location | undefined = locations.find(
-  //     (x: Location) => x.id == parseInt(id)
-  //   );
-  //   if (!item) {
-  //     return res.status(404).json({ error: 'Not found' });
-  //   }
-  //   let { floor, room_number, build_number, entry } = req.body;
-  //   item.floor = floor;
-  //   item.room_number = room_number;
-  //   item.build_number = build_number;
-  //   item.entry = entry;
+  patchLocation = async (req: Request, res: Response): Promise<Response> => {
+    const errors = validationResult(req);
 
-  //   return res.status(200).send(item);
-  // };
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+    let id: string = req.params.id;
+    let location: Location = req.body;
+    try {
+      location.id = id;
+      let results = await updateLocation(location);
+      return res.status(200).send(wrap(results)).json();
+    } catch (err) {
+      return res.status(500).send({ errors: err.detail }).json();
+    }
+  };
 
   deleteLocation = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
@@ -121,9 +120,6 @@ class LocationController extends Controller {
       return res.status(500).send({ errors: err.detail }).json();
     }
   };
-
-  //   return res.status(200).json();
-  // };
 }
 
 export default LocationController;

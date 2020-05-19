@@ -7,6 +7,8 @@ import {
   getAllBuildings,
   insertBuilding,
   deleteBuilding,
+  updateBuilding,
+  getBuildingById,
 } from '../models/building/building-models';
 import { wrap } from '../util/wrapper';
 
@@ -21,22 +23,22 @@ class BuildingContoller extends Controller {
 
   public intializeRoutes(): void {
     this.router.get(this.path, this.getBuildings);
-    // this.router.get(
-    //   this.path + this.idPrefix,
-    //   [param('id').isNumeric()],
-    //   this.getLocationById
-    // );
+    this.router.get(
+      this.path + this.idPrefix,
+      [param('id').isNumeric()],
+      this.getBuildingByID
+    );
     this.router.post(
       this.path,
       [check('number_of_floors').isNumeric()],
       this.generateBuilding
     );
 
-    // this.router.patch(
-    //   this.path + this.idPrefix,
-    //   [param('id').isNumeric()],
-    //   this.patchLocation
-    // );
+    this.router.patch(
+      this.path + this.idPrefix,
+      [param('id').isNumeric()],
+      this.patchBuilding
+    );
 
     this.router.delete(
       this.path + this.idPrefix,
@@ -54,21 +56,20 @@ class BuildingContoller extends Controller {
     }
   };
 
-  // getLocationById = (req: Request, res: Response): Response => {
-  //   const errors = validationResult(req);
-  //   if (!errors.isEmpty()) {
-  //     return res.status(404).json({ errors: errors.array() });
-  //   }
+  getBuildingByID = async (req: Request, res: Response): Promise<Response> => {
+    const errors = validationResult(req);
 
-  //   let id: string = req.params.id;
-  //   let item: Location | undefined = locations.find(
-  //     (x: Location) => x.id == parseInt(id)
-  //   );
-  //   if (!item) {
-  //     return res.status(404).json({ error: 'Not found' });
-  //   }
-  //   return res.status(200).send(item);
-  // };
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+    let id: string = req.params.id;
+    try {
+      let results = await getBuildingById(id);
+      return res.status(200).send(wrap(results)).json();
+    } catch (err) {
+      return res.status(500).send({ errors: err.detail }).json();
+    }
+  };
 
   generateBuilding = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
@@ -85,26 +86,22 @@ class BuildingContoller extends Controller {
     }
   };
 
-  // patchLocation = (req: Request, res: Response): Response => {
-  //   const errors = validationResult(req);
-  //   if (!errors.isEmpty()) {
-  //     return res.status(404).json({ errors: errors.array() });
-  //   }
-  //   let id: string = req.params.id;
-  //   let item: Location | undefined = locations.find(
-  //     (x: Location) => x.id == parseInt(id)
-  //   );
-  //   if (!item) {
-  //     return res.status(404).json({ error: 'Not found' });
-  //   }
-  //   let { floor, room_number, build_number, entry } = req.body;
-  //   item.floor = floor;
-  //   item.room_number = room_number;
-  //   item.build_number = build_number;
-  //   item.entry = entry;
+  patchBuilding = async (req: Request, res: Response): Promise<Response> => {
+    const errors = validationResult(req);
 
-  //   return res.status(200).send(item);
-  // };
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+    let id: string = req.params.id;
+    let buidling: Building = req.body;
+    try {
+      buidling.id = id;
+      let results = await updateBuilding(buidling);
+      return res.status(200).send(wrap(results)).json();
+    } catch (err) {
+      return res.status(500).send({ errors: err.detail }).json();
+    }
+  };
 
   deleteBuilding = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
