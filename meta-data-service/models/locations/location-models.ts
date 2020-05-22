@@ -36,6 +36,7 @@ export async function insertLocation(location: Location) {
     return (
       await pool.query(insertLocationQuery, [
         location.building_id,
+        location.name,
         location.floor,
         location.room_num,
         location.entry,
@@ -59,6 +60,7 @@ export async function updateLocation(location: Location) {
     return (
       await pool.query(updateLocationQuery, [
         location.id,
+        location.name,
         location.building_id,
         location.floor,
         location.room_num,

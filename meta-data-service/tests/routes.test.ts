@@ -14,15 +14,17 @@ describe('Test /buildling', () => {
 
   it('responds with an id', async (done) => {
     let building: Building = {
-      id: '1',
+      id: '34',
       number_of_floors: 5,
       name: 'test',
+      capacity: 500,
     };
     const res = await api
       .post('/building')
       .send({
         name: building.name,
         number_of_floors: building.number_of_floors,
+        capacity: building.capacity,
       })
       .set('Accept', 'application/json');
     expect(res.body.data[0]).toHaveProperty('id');
@@ -55,6 +57,7 @@ describe('Test /location', () => {
       .send({
         name: 'test',
         number_of_floors: 5,
+        capacity: 500,
       })
       .set('Accept', 'application/json');
     expect(res.body.data[0]).toHaveProperty('id');
@@ -64,6 +67,7 @@ describe('Test /location', () => {
       .send({
         building_id: buildingId,
         floor: 14,
+        name: 'yuval',
         room_num: 15,
         entry: 2222,
       })
@@ -91,10 +95,12 @@ describe('Tests delete /buildling', () => {
     let res = await api.post('/building').send({
       number_of_floors: 5,
       name: 'test',
+      capacity: 500,
     });
     id = res.body.data[0].id;
     res = await api.post('/location').send({
       building_id: id,
+      name: 'yuval',
       floor: 14,
       room_num: 15,
       entry: 2222,

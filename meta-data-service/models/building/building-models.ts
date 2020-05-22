@@ -38,6 +38,7 @@ export async function insertBuilding(building: Building) {
       await pool.query(insertBuildingQuery, [
         building.name,
         building.number_of_floors,
+        building.capacity,
       ])
     ).rows;
   } catch (err) {
@@ -47,8 +48,9 @@ export async function insertBuilding(building: Building) {
 
 export async function deleteBuilding(id: string) {
   try {
-    await pool.query(deleteAllLocationsAndBuilding, [id]);
-    return await pool.query(deleteBuildingQuery, [id]);
+    let res = (await pool.query(deleteAllLocationsAndBuilding, [id])).rows;
+    await pool.query(deleteBuildingQuery, [id]);
+    return res.length;
   } catch (err) {
     console.log(err);
     throw err;
@@ -62,6 +64,7 @@ export async function updateBuilding(building: Building) {
         building.id,
         building.name,
         building.number_of_floors,
+        building.capacity,
       ])
     ).rows;
   } catch (err) {

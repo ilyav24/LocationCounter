@@ -39,11 +39,13 @@ update_last_date timestamp NOT NULL default CURRENT_TIMESTAMP
 export const buildingTable = `CREATE TABLE public.building(
 id SERIAL NOT NULL PRIMARY KEY,
 name TEXT NOT NULL,
-number_of_floors INTEGER NOT NULL
+number_of_floors INTEGER NOT NULL,
+capacity INTEGER NOT NULL
 );`;
 
 export const locationTable = `CREATE TABLE public.location(
 id SERIAL NOT NULL PRIMARY KEY,
+name TEXT NOT NULL,
 building_id INTEGER NOT NULL REFERENCES building(id),
 floor INTEGER NOT NULL,
 room_num INTEGER NULL,
@@ -57,7 +59,7 @@ sensors_id INTEGER REFERENCES location(id)
 );`;
 
 export const usagesTable = `CREATE TABLE public.usages(
-sensose_id INTEGER NOT NULL PRIMARY KEY,
+sensosr_id INTEGER NOT NULL PRIMARY KEY,
 last_sync TIMESTAMP NOT NULL DEFAULT NOW(),
 is_entered BIT NULL
 );`;

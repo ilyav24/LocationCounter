@@ -110,8 +110,8 @@ class BuildingContoller extends Controller {
     }
     let id: string = req.params.id;
     try {
-      await deleteBuilding(id);
-      return res.status(200).send(wrap(true)).json();
+      let rows = await deleteBuilding(id);
+      return res.status(200).send(wrap({ rows })).json();
     } catch (err) {
       return res.status(500).send({ errors: err.detail }).json();
     }
