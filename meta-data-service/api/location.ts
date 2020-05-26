@@ -55,7 +55,7 @@ class LocationController extends Controller {
       let locations = await getAllLocations();
       return res.status(200).send(wrap(locations)).json();
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      return res.status(500).json({ errors: err.detail });
     }
   };
 
@@ -68,7 +68,7 @@ class LocationController extends Controller {
     let id: string = req.params.id;
     try {
       let results = await getLocationById(id);
-      return res.status(200).send(wrap(results)).json();
+      return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).send({ errors: err.detail }).json();
     }
@@ -84,9 +84,9 @@ class LocationController extends Controller {
     let results;
     try {
       results = await insertLocation(location);
-      return res.status(200).send(wrap(results)).json();
+      return res.status(200).json(wrap(results));
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      return res.status(500).json({ errors: err.detail });
     }
   };
 
@@ -101,9 +101,9 @@ class LocationController extends Controller {
     try {
       location.id = id;
       let results = await updateLocation(location);
-      return res.status(200).send(wrap(results)).json();
+      return res.status(200).json(wrap(results));
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      return res.status(500).json({ errors: err.detail });
     }
   };
 
@@ -115,9 +115,9 @@ class LocationController extends Controller {
     let id: string = req.params.id;
     try {
       await deleteLocation(id);
-      return res.status(200).send(wrap(true)).json();
+      return res.status(200).json(wrap(true));
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      return res.status(500).json({ errors: err.detail });
     }
   };
 }

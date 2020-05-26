@@ -47,12 +47,12 @@ class BuildingContoller extends Controller {
     );
   }
 
-  getBuildings = async (req: Request, res: Response): Promise<Response> => {
+  getBuildings = async (req: Request, res: Response) => {
     try {
       let buildings = await getAllBuildings();
-      return res.status(200).send(wrap(buildings)).json();
+      return res.json(wrap(buildings));
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      res.status(500).json({ errors: err.detail });
     }
   };
 
@@ -65,9 +65,9 @@ class BuildingContoller extends Controller {
     let id: string = req.params.id;
     try {
       let results = await getBuildingById(id);
-      return res.status(200).send(wrap(results)).json();
+      return res.status(200).json(wrap(results));
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      return res.status(500).json({ errors: err.detail });
     }
   };
 
@@ -80,9 +80,9 @@ class BuildingContoller extends Controller {
     let buidling: Building = req.body;
     try {
       let results = await insertBuilding(buidling);
-      return res.status(200).send(wrap(results)).json();
+      return res.status(200).json(wrap(results));
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      return res.status(500).json({ errors: err.detail });
     }
   };
 
@@ -97,9 +97,9 @@ class BuildingContoller extends Controller {
     try {
       buidling.id = id;
       let results = await updateBuilding(buidling);
-      return res.status(200).send(wrap(results)).json();
+      return res.status(200).json(wrap(results));
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      return res.status(500).json({ errors: err.detail });
     }
   };
 
@@ -111,13 +111,11 @@ class BuildingContoller extends Controller {
     let id: string = req.params.id;
     try {
       let rows = await deleteBuilding(id);
-      return res.status(200).send(wrap({ rows })).json();
+      return res.status(200).json(wrap({ rows }));
     } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
+      return res.status(500).json({ errors: err.detail });
     }
   };
-  //   return res.status(200).json();
-  // };
 }
 
 export default BuildingContoller;
