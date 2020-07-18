@@ -8,6 +8,10 @@ import {
   qGetCountBetweenDaysBaseByLocationId,
   qGetCountBetweenDaysFromByLocationId,
   qGetCountBetweenDaysToByLocationId,
+  qGetCountBetweenDaysByBuildingId,
+  qGetCountBetweenDaysBaseByBuildingId,
+  qGetCountBetweenDaysFromByBuildingId,
+  qGetCountBetweenDaysToByBuildingId,
 } from './strat-queries';
 
 import * as dotenv from 'dotenv';
@@ -72,7 +76,6 @@ export async function getCountBetweenDaysByLocationIdDb(
 ) {
   try {
     if (sensor.from !== undefined && sensor.to !== undefined) {
-      console.log(qGetCountBetweenDaysByLocationId);
       return (
         await pool.query(qGetCountBetweenDaysByLocationId, [
           sensor.from,
@@ -82,15 +85,11 @@ export async function getCountBetweenDaysByLocationIdDb(
       ).rows;
     }
     if (sensor.from === undefined && sensor.to === undefined) {
-      console.log(qGetCountBetweenDaysBaseByLocationId);
-
       return (
         await pool.query(qGetCountBetweenDaysBaseByLocationId, [locationId])
       ).rows;
     }
     if (sensor.from !== undefined) {
-      console.log(qGetCountBetweenDaysFromByLocationId);
-
       return (
         await pool.query(qGetCountBetweenDaysFromByLocationId, [
           sensor.from,
@@ -99,9 +98,49 @@ export async function getCountBetweenDaysByLocationIdDb(
       ).rows;
     }
     if (sensor.to !== undefined) {
-      console.log(qGetCountBetweenDaysToByLocationId);
       return (
         await pool.query(qGetCountBetweenDaysToByLocationId, [
+          sensor.to,
+          locationId,
+        ])
+      ).rows;
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function getCountBetweenDaysByBuildingIdDb(
+  sensor: MyDate,
+  locationId: number
+) {
+  try {
+    if (sensor.from !== undefined && sensor.to !== undefined) {
+      return (
+        await pool.query(qGetCountBetweenDaysByBuildingId, [
+          sensor.from,
+          sensor.to,
+          locationId,
+        ])
+      ).rows;
+    }
+    if (sensor.from === undefined && sensor.to === undefined) {
+      return (
+        await pool.query(qGetCountBetweenDaysBaseByBuildingId, [locationId])
+      ).rows;
+    }
+    if (sensor.from !== undefined) {
+      return (
+        await pool.query(qGetCountBetweenDaysFromByBuildingId, [
+          sensor.from,
+          locationId,
+        ])
+      ).rows;
+    }
+    if (sensor.to !== undefined) {
+      return (
+        await pool.query(qGetCountBetweenDaysToByBuildingId, [
           sensor.to,
           locationId,
         ])

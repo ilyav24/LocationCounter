@@ -1,4 +1,5 @@
-import { Pool } from 'pg';
+import { MyDate } from './my-date';
+
 import {
   qGetAllSsensors,
   qGetSensorById,
@@ -7,21 +8,8 @@ import {
   qUpdateLocationByID,
 } from './sensor-queries';
 
-import * as dotenv from 'dotenv';
-import { MyDate } from './my-date';
 
-dotenv.config();
 
-const user: String | undefined = process.env.DB_USER;
-const password: String | undefined = process.env.DB_PASS;
-
-const connectionString =
-  'postgres://' + user + ':' + password + '@localhost:5432';
-const databaseName = 'location_counter';
-
-const pool = new Pool({
-  connectionString: connectionString + '/' + databaseName,
-});
 
 export async function getAllSsensorsDb() {
   try {
