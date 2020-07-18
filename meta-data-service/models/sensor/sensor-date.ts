@@ -1,5 +1,5 @@
-import { SensorBase } from './sensor-base';
+import { MyDate } from './my-date';
 
-export interface SensorDate extends SensorBase {
+export interface SensorDate extends MyDate {
   sensor_id: number;
 }

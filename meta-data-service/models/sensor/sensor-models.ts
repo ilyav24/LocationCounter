@@ -8,7 +8,7 @@ import {
 } from './sensor-queries';
 
 import * as dotenv from 'dotenv';
-import { SensorBase } from './sensor-base';
+import { MyDate } from './my-date';
 
 dotenv.config();
 
@@ -40,7 +40,7 @@ export async function getSensorByIdDb(id: string) {
   }
 }
 
-export async function getAllSensorsEventDb(date: SensorBase, sensorId: number) {
+export async function getAllSensorsEventDb(date: MyDate, sensorId: number) {
   try {
     return (await pool.query(qGetAllSensorsEvent, [date.from, date.to, sensorId])).rows;
   } catch (err) {
@@ -49,7 +49,7 @@ export async function getAllSensorsEventDb(date: SensorBase, sensorId: number) {
   }
 }
 
-export async function getAllSensorsEventByIdDb(date: SensorBase, sensorId:number) {
+export async function getAllSensorsEventByIdDb(date: MyDate, sensorId:number) {
   try {
     return (
       await pool.query(qGetAllSensorsEventById, [

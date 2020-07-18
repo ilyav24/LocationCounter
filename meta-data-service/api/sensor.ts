@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Request } from 'express';
 import { param, check, validationResult } from 'express-validator';
 import { wrap } from '../util/wrapper';
-import { SensorBase } from '../models/sensor/sensor-base';
+import { MyDate } from '../models/sensor/my-date';
 import { SensorDate } from '../models/sensor/sensor-date';
 import {
   getAllSsensorsDb,
@@ -86,7 +86,7 @@ class SensorContoller extends Controller {
       return res.status(404).json({ errors: errors.array() });
     }
 
-    const date: SensorBase = req.body;
+    const date: MyDate = req.body;
     const id = +req.params.id;
     try {
       let results = await getAllSensorsEventDb(date, id);
