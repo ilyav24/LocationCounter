@@ -116,6 +116,7 @@ class BuildingContoller extends Controller {
       return res.status(500).json({ errors: err.detail });
     }
   };
+
 }
 
 export default BuildingContoller;
