@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import {
   qGetAllSsensors,
+  qGetSensorById,
 } from './sensor-queries';
 import { Sensor } from './sensor';
 
@@ -23,6 +24,15 @@ export async function getAllSsensorsDb() {
   try {
     return (await pool.query(qGetAllSsensors)).rows;
   } catch (err) {
+    throw err;
+  }
+}
+
+export async function getSensorByIdDb(id: string) {
+  try {
+    return (await pool.query(qGetSensorById, [id])).rows;
+  } catch (err) {
+    console.log(err);
     throw err;
   }
 }
