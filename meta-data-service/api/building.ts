@@ -13,7 +13,7 @@ import {
 import { wrap } from '../util/wrapper';
 
 class BuildingContoller extends Controller {
-  public path = '/building';
+  public path = '/api/building';
   public idPrefix: string = '/:id';
 
   constructor() {
@@ -93,13 +93,14 @@ class BuildingContoller extends Controller {
       return res.status(404).json({ errors: errors.array() });
     }
     let id: string = req.params.id;
-    let buidling: Building = req.body;
+    let building: Building = req.body;
     try {
-      buidling.id = id;
-      let results = await updateBuilding(buidling);
+      building.id = id;
+      let results = await updateBuilding(building);
       return res.status(200).json(wrap(results));
     } catch (err) {
-      return res.status(500).json({ errors: err.detail });
+      console.log(err);
+      return res.status(500).json({ errors: 'failed to update building' });
     }
   };
 
@@ -111,9 +112,9 @@ class BuildingContoller extends Controller {
     let id: string = req.params.id;
     try {
       let rows = await deleteBuilding(id);
-      return res.status(200).json(wrap({ rows }));
+      return res.status(200).json(wrap(true));
     } catch (err) {
-      return res.status(500).json({ errors: err.detail });
+      return res.status(500).json({ errors: err });
     }
   };
 }

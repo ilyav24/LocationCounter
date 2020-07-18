@@ -14,7 +14,7 @@ import {
 
 //TODO: make checks in diffrent file?
 class LocationController extends Controller {
-  public path = '/location';
+  public path = '/api/location';
   public idPrefix: string = '/:id';
 
   constructor() {
@@ -24,7 +24,7 @@ class LocationController extends Controller {
 
   public intializeRoutes(): void {
     this.router.get(this.path, this.getLocations);
-    
+
     this.router.get(
       this.path + this.idPrefix,
       [param('id').isNumeric()],

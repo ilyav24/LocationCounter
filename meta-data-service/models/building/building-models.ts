@@ -59,14 +59,13 @@ export async function deleteBuilding(id: string) {
 
 export async function updateBuilding(building: Building) {
   try {
-    return (
-      await pool.query(updateBuildingQuery, [
+    let res = await pool.query(updateBuildingQuery, [
         building.id,
         building.name,
         building.number_of_floors,
         building.capacity,
-      ])
-    ).rows;
+      ]);
+    return res.rows;
   } catch (err) {
     console.log(err);
     throw err;
