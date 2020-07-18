@@ -4,11 +4,13 @@ import {
   qGetSensorById,
   qGetAllSensorsEvent,
   qGetAllSensorsEventById,
+  qUpdateLocationByID,
 } from './sensor-queries';
 
 import * as dotenv from 'dotenv';
 import { SensorBase } from './sensor-base';
 import { SensorDate } from './sensor-date';
+import { SensorLocation } from './sensor-location';
 
 dotenv.config();
 
@@ -51,10 +53,6 @@ export async function getAllSensorsEventDb(date: SensorBase) {
 
 export async function getAllSensorsEventByIdDb(date: SensorDate) {
   try {
-    console.log(date.to);
-    console.log(date.from);
-    console.log(date.sensor_id);
-
     return (
       await pool.query(qGetAllSensorsEventById, [
         date.from,
@@ -62,6 +60,16 @@ export async function getAllSensorsEventByIdDb(date: SensorDate) {
         date.sensor_id,
       ])
     ).rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function updateLocationDb(locationId: number, sensorId: number) {
+  try {
+    await pool.query(qUpdateLocationByID, [locationId, sensorId]);
+    return getSensorByIdDb(sensorId.toString());
   } catch (err) {
     console.log(err);
     throw err;

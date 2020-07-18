@@ -10,7 +10,9 @@ import {
   getSensorByIdDb,
   getAllSensorsEventDb,
   getAllSensorsEventByIdDb,
+  updateLocationDb,
 } from '../models/sensor/sensor-models';
+import { SensorLocation } from '../models/sensor/sensor-location';
 
 class SensorContoller extends Controller {
   public path = '/sensor';
@@ -38,6 +40,12 @@ class SensorContoller extends Controller {
       this.path + '/GetAllSensorsEventById',
       [check('sensor_id').isNumeric()],
       this.getAllSensorsEventById
+    );
+
+    this.router.patch(
+      this.path + '/UpdateLocation',
+      [check('data').isArray()],
+      this.updateLocation
     );
 
     // this.router.get(this.path + this.idPrefix,[param('id').isNumeric()],this.getBuildingByID);
@@ -104,6 +112,32 @@ class SensorContoller extends Controller {
     try {
       let results = await getAllSensorsEventByIdDb(date);
       return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
+
+  updateLocation = async (req: Request, res: Response): Promise<Response> => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+    const data: SensorLocation[] = req.body.data;
+    try {
+      let responseArr: SensorLocation[] = [];
+
+      for (let index = 0; index < data.length; index++) {
+        const result = await updateLocationDb(
+          data[index].location,
+          data[index].sensor_id
+        );
+        responseArr.push(result[0]);
+      }
+      // // date.forEach((x) => responseArr.push(await updateLocationDb(x)));
+      // // let results = await updateLocationDb(date);
+      console.log(responseArr);
+
+      return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
     }
