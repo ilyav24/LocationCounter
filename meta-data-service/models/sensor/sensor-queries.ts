@@ -16,3 +16,7 @@ WHERE se.id = $1`;
 export const qGetAllSensorsEvent: string = `SELECT * 
 FROM public.usages
 WHERE last_sync>= $1 and last_sync<$2`;
+
+export const qGetAllSensorsEventById: string = `SELECT * 
+FROM public.usages
+WHERE last_sync>= $1 AND last_sync < $2 AND sensosr_id = $3`;

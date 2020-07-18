@@ -3,13 +3,14 @@ import { Response } from 'express';
 import { Request } from 'express';
 import { param, check, validationResult } from 'express-validator';
 import { wrap } from '../util/wrapper';
-
+import { SensorBase } from '../models/sensor/sensor-base';
+import { SensorDate } from '../models/sensor/sensor-date';
 import {
   getAllSsensorsDb,
   getSensorByIdDb,
   getAllSensorsEventDb,
+  getAllSensorsEventByIdDb,
 } from '../models/sensor/sensor-models';
-import { SensorDate } from '../models/sensor/sensor-date';
 
 class SensorContoller extends Controller {
   public path = '/sensor';
@@ -32,6 +33,11 @@ class SensorContoller extends Controller {
     this.router.post(
       this.path + '/GetAllSensorsEvent',
       this.getAllSensorsEvent
+    );
+    this.router.post(
+      this.path + '/GetAllSensorsEventById',
+      [check('sensor_id').isNumeric()],
+      this.getAllSensorsEventById
     );
 
     // this.router.get(this.path + this.idPrefix,[param('id').isNumeric()],this.getBuildingByID);
@@ -76,9 +82,27 @@ class SensorContoller extends Controller {
       return res.status(404).json({ errors: errors.array() });
     }
 
-    const date: SensorDate = req.body;
+    const date: SensorBase = req.body;
     try {
       let results = await getAllSensorsEventDb(date);
+      return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
+
+  getAllSensorsEventById = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+
+    const date: SensorDate = req.body;
+    try {
+      let results = await getAllSensorsEventByIdDb(date);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
