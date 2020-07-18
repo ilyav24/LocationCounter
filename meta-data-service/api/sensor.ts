@@ -1,11 +1,15 @@
-import { Building } from '../models/building/building';
 import Controller from './controller';
 import { Response } from 'express';
 import { Request } from 'express';
 import { param, check, validationResult } from 'express-validator';
 import { wrap } from '../util/wrapper';
 
-import { getAllSsensorsDb, getSensorByIdDb } from '../models/sensor/sensor-models';
+import {
+  getAllSsensorsDb,
+  getSensorByIdDb,
+  getAllSensorsEventDb,
+} from '../models/sensor/sensor-models';
+import { SensorDate } from '../models/sensor/sensor-date';
 
 class SensorContoller extends Controller {
   public path = '/sensor';
@@ -20,8 +24,15 @@ class SensorContoller extends Controller {
   public intializeRoutes(): void {
     // get all sensors
     this.router.get(this.path, this.getAllSsensors);
-    this.router.get(this.path + this.idPrefix,[param(this.id).isNumeric()],this.getSensorById);
-    
+    this.router.get(
+      this.path + this.idPrefix,
+      [param(this.id).isNumeric()],
+      this.getSensorById
+    );
+    this.router.post(
+      this.path + '/GetAllSensorsEvent',
+      this.getAllSensorsEvent
+    );
 
     // this.router.get(this.path + this.idPrefix,[param('id').isNumeric()],this.getBuildingByID);
 
@@ -42,19 +53,37 @@ class SensorContoller extends Controller {
   };
 
   getSensorById = async (req: Request, res: Response): Promise<Response> => {
-      const errors = validationResult(req);
+    const errors = validationResult(req);
 
-      if (!errors.isEmpty()) {
-        return res.status(404).json({ errors: errors.array() });
-      }
-      let id: string = req.params.id;
-      try {
-        let results = await getSensorByIdDb(id);
-        return res.status(200).json(wrap(results));
-      } catch (err) {
-        return res.status(500).json({ errors: err.detail });
-      }
-    };
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+    let id: string = req.params.id;
+    try {
+      let results = await getSensorByIdDb(id);
+      return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
+
+  getAllSensorsEvent = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+
+    const date: SensorDate = req.body;
+    try {
+      let results = await getAllSensorsEventDb(date);
+      return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
 
   //   getBuildingByID = async (req: Request, res: Response): Promise<Response> => {
   //     const errors = validationResult(req);

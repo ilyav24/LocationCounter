@@ -12,3 +12,7 @@ FROM public.sensors se
 	join public.sensor_location l on
 		l.sensors_id=st.sensor_id
 WHERE se.id = $1`;
+
+export const qGetAllSensorsEvent: string = `SELECT * 
+FROM public.usages
+WHERE last_sync>= $1 and last_sync<$2`;

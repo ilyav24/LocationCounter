@@ -1,11 +1,8 @@
 import { Pool } from 'pg';
-import {
-  qGetAllSsensors,
-  qGetSensorById,
-} from './sensor-queries';
-import { Sensor } from './sensor';
+import { qGetAllSsensors, qGetSensorById, qGetAllSensorsEvent } from './sensor-queries';
 
 import * as dotenv from 'dotenv';
+import { SensorDate } from './sensor-date';
 
 dotenv.config();
 
@@ -31,6 +28,15 @@ export async function getAllSsensorsDb() {
 export async function getSensorByIdDb(id: string) {
   try {
     return (await pool.query(qGetSensorById, [id])).rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function getAllSensorsEventDb(date: SensorDate) {
+  try {
+    return (await pool.query(qGetAllSensorsEvent, [date.from, date.to])).rows;
   } catch (err) {
     console.log(err);
     throw err;
