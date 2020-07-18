@@ -131,9 +131,6 @@ class SensorContoller extends Controller {
         );
         responseArr.push(result[0]);
       }
-      // // date.forEach((x) => responseArr.push(await updateLocationDb(x)));
-      // // let results = await updateLocationDb(date);
-      console.log(responseArr);
 
       return res.status(200).json(wrap(responseArr));
     } catch (err) {

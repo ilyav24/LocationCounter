@@ -42,10 +42,6 @@ export async function getSensorByIdDb(id: string) {
 
 export async function getAllSensorsEventDb(date: SensorBase, sensorId: number) {
   try {
-    console.log(date);
-    console.log(sensorId);
-
-    
     return (await pool.query(qGetAllSensorsEvent, [date.from, date.to, sensorId])).rows;
   } catch (err) {
     console.log(err);
