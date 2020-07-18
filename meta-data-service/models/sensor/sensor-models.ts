@@ -5,6 +5,10 @@ import {
   qGetAllSensorsEvent,
   qGetAllSensorsEventById,
   qUpdateLocationByID,
+  qGetCountBetweenDaysBase,
+  qGetCountBetweenDays,
+  qGetCountBetweenDaysFrom,
+  qGetCountBetweenDaysTo,
 } from './sensor-queries';
 
 import * as dotenv from 'dotenv';
@@ -70,6 +74,32 @@ export async function updateLocationDb(locationId: number, sensorId: number) {
   try {
     await pool.query(qUpdateLocationByID, [locationId, sensorId]);
     return getSensorByIdDb(sensorId.toString());
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+export async function getCountBetweenDaysDb(sensor: SensorBase) {
+  try {
+    // const undefined = 'undefined';
+
+    if (sensor.from !== undefined && sensor.to !== undefined) {
+      console.log(qGetCountBetweenDays);
+      return (await pool.query(qGetCountBetweenDays, [sensor.from, sensor.to]))
+        .rows;
+    }
+    if (sensor.from === undefined && sensor.to === undefined) {
+      console.log(qGetCountBetweenDaysBase);
+      return (await pool.query(qGetCountBetweenDaysBase)).rows;
+    }
+    if (sensor.from !== undefined ) {
+      console.log(qGetCountBetweenDaysFrom);
+      return (await pool.query(qGetCountBetweenDaysFrom, [sensor.from])).rows;
+    }
+    if (sensor.to !== undefined) {
+      console.log(qGetCountBetweenDaysTo);
+      return (await pool.query(qGetCountBetweenDaysTo, [sensor.to])).rows;
+    }
   } catch (err) {
     console.log(err);
     throw err;
