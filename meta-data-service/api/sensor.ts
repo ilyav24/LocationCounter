@@ -11,10 +11,9 @@ import {
   getAllSensorsEventDb,
   getAllSensorsEventByIdDb,
   updateLocationDb,
-  getCountBetweenDaysDb,
 } from '../models/sensor/sensor-models';
 import { SensorLocation } from '../models/sensor/sensor-location';
-import { SensoreUsage } from '../models/sensor/sensor-usage';
+import { SensoreUsage } from '../models/strat/sensor-usage';
 
 class SensorContoller extends Controller {
   public path = '/sensor';
@@ -34,18 +33,17 @@ class SensorContoller extends Controller {
       [param(this.id).isNumeric()],
       this.getSensorById
     );
+
     this.router.post(
-      this.path + '/GetAllSensorsEvent',
+      this.path + this.idPrefix,
+      [param(this.id).isNumeric()],
       this.getAllSensorsEvent
     );
+
     this.router.post(
-      this.path + '/GetAllSensorsEventById',
-      [check('sensor_id').isNumeric()],
+      this.path + '/event' + this.idPrefix,
+      [param(this.id).isNumeric()],
       this.getAllSensorsEventById
-    );
-    this.router.post(
-      this.path + '/getCountBetweenDays',
-      this.getCountBetweenDays
     );
 
     this.router.patch(
@@ -53,14 +51,6 @@ class SensorContoller extends Controller {
       [check('data').isArray()],
       this.updateLocation
     );
-
-    // this.router.get(this.path + this.idPrefix,[param('id').isNumeric()],this.getBuildingByID);
-
-    // this.router.post(this.path,[check('number_of_floors').isNumeric()],this.generateBuilding);
-
-    // this.router.patch(this.path + this.idPrefix,[param('id').isNumeric()],this.patchBuilding);
-
-    // this.router.delete(this.path + this.idPrefix,[param('id').isNumeric()],this.deleteBuilding);
   }
 
   getAllSsensors = async (req: Request, res: Response) => {
@@ -97,8 +87,9 @@ class SensorContoller extends Controller {
     }
 
     const date: SensorBase = req.body;
+    const id = +req.params.id;
     try {
-      let results = await getAllSensorsEventDb(date);
+      let results = await getAllSensorsEventDb(date, id);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -115,8 +106,9 @@ class SensorContoller extends Controller {
     }
 
     const date: SensorDate = req.body;
+    const id = +req.params.id;
     try {
-      let results = await getAllSensorsEventByIdDb(date);
+      let results = await getAllSensorsEventByIdDb(date, id);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -148,100 +140,6 @@ class SensorContoller extends Controller {
       return res.status(500).json({ errors: err.detail });
     }
   };
-
-  getCountBetweenDays = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(404).json({ errors: errors.array() });
-    }
-
-    const date: SensorBase = req.body;
-
-    try {
-      let results: any = await getCountBetweenDaysDb(date);
-
-      let inside = 0,
-        outside = 0;
-
-      if (results[0].is_entered == '0') {
-        outside = +results[0].total;
-        inside = +results[1].total;
-      } else {
-        outside = +results[1].total;
-        inside = +results[0].total;
-      }
-
-      const total = inside - outside;
-      const r = new SensoreUsage(total);
-      return res.status(200).json(wrap(r));
-    } catch (err) {
-      return res.status(500).json({ errors: err.detail });
-    }
-  };
-
-  //   getBuildingByID = async (req: Request, res: Response): Promise<Response> => {
-  //     const errors = validationResult(req);
-
-  //     if (!errors.isEmpty()) {
-  //       return res.status(404).json({ errors: errors.array() });
-  //     }
-  //     let id: string = req.params.id;
-  //     try {
-  //       let results = await getBuildingById(id);
-  //       return res.status(200).json(wrap(results));
-  //     } catch (err) {
-  //       return res.status(500).json({ errors: err.detail });
-  //     }
-  //   };
-
-  //   generateBuilding = async (req: Request, res: Response): Promise<Response> => {
-  //     const errors = validationResult(req);
-  //     if (!errors.isEmpty()) {
-  //       return res.status(404).json({ errors: errors.array() });
-  //     }
-
-  //     let buidling: Building = req.body;
-  //     try {
-  //       let results = await insertBuilding(buidling);
-  //       return res.status(200).json(wrap(results));
-  //     } catch (err) {
-  //       return res.status(500).json({ errors: err.detail });
-  //     }
-  //   };
-
-  //   patchBuilding = async (req: Request, res: Response): Promise<Response> => {
-  //     const errors = validationResult(req);
-
-  //     if (!errors.isEmpty()) {
-  //       return res.status(404).json({ errors: errors.array() });
-  //     }
-  //     let id: string = req.params.id;
-  //     let buidling: Building = req.body;
-  //     try {
-  //       buidling.id = id;
-  //       let results = await updateBuilding(buidling);
-  //       return res.status(200).json(wrap(results));
-  //     } catch (err) {
-  //       return res.status(500).json({ errors: err.detail });
-  //     }
-  //   };
-
-  //   deleteBuilding = async (req: Request, res: Response): Promise<Response> => {
-  //     const errors = validationResult(req);
-  //     if (!errors.isEmpty()) {
-  //       return res.status(404).json({ errors: errors.array() });
-  //     }
-  //     let id: string = req.params.id;
-  //     try {
-  //       let rows = await deleteBuilding(id);
-  //       return res.status(200).json(wrap({ rows }));
-  //     } catch (err) {
-  //       return res.status(500).json({ errors: err.detail });
-  //     }
-  //   };
 }
 
 export default SensorContoller;

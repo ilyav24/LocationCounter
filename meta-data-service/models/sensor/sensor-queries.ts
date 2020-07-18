@@ -15,7 +15,7 @@ WHERE se.id = $1;`;
 
 export const qGetAllSensorsEvent: string = `SELECT * 
 FROM public.usages
-WHERE last_sync>= $1 and last_sync<$2;`;
+WHERE last_sync>= $1 AND  last_sync<$2 AND sensosr_id = $3;`;
 
 export const qGetAllSensorsEventById: string = `SELECT * 
 FROM public.usages
@@ -25,21 +25,4 @@ export const qUpdateLocationByID: string = `UPDATE public.sensor_location
 SET location_id=$1
 WHERE sensors_id = 1;`;
 
-export const qGetCountBetweenDaysBase: string = `SELECT is_entered, count (*) as Total
-FROM public.usages 
-GROUP BY is_entered;`;
-
-export const qGetCountBetweenDays: string = `SELECT is_entered, count (*) as Total
-FROM public.usages 
-WHERE  last_sync > $1 AND  last_sync < $2 
-GROUP BY is_entered;`;
-
-export const qGetCountBetweenDaysFrom: string = `SELECT is_entered, count (*) as Total
-FROM public.usages 
-WHERE  last_sync > $1 
-GROUP BY is_entered;`;
-export const qGetCountBetweenDaysTo: string = `SELECT is_entered, count (*) as Total
-FROM public.usages 
-WHERE last_sync < $1 
-GROUP BY is_entered;`;
 
