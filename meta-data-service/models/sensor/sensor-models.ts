@@ -1,5 +1,6 @@
+import { Pool } from 'pg';
+import * as dotenv from 'dotenv';
 import { MyDate } from './my-date';
-
 import {
   qGetAllSsensors,
   qGetSensorById,
@@ -8,8 +9,18 @@ import {
   qUpdateLocationByID,
 } from './sensor-queries';
 
+dotenv.config();
 
+const user: String | undefined = process.env.DB_USER;
+const password: String | undefined = process.env.DB_PASS;
 
+const connectionString =
+  'postgres://' + user + ':' + password + '@localhost:5432';
+const databaseName = 'location_counter';
+
+const pool = new Pool({
+  connectionString: connectionString + '/' + databaseName,
+});
 
 export async function getAllSsensorsDb() {
   try {
@@ -30,21 +41,19 @@ export async function getSensorByIdDb(id: string) {
 
 export async function getAllSensorsEventDb(date: MyDate, sensorId: number) {
   try {
-    return (await pool.query(qGetAllSensorsEvent, [date.from, date.to, sensorId])).rows;
+    return (
+      await pool.query(qGetAllSensorsEvent, [date.from, date.to, sensorId])
+    ).rows;
   } catch (err) {
     console.log(err);
     throw err;
   }
 }
 
-export async function getAllSensorsEventByIdDb(date: MyDate, sensorId:number) {
+export async function getAllSensorsEventByIdDb(date: MyDate, sensorId: number) {
   try {
     return (
-      await pool.query(qGetAllSensorsEventById, [
-        date.from,
-        date.to,
-        sensorId
-      ])
+      await pool.query(qGetAllSensorsEventById, [date.from, date.to, sensorId])
     ).rows;
   } catch (err) {
     console.log(err);
