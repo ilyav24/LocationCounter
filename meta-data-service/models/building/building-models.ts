@@ -6,6 +6,7 @@ import {
   deleteAllLocationsAndBuilding,
   updateBuildingQuery,
   getBuildingByIdQuery,
+  getBuildingLocations,
 } from './building-queries';
 import { Building } from './building';
 
@@ -76,6 +77,15 @@ export async function updateBuilding(building: Building) {
 export async function getBuildingById(id: string) {
   try {
     return (await pool.query(getBuildingByIdQuery, [id])).rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function getAllBuildingsLocations(id: string) {
+  try {
+    return (await pool.query(getBuildingLocations, [id])).rows;
   } catch (err) {
     console.log(err);
     throw err;

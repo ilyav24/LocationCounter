@@ -9,10 +9,11 @@ import {
   deleteBuilding,
   updateBuilding,
   getBuildingById,
+  getAllBuildingsLocations,
 } from '../models/building/building-models';
 import { wrap } from '../util/wrapper';
 
-class BuildingContoller extends Controller {
+class BuildingController extends Controller {
   public path = '/building';
   public idPrefix: string = '/:id';
 
@@ -28,6 +29,13 @@ class BuildingContoller extends Controller {
       [param('id').isNumeric()],
       this.getBuildingByID
     );
+
+    this.router.get(
+      this.path + this.idPrefix + '/location',
+      [param('id').isNumeric()],
+      this.getBuildingsLocations
+    );
+
     this.router.post(
       this.path,
       [check('number_of_floors').isNumeric()],
@@ -93,10 +101,10 @@ class BuildingContoller extends Controller {
       return res.status(404).json({ errors: errors.array() });
     }
     let id: string = req.params.id;
-    let buidling: Building = req.body;
+    let building: Building = req.body;
     try {
-      buidling.id = id;
-      let results = await updateBuilding(buidling);
+      building.id = id;
+      let results = await updateBuilding(building);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -116,6 +124,16 @@ class BuildingContoller extends Controller {
       return res.status(500).json({ errors: err.detail });
     }
   };
+
+  getBuildingsLocations = async (req: Request, res: Response) => {
+    try {
+      let id: string = req.params.id;
+      let locations = await getAllBuildingsLocations(id);
+      return res.json(wrap(locations));
+    } catch (err) {
+      res.status(500).json({ errors: err.detail });
+    }
+  };
 }
 
-export default BuildingContoller;
+export default BuildingController;
