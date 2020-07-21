@@ -1,0 +1,15 @@
+import React from "react";
+
+const Dashboard = React.lazy(() => import("./views/Dashboard"));
+const Colors = React.lazy(() => import("./views/Theme/Colors"));
+const Buildings = React.lazy(() => import("./containers/Buildings"));
+const Locations = React.lazy(() => import("./containers/Locations"));
+// https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
+const routes = [
+  { path: "/", exact: true, name: "Home" },
+  { path: "/dashboard", name: "Dashboard", component: Dashboard },
+  { path: "/buildings", exact: true, name: "Buildings", component: Buildings },
+  { path: "/locations", exact: true, name: "Locations", component: Locations },
+];
+
+export default routes;
