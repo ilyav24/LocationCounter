@@ -1,13 +1,13 @@
 # To Run Server
 
 Run in command line:  
-`cd meta-data-service`  
+`cd meta-data-service`
 
 Install dependencies:  
 `npm i`
 
 Add `.env` file with your postgress credentials:  
-`touch .env` 
+`touch .env`
 
 File content:  
 `DB_USER="<db_user_name>"`  
@@ -21,6 +21,9 @@ Should produce no error
 
 Test if it's working:  
 `curl http://localhost:5000`
+
+You can seed data using the command:  
+`npm run seed`
 
 Should return:  
 `I'm up and running!`

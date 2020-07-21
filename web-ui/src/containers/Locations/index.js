@@ -6,30 +6,50 @@ import _ from "lodash";
 import { BuildingsTable } from "../../components/BuildingsTable";
 import { loadBuildings } from "../Buildings/actions";
 import { LocationsTable } from "../../components/LocationsTable";
-import { loadBuildingLocations } from "./actions";
+import {
+  loadBuildingLocations,
+  locationSelected,
+  fieldChanged,
+  updateLocation,
+  newLocation,
+  newLocationSaved,
+} from "./actions";
 import { LocationCard } from "../../components/LocationCard";
+import { ErrorMessage } from "../../components/ErrorMessage";
 
 const Locations = () => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
 
-  const { locationList } = useSelector((state) => state);
-  const { locations, selectedBuilding } = locationList.toJS();
-  const { buildingsList } = useSelector((state) => state);
-  const { buildings } = buildingsList.toJS();
+  const {
+    locations,
+    selectedBuilding,
+    selectedLocation,
+    error,
+  } = useSelector((state) => state.locationList.toJS());
+  const { buildings } = useSelector((state) => state.buildingsList.toJS());
 
   useEffect(() => {
     dispatch(loadBuildings());
   }, []);
 
-  const onClick = ({ id }) => {
+  const onClickBuilding = ({ id }) => {
     dispatch(loadBuildingLocations(id));
     setOpen(false);
   };
+
+  const onClickLocation = (location) => dispatch(locationSelected(location));
+  const onChange = (location) => dispatch(fieldChanged(location));
+  const onUpdate = () => dispatch(updateLocation());
+  const onCreate = () => dispatch(newLocation(selectedBuilding));
+  const onCreateNew = () => dispatch(newLocationSaved());
+  const onSave = selectedLocation?.id === "" ? onCreateNew : onUpdate;
+
   const { name } = selectedBuilding
     ? buildings[_.findIndex(buildings, ["id", selectedBuilding])]
     : "";
+
   return (
     <div className="animated fadeIn">
       <Card>
@@ -52,21 +72,35 @@ const Locations = () => {
           <CardBody>
             <BuildingsTable
               buildings={buildings}
-              onClick={onClick}
+              onClick={onClickBuilding}
               selected={selectedBuilding}
             />
           </CardBody>
         </Collapse>
       </Card>
-      <Card>
-        <CardHeader>
-          <i className="fa icon-layers"></i> Locations
-        </CardHeader>
-        <CardBody>
-          <LocationsTable locations={locations} />
-        </CardBody>
-      </Card>
-      <LocationCard location={locations[0]} />
+      {selectedBuilding ? (
+        <Card>
+          <CardHeader>
+            <i className="fa icon-layers"></i> Locations
+          </CardHeader>
+          <CardBody>
+            <LocationsTable
+              locations={locations}
+              onClick={onClickLocation}
+              selectedLocation={selectedLocation}
+              onCreate={onCreate}
+            />
+          </CardBody>
+        </Card>
+      ) : (
+        ""
+      )}
+      <ErrorMessage error={error} />
+      <LocationCard
+        location={selectedLocation}
+        onChange={onChange}
+        onSave={onSave}
+      />
     </div>
   );
 };

@@ -80,6 +80,19 @@ export const LocationCard = ({ location, onChange, onSave }) => {
                       />
                     </FormGroup>
                   </Col>
+                  <Col xs="12">
+                    <FormGroup>
+                      <Label htmlFor="ccnumber">Floor</Label>
+                      <Input
+                        value={location.floor}
+                        type="text"
+                        id="floor"
+                        onChange={({ target: { value } }) => {
+                          onChange({ floor: value });
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
                 </Row>
                 <Row>
                   <Col xs="12">

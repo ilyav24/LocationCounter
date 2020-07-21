@@ -61,7 +61,6 @@ export async function updateLocation(location: Location) {
       await pool.query(updateLocationQuery, [
         location.id,
         location.name,
-        location.building_id,
         location.floor,
         location.room_num,
         location.entry,

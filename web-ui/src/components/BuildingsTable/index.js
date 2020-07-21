@@ -6,10 +6,8 @@ import _ from "lodash";
 export const BuildingsTable = (props) => {
   const { buildings, onClick, onClear, selected } = props;
   const id = selected ? selected : null;
-  const [selectedId, setSelectedKey] = useState([id]);
 
   const onSelectedRow = (row) => {
-    setSelectedKey(row.id);
     onClick(row);
   };
 
@@ -18,7 +16,7 @@ export const BuildingsTable = (props) => {
     clickToSelect: true,
     style: { backgroundColor: "#c8e6c9" },
     onSelect: (row) => onSelectedRow(row),
-    selected: [selectedId],
+    selected: [id],
   };
   
   if (id == null) {

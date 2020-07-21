@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "ts-node ./db/schema_init createAllTables",
+    "seed": "ts-node ./db/seeder createData",
     "start": "nodemon server.ts",
     "tsc": "tsc",
     "tslint": "tslint",

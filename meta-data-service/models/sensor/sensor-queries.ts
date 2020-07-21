@@ -15,11 +15,11 @@ WHERE se.id = $1;`;
 
 export const qGetAllSensorsEvent: string = `SELECT * 
 FROM public.usages
-WHERE last_sync>= $1 AND  last_sync<$2 AND sensosr_id = $3;`;
+WHERE last_sync>= $1 AND  last_sync<$2 AND sensor_id = $3;`;
 
 export const qGetAllSensorsEventById: string = `SELECT * 
 FROM public.usages
-WHERE last_sync>= $1 AND last_sync < $2 AND sensosr_id = $3;`;
+WHERE last_sync>= $1 AND last_sync < $2 AND sensor_id = $3;`;
 
 export const qUpdateLocationByID: string = `UPDATE public.sensor_location
 SET location_id=$1
