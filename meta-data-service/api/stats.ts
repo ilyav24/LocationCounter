@@ -12,7 +12,7 @@ import {
 import { SensoreUsage } from '../models/strat/sensor-usage';
 import { log } from 'console';
 
-class StratContoller extends Controller {
+class StratController extends Controller {
   public path = '/strat';
   public idPrefix: string = '/:id';
 
@@ -124,4 +124,4 @@ class StratContoller extends Controller {
   };
 }
 
-export default StratContoller;
+export default StratController;

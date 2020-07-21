@@ -15,7 +15,7 @@ import {
 import { SensorLocation } from '../models/sensor/sensor-location';
 import { SensoreUsage } from '../models/strat/sensor-usage';
 
-class SensorContoller extends Controller {
+class SensorController extends Controller {
   public path = '/sensor';
   public idPrefix: string = '/:id';
 
@@ -139,4 +139,4 @@ class SensorContoller extends Controller {
   };
 }
 
-export default SensorContoller;
+export default SensorController;

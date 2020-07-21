@@ -16,3 +16,5 @@ SET name = $2, number_of_floors = $3, capacity = $4
 WHERE id = $1 RETURNING *`;
 
 export const getBuildingByIdQuery = `SELECT * FROM building WHERE id = $1`;
+
+export const getBuildingLocations = `SELECT * FROM location WHERE building_id = $1`;
