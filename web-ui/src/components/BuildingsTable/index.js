@@ -18,7 +18,7 @@ export const BuildingsTable = (props) => {
     onSelect: (row) => onSelectedRow(row),
     selected: [id],
   };
-  
+
   if (id == null) {
     selectRow.selected = [];
   }
@@ -55,6 +55,8 @@ export const BuildingsTable = (props) => {
   return buildings ? (
     <Col>
       <BootstrapTable
+        hover
+        bordered={false}
         keyField="id"
         data={buildings}
         columns={columns}

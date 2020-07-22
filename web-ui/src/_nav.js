@@ -25,5 +25,10 @@ export default {
       url: "/locations",
       icon: "icon-layers",
     },
+    {
+      name: "Sensors",
+      url: "/sensors",
+      icon: "cui-location-pin",
+    },
   ],
 };

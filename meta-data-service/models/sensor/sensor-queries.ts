@@ -1,11 +1,11 @@
-export const qGetAllSsensors: string = `SELECT st.sensor_id, st.status_id as sensor_stats, l.id as localtion
+export const qGetAllSsensors: string = `SELECT st.sensor_id, st.status_id as sensor_status, l.id as location_id
 FROM public.sensors se 
 	join public.sensors_status st on
 		se.id=st.sensor_id
 	join public.sensor_location l on
 		l.sensors_id=st.sensor_id;`;
 
-export const qGetSensorById: string = `SELECT st.sensor_id, st.status_id as sensor_stats, l.id as localtion
+export const qGetSensorById: string = `SELECT st.sensor_id, st.status_id as sensor_status, l.id as location_id
 FROM public.sensors se 
 	join public.sensors_status st on
 		se.id=st.sensor_id

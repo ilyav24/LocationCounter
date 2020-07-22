@@ -5,6 +5,7 @@ import { fromJS } from "immutable";
 import { ConnectedRouter } from "connected-react-router";
 import configureStore, { history } from "./configureStore";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import "./App.scss";
 
 const loading = () => (

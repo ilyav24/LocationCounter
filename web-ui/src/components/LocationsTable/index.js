@@ -59,6 +59,8 @@ export const LocationsTable = ({
       {!_.isEmpty(locations) ? (
         <Col>
           <BootstrapTable
+            hover
+            bordered={false}
             keyField="id"
             data={locations}
             columns={columns}

@@ -49,7 +49,24 @@ async function createData() {
         `INSERT INTO public.sensor_location(sensors_id) VALUES (${i})`
       );
     }
-
+    console.log('+++++ creating statuses');
+    await client.query(
+      `INSERT INTO public.status(id, status)VALUES (1, 'ONLINE')`
+    );
+    await client.query(
+      `INSERT INTO public.status(id, status)VALUES (2, 'OFFLINE')`
+    );
+    await client.query(
+      `INSERT INTO public.status(id, status)VALUES (3, 'UNKNOWN')`
+    );
+    console.log('+++++ creating sensors status');
+    for (let i = 1; i < 11; i++) {
+      await client.query(
+        `INSERT INTO sensors_status(sensor_id,status_id) VALUES (${i},${
+          Math.floor(Math.random() * 3) + 1
+        })`
+      );
+    }
     console.log('+++++ creating usages');
     for (let i = 0; i < 100; i++) {
       let is_entered = Math.round(Math.random());
