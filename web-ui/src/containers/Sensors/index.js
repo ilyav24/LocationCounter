@@ -21,7 +21,10 @@ const Sensors = () => {
         <Col>
           <Card>
             <CardHeader>
-              <i className="cui-location-pin"></i> Sensors
+              <b>
+                {" "}
+                <i className="cui-location-pin"></i> Sensors
+              </b>
             </CardHeader>
             <CardBody>
               <SensorsTable
