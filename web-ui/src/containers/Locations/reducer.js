@@ -25,7 +25,7 @@ export default function locationsReducer(state = initialState, action) {
       return state.merge({ locations: payload });
     case LOAD_BUILDING_LOCATIONS:
       const { id } = action;
-      return state.merge({ selectedBuilding: id });
+      return state.merge({ selectedBuilding: id, selectedLocation: null });
     case LOCATION_SELECTED:
       return state.merge({ selectedLocation: location });
     case FIELD_CHANGE:

@@ -6,6 +6,8 @@ import SensorEventList from "../../components/SensorEventList";
 import { loadSensors, loadSensorsEvents } from "./actions";
 import LocationDetailsCard from "../../components/LocationDetailsCard/indejx";
 import BuildingDetailsCard from "../../components/BuildingDetailsCard";
+import { isNull } from "lodash";
+import ChooseLocation from "../ChooseLocationContainer";
 
 const Sensors = () => {
   const dispatch = useDispatch();
@@ -43,7 +45,11 @@ const Sensors = () => {
         </Col>
         <SensorEventList events={events} />
         <Col>
-          <LocationDetailsCard location={location} />
+          {isNull(location) ? (
+            <ChooseLocation />
+          ) : (
+            <LocationDetailsCard location={location} />
+          )}
           <BuildingDetailsCard building={building} />
         </Col>
       </Row>
