@@ -20,6 +20,8 @@ const SensorEventList = ({ events }) => {
 
   const options = {
     hideSizePerPage: true,
+    paginationSize: 3,
+    sizePerPage: 7,
   };
 
   return (

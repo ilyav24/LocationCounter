@@ -60,7 +60,7 @@ const Locations = () => {
               Selected Building: <b>{name}</b>
             </span>
           ) : (
-            <span>Choose Location</span>
+            <span>Choose Building</span>
           )}
           <div className="card-header-actions">
             <Button size="sm" color="primary" onClick={() => setOpen(!open)}>

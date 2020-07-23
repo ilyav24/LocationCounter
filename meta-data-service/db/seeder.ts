@@ -72,7 +72,7 @@ async function createData() {
       let is_entered = Math.round(Math.random());
       await client.query(
         `INSERT INTO public.usages(sensor_id,last_sync, is_entered) VALUES (2,to_timestamp(${
-          Date.now() + 10000 * i
+          Date.now() - 10000 * i
         } / 1000.0), ${is_entered}::bit);`
       );
     }
@@ -80,7 +80,7 @@ async function createData() {
       let is_entered = Math.round(Math.random());
       await client.query(
         `INSERT INTO public.usages(sensor_id,last_sync, is_entered) VALUES (1,to_timestamp(${
-          Date.now() - 100000 * i
+          Date.now() - 10000 * i*i
         } / 1000.0), ${is_entered}::bit);`
       );
     }

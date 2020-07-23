@@ -1,15 +1,16 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { StatusBadge } from "../SensorStatus";
+import { isNull } from "lodash";
 
 const SensorsTable = ({ sensors, onSelect, selected }) => {
-  
-    const selectRow = {
+  const id = selected?.sensor_id;
+  const selectRow = {
     mode: "radio",
     clickToSelect: true,
     style: { backgroundColor: "#c8e6c9" },
-    onSelect: (row) => onSelect(row.sensor_id),
-    selected: [selected],
+    onSelect: (row) => onSelect(row),
+    selected: [id],
   };
 
   const columns = [

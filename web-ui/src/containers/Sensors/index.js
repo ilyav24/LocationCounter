@@ -4,6 +4,8 @@ import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 import SensorsTable from "../../components/SensorsTable";
 import SensorEventList from "../../components/SensorEventList";
 import { loadSensors, loadSensorsEvents } from "./actions";
+import LocationDetailsCard from "../../components/LocationDetailsCard/indejx";
+import BuildingDetailsCard from "../../components/BuildingDetailsCard";
 
 const Sensors = () => {
   const dispatch = useDispatch();
@@ -11,10 +13,14 @@ const Sensors = () => {
     dispatch(loadSensors());
   }, []);
 
-  const { sensors, events, selected } = useSelector((state) =>
-    state.sensorsList.toJS()
-  );
-  const onSelect = (id) => dispatch(loadSensorsEvents(id));
+  const {
+    sensors,
+    events,
+    selected,
+    location,
+    building,
+  } = useSelector((state) => state.sensorsList.toJS());
+  const onSelect = (sensor) => dispatch(loadSensorsEvents(sensor));
   return (
     <div className="animated fadeIn">
       <Row>
@@ -36,6 +42,10 @@ const Sensors = () => {
           </Card>
         </Col>
         <SensorEventList events={events} />
+        <Col>
+          <LocationDetailsCard location={location} />
+          <BuildingDetailsCard building={building} />
+        </Col>
       </Row>
     </div>
   );
