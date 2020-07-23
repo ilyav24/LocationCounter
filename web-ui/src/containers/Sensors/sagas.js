@@ -30,7 +30,9 @@ function* loadSensorEventSaga(action) {
     const { data, errors } = yield response.json();
     if (data) {
       yield put(sensorsEventsLoaded(data));
-      yield call(loadSensorLocationSaga, location_id);
+      if (location_id) {
+        yield call(loadSensorLocationSaga, location_id);
+      }
     } else {
       throw errors;
     }

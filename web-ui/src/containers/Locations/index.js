@@ -45,7 +45,11 @@ const Locations = () => {
   const onCreate = () => dispatch(newLocation(selectedBuilding));
   const onCreateNew = () => dispatch(newLocationSaved());
   const onSave = selectedLocation?.id === "" ? onCreateNew : onUpdate;
-
+  const action = (
+    <Button color="primary" onClick={onCreate}>
+      Add new Location
+    </Button>
+  );
   const { name } = selectedBuilding
     ? buildings[_.findIndex(buildings, ["id", selectedBuilding])]
     : "";
@@ -88,7 +92,7 @@ const Locations = () => {
               locations={locations}
               onClick={onClickLocation}
               selectedLocation={selectedLocation}
-              onCreate={onCreate}
+              action={action}
             />
           </CardBody>
         </Card>

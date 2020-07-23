@@ -7,7 +7,7 @@ export const LocationsTable = ({
   locations,
   onClick,
   selectedLocation,
-  onCreate,
+  action,
 }) => {
   const id = !_.isEmpty(selectedLocation) ? selectedLocation.id : "";
 
@@ -70,12 +70,10 @@ export const LocationsTable = ({
         </Col>
       ) : (
         <div>
-          <p>No Locations to show.. but you can create one!"</p>
+          <p>No Locations to show</p>
         </div>
       )}
-      <Button color="primary" onClick={onCreate}>
-        Add new Location
-      </Button>
+      {action}
     </div>
   );
 };
