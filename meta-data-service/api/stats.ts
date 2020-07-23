@@ -8,12 +8,12 @@ import {
   getCountBetweenDaysBySensorIdDb,
   getCountBetweenDaysByLocationIdDb,
   getCountBetweenDaysByBuildingIdDb,
-} from '../models/strat/strat-models';
-import { SensoreUsage } from '../models/strat/sensor-usage';
+} from '../models/stats/strat-models';
+import { SensoreUsage } from '../models/stats/sensor-usage';
 import { log } from 'console';
 
 class StratController extends Controller {
-  public path = '/strat';
+  public path = '/stats';
   public idPrefix: string = '/:id';
 
   private id: string = 'id';

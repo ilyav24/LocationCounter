@@ -13,7 +13,7 @@ import {
   updateLocationDb,
 } from '../models/sensor/sensor-models';
 import { SensorLocation } from '../models/sensor/sensor-location';
-import { SensoreUsage } from '../models/strat/sensor-usage';
+import { SensoreUsage } from '../models/stats/sensor-usage';
 
 class SensorController extends Controller {
   public path = '/sensor';
