@@ -1,7 +1,8 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { StatusBadge } from "../SensorStatus";
-import { isNull } from "lodash";
+import { LocationNotification } from "../LocationNotification";
+import { LiveCounter } from "../../containers/LiveCounter";
 
 const SensorsTable = ({ sensors, onSelect, selected }) => {
   const id = selected?.sensor_id;
@@ -20,9 +21,19 @@ const SensorsTable = ({ sensors, onSelect, selected }) => {
       sort: true,
     },
     {
+      dataField: "sensor_id",
+      text: "",
+      formatter: (cell) => <LiveCounter type="sensor" id={cell} />,
+    },
+    {
       dataField: "sensor_status",
       text: "Status",
       formatter: (cell) => <StatusBadge status={cell} />,
+    },
+    {
+      dataField: "location_id",
+      text: "",
+      formatter: (cell) => <LocationNotification location={cell} />,
     },
   ];
 

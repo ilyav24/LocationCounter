@@ -1,0 +1,1 @@
+export const ATTACH_LOCATION = "ATTACH_LOCATION";

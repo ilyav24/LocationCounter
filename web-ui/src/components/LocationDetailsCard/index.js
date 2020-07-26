@@ -1,13 +1,18 @@
 import React from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "reactstrap";
 import { isNull } from "lodash";
+import { LiveCounter } from "../../containers/LiveCounter";
 
 const LocationDetailsCard = ({ location }) => {
   return (
     <div className="animated fadeIn fadeOut">
       <Card>
         <CardHeader>
-          <i className="fa icon-layers"></i> <b>Location</b>
+          <i className="fa icon-layers"></i>
+          <b>Location</b>
+          <div className="card-header-actions">
+            <LiveCounter type="location" id={location.id} />
+          </div>
         </CardHeader>
         <CardBody>
           {!isNull(location) ? (

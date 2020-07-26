@@ -34,6 +34,7 @@ FROM public.sensor_location l JOIN public.usages AS u
 	ON l.sensors_id= u.sensor_id
 WHERE u.last_sync >= $1 AND l.location_id = $2
 GROUP BY u.is_entered;`;
+
 export const qGetCountBetweenDaysToByLocationId: string = `SELECT is_entered, count (*) AS Total
 FROM public.sensor_location l JOIN public.usages AS u
 	ON l.sensors_id= u.sensor_id
@@ -42,7 +43,7 @@ GROUP BY u.is_entered;`;
 
 export const qGetCountBetweenDaysBaseByBuildingId: string = `SELECT is_entered, count (*) AS Total
 FROM public.usages u
-WHERE u.sensosr_id IN (SELECT s.sensors_id
+WHERE u.sensor_id IN (SELECT s.sensors_id
 						FROM public.location l JOIN public.sensor_location s
 							ON l.id=s.location_id
 						WHERE l.building_id = $1
@@ -51,7 +52,7 @@ GROUP BY u.is_entered;`;
 
 export const qGetCountBetweenDaysByBuildingId: string = `SELECT is_entered, count (*) AS Total
 FROM public.usages u
-WHERE u.sensosr_id IN (SELECT s.sensors_id
+WHERE u.sensor_id IN (SELECT s.sensors_id
 						FROM public.location l JOIN public.sensor_location s
 							ON l.id=s.location_id
 						WHERE l.building_id = $3
@@ -60,7 +61,7 @@ GROUP BY u.is_entered;`;
 
 export const qGetCountBetweenDaysFromByBuildingId: string = `SELECT is_entered, count (*) AS Total
 FROM public.usages u
-WHERE u.sensosr_id IN (SELECT s.sensors_id
+WHERE u.sensor_id IN (SELECT s.sensors_id
 						FROM public.location l JOIN public.sensor_location s
 							ON l.id=s.location_id
 						WHERE l.building_id = $2
@@ -68,7 +69,7 @@ WHERE u.sensosr_id IN (SELECT s.sensors_id
 GROUP BY u.is_entered;`;
 export const qGetCountBetweenDaysToByBuildingId: string = `SELECT is_entered, count (*) AS Total
 FROM public.usages u
-WHERE u.sensosr_id IN (SELECT s.sensors_id
+WHERE u.sensor_id IN (SELECT s.sensors_id
 						FROM public.location l JOIN public.sensor_location s
 							ON l.id=s.location_id
 						WHERE l.building_id = $2

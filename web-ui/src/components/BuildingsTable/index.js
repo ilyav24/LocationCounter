@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Col } from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import _ from "lodash";
+import { LiveCounter } from "../../containers/LiveCounter";
 
 export const BuildingsTable = (props) => {
   const { buildings, onClick, onClear, selected } = props;
@@ -27,6 +28,12 @@ export const BuildingsTable = (props) => {
       dataField: "id",
       text: "#",
       sort: true,
+    },
+    {
+      dataField: "id",
+      text: "Live Count",
+      sort: true,
+      formatter: (cell) => <LiveCounter type="building" id={cell} />
     },
     {
       dataField: "name",

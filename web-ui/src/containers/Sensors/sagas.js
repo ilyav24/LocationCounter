@@ -1,10 +1,15 @@
-import { put, takeLatest, call, select } from "redux-saga/effects";
-import { LOAD_SENSORS, LOAD_SENSOR_EVENTS } from "./constants";
+import { put, takeLatest, call } from "redux-saga/effects";
+import {
+  LOAD_SENSORS,
+  LOAD_SENSOR_EVENTS,
+  LOAD_SENSOR_LOCATION,
+} from "./constants";
 import {
   sensorsLoaded,
   sensorsEventsLoaded,
   sensorLocationLoaded,
   sensorBuildingLoaded,
+  loadSensorLocation,
 } from "./actions";
 import moment from "moment";
 
@@ -31,7 +36,10 @@ function* loadSensorEventSaga(action) {
     if (data) {
       yield put(sensorsEventsLoaded(data));
       if (location_id) {
-        yield call(loadSensorLocationSaga, location_id);
+        yield put(loadSensorLocation(location_id));
+      } else {
+        yield put(sensorLocationLoaded(null));
+        yield put(sensorBuildingLoaded(null));
       }
     } else {
       throw errors;
@@ -41,7 +49,8 @@ function* loadSensorEventSaga(action) {
   }
 }
 
-function* loadSensorLocationSaga(location_id) {
+function* loadSensorLocationSaga(action) {
+  const { location_id } = action;
   const response = yield call(getLocation, location_id);
   const { data } = yield response.json();
   const { building_id } = data[0];
@@ -58,6 +67,7 @@ function* loadSensorBuilding(building_id) {
 function* sensorsRootSaga() {
   yield takeLatest(LOAD_SENSORS, loadSensorSaga);
   yield takeLatest(LOAD_SENSOR_EVENTS, loadSensorEventSaga);
+  yield takeLatest(LOAD_SENSOR_LOCATION, loadSensorLocationSaga);
 }
 
 export default [sensorsRootSaga];
@@ -76,7 +86,7 @@ function getBuilding(id) {
 
 function getSensorsEvents(id) {
   const body = {
-    from: moment().subtract(1, "days"),
+    from: moment().subtract(100, "years"),
     to: moment().add(1, "days"),
   };
 
