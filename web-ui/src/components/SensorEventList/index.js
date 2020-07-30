@@ -3,7 +3,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { Col, Card, CardHeader, CardBody } from "reactstrap";
 import SensorEntry from "../SensorEntry";
-import _ from "lodash";
+import { isEmpty } from "lodash";
 
 const SensorEventList = ({ events }) => {
   const columns = [
@@ -32,7 +32,7 @@ const SensorEventList = ({ events }) => {
           <b>Events</b>
         </CardHeader>
         <CardBody>
-          {!_.isEmpty(events) ? (
+          {!isEmpty(events) ? (
             <BootstrapTable
               bordered={false}
               keyField="Events"

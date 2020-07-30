@@ -94,7 +94,6 @@ function postLocation(body) {
 
 function newLocation(body) {
   delete body.id;
-  console.log(body);
   let requestOptions = {
     method: "POST",
     headers: {

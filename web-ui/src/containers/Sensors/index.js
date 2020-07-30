@@ -4,10 +4,10 @@ import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 import SensorsTable from "../../components/SensorsTable";
 import SensorEventList from "../../components/SensorEventList";
 import { loadSensors, loadSensorsEvents } from "./actions";
-import LocationDetailsCard from "../../components/LocationDetailsCard/indejx";
+import LocationDetailsCard from "../../components/LocationDetailsCard";
 import BuildingDetailsCard from "../../components/BuildingDetailsCard";
 import { isNull } from "lodash";
-import ChooseLocation from "../ChooseLocationContainer";
+import ChooseLocation from "../LocationAttachContainer";
 
 const Sensors = () => {
   const dispatch = useDispatch();
@@ -45,12 +45,15 @@ const Sensors = () => {
         </Col>
         <SensorEventList events={events} />
         <Col>
-          {isNull(location) ? (
-            <ChooseLocation />
+          {!isNull(location) ? (
+            <>
+              <LocationDetailsCard location={location} />
+              <BuildingDetailsCard building={building} />
+            </>
           ) : (
-            <LocationDetailsCard location={location} />
+            ""
           )}
-          <BuildingDetailsCard building={building} />
+          {!isNull(selected) ? <ChooseLocation sensor={selected} /> : ""}
         </Col>
       </Row>
     </div>

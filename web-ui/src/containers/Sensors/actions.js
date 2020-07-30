@@ -2,6 +2,7 @@ import {
   LOAD_SENSORS,
   SENSORS_LOADED,
   LOAD_SENSOR_EVENTS,
+  LOAD_SENSOR_LOCATION,
   SENSOR_EVENTS_LOADED,
   SENSOR_LOCATION_LOADED,
   SENSOR_BUILDING_LOADED,
@@ -19,6 +20,11 @@ export const sensorsLoaded = (sensors) => ({
 export const loadSensorsEvents = (sensor) => ({
   type: LOAD_SENSOR_EVENTS,
   sensor,
+});
+
+export const loadSensorLocation = (location_id) => ({
+  type: LOAD_SENSOR_LOCATION,
+  location_id,
 });
 
 export const sensorsEventsLoaded = (events) => ({

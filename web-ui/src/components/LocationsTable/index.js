@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Button } from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import _ from "lodash";
+import { LiveCounter } from "../../containers/LiveCounter";
 
 export const LocationsTable = ({
   locations,
@@ -24,6 +25,12 @@ export const LocationsTable = ({
       dataField: "id",
       text: "#",
       sort: true,
+    },
+    {
+      dataField: "id",
+      text: "Live Count",
+      sort: true,
+      formatter: (cell) => <LiveCounter type="location" id={cell} />,
     },
     {
       dataField: "name",

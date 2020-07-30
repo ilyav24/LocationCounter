@@ -19,7 +19,7 @@ export const StatusBadge = ({ status }) => {
       color = "secondary";
       break;
   }
-  return <Badge color={color}>{text}</Badge>;
+  return (<Badge color={color}>{text}</Badge>);
 };
 
 {

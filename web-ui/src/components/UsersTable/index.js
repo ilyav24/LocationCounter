@@ -1,14 +1,13 @@
 import React from "react";
 import { Col } from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
-import { LiveCounter } from "../../containers/LiveCounter";
+import USER_TYPES from "../../components/UserType/userTypes";
 
-export const BuildingsTable = (props) => {
-  const { buildings, onClick, selected } = props;
-  const id = selected ? selected : null;
+const UsersTable = ({ users, onSelect, selected }) => {
+  const selectedId = selected ? [selected.id] : [];
 
   const onSelectedRow = (row) => {
-    onClick(row);
+    onSelect(row);
   };
 
   let selectRow = {
@@ -16,12 +15,9 @@ export const BuildingsTable = (props) => {
     clickToSelect: true,
     style: { backgroundColor: "#c8e6c9" },
     onSelect: (row) => onSelectedRow(row),
-    selected: [id],
+    selected: selectedId,
   };
 
-  if (id == null) {
-    selectRow.selected = [];
-  }
   const columns = [
     {
       dataField: "id",
@@ -29,25 +25,20 @@ export const BuildingsTable = (props) => {
       sort: true,
     },
     {
-      dataField: "id",
-      text: "Live Count",
-      sort: true,
-      formatter: (cell) => <LiveCounter type="building" id={cell} />
-    },
-    {
-      dataField: "name",
-      text: "Name",
+      dataField: "user_name",
+      text: "User Name",
       sort: true,
     },
     {
-      dataField: "number_of_floors",
-      text: "Number of floors",
+      dataField: "email",
+      text: "Email",
       sort: true,
     },
     {
-      dataField: "capacity",
-      text: "Capacity",
+      dataField: "user_type",
+      text: "User Type",
       sort: true,
+      formatter: (cell) => USER_TYPES[cell].name,
     },
   ];
 
@@ -58,19 +49,21 @@ export const BuildingsTable = (props) => {
     },
   ];
 
-  return buildings ? (
+  return users ? (
     <Col>
       <BootstrapTable
         hover
         bordered={false}
         keyField="id"
-        data={buildings}
+        data={users}
         columns={columns}
         selectRow={selectRow}
         defaultSorted={defaultSorted}
       />
     </Col>
   ) : (
-    "No Building to show"
+    "No Users to show"
   );
 };
+
+export default UsersTable;

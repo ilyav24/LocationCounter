@@ -22,10 +22,10 @@ class SensorController extends Controller {
   private id: string = 'id';
   constructor() {
     super();
-    this.intializeRoutes();
+    this.initializeRoutes();
   }
 
-  public intializeRoutes(): void {
+  public initializeRoutes(): void {
     // get all sensors
     this.router.get(this.path, this.getAllSsensors);
     this.router.get(
