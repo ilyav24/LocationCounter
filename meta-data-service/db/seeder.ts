@@ -88,6 +88,9 @@ async function createData() {
         } / 1000.0), ${is_entered}::bit);`
       );
     }
+    console.log('+++++ creating user types');
+    await client.query(`INSERT INTO public.user_type(type) VALUES ('USER')`);
+    await client.query(`INSERT INTO public.user_type(type) VALUES ('ADMIN')`);
   } catch (err) {
     console.log(err);
   } finally {

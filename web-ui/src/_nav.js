@@ -30,5 +30,10 @@ export default {
       url: "/sensors",
       icon: "cui-location-pin",
     },
+    {
+      name: "Users",
+      url: "/users",
+      icon: "icon-user",
+    },
   ],
 };

@@ -19,10 +19,10 @@ class BuildingController extends Controller {
 
   constructor() {
     super();
-    this.intializeRoutes();
+    this.initializeRoutes();
   }
 
-  public intializeRoutes(): void {
+  public initializeRoutes(): void {
     this.router.get(this.path, this.getBuildings);
     this.router.get(
       this.path + this.idPrefix,

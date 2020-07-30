@@ -27,7 +27,7 @@ export const usersTable = `CREATE TABLE public.users (
 id SERIAL NOT NULL PRIMARY KEY,
 user_name TEXT NOT NULL,
 email TEXT NOT NULL,
-type_id INTEGER REFERENCES user_type(id)
+user_type INTEGER REFERENCES user_type(id)
 );`;
 
 export const userPassTable = `CREATE TABLE public.user_pass (
@@ -55,11 +55,11 @@ entry INTEGER NULL
 export const sensorLocationTable = `CREATE TABLE public.sensor_location(
 id SERIAL NOT NULL PRIMARY KEY,
 location_id INTEGER REFERENCES location(id),
-sensors_id INTEGER REFERENCES sensors(id)
+sensors_id INTEGER REFERENCES location(id)
 );`;
 
 export const usagesTable = `CREATE TABLE public.usages(
-sensor_id INTEGER REFERENCES sensors(id),
+sensosr_id INTEGER NOT NULL PRIMARY KEY,
 last_sync TIMESTAMP NOT NULL DEFAULT NOW(),
 is_entered BIT NULL
 );`;

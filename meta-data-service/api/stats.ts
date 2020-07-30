@@ -19,7 +19,7 @@ class StratController extends Controller {
   private id: string = 'id';
   constructor() {
     super();
-    this.intializeRoutes();
+    this.initializeRoutes();
   }
 
   private calculateAmout(results: any[]): SensoreUsage[] {
@@ -40,7 +40,7 @@ class StratController extends Controller {
     r.push(new SensoreUsage(total));
     return r;
   }
-  public intializeRoutes(): void {
+  public initializeRoutes(): void {
     this.router.post(
       this.path + '/location' + this.idPrefix,
       [param(this.id).isNumeric()],

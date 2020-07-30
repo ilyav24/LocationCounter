@@ -1,20 +1,19 @@
-import { wrap } from '../util/wrapper';
-import { Location } from '../models/locations/location';
+import { User } from './../models/users/user';
 import Controller from './controller';
 import { Response } from 'express';
 import { Request } from 'express';
 import { param, check, validationResult } from 'express-validator';
 import {
-  getAllLocations,
-  insertLocation,
-  deleteLocation,
-  updateLocation,
-  getLocationById,
-} from '../models/locations/location-models';
+  getAllUsers,
+  getUserById,
+  updateUserDetails,
+  deleteUser,
+  insertUser,
+} from '../models/users/user-models';
+import { wrap } from '../util/wrapper';
 
-//TODO: make checks in diffrent file?
-class LocationController extends Controller {
-  public path = '/location';
+class UserController extends Controller {
+  public path = '/users';
   public idPrefix: string = '/:id';
 
   constructor() {
@@ -23,43 +22,45 @@ class LocationController extends Controller {
   }
 
   public initializeRoutes(): void {
-    this.router.get(this.path, this.getLocations);
-    
+    this.router.get(this.path, this.getUsers);
     this.router.get(
       this.path + this.idPrefix,
       [param('id').isNumeric()],
-      this.getLocationByID
+      this.getUserDetailsById
     );
 
     this.router.post(
       this.path,
-      [check('floor').isNumeric()],
-      this.generateLocation
+      [check('email').isEmail(), check('user_type').isNumeric()],
+      this.insertNewUser
     );
 
     this.router.patch(
       this.path + this.idPrefix,
-      [param('id').isNumeric()],
-      this.patchLocation
+      [check('email').isEmail(), check('user_type').isNumeric()],
+      this.updateUser
     );
 
     this.router.delete(
       this.path + this.idPrefix,
       [param('id').isNumeric()],
-      this.deleteLocation
+      this.deleteUserById
     );
   }
 
-  getLocations = async (req: Request, res: Response): Promise<Response> => {
+  getUsers = async (req: Request, res: Response) => {
     try {
-      let locations = await getAllLocations();
-      return res.status(200).send(wrap(locations)).json();
+      let users = await getAllUsers();
+      return res.json(wrap(users));
     } catch (err) {
-      return res.status(500).json({ errors: err.detail });
+      res.status(500).json({ errors: err.detail });
     }
   };
 
-  getLocationByID = async (req: Request, res: Response): Promise<Response> => {
+  getUserDetailsById = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -67,59 +68,58 @@ class LocationController extends Controller {
     }
     let id: string = req.params.id;
     try {
-      let results = await getLocationById(id);
-      return res.status(200).json(wrap(results));
-    } catch (err) {
-      return res.status(500).send({ errors: err.detail }).json();
-    }
-  };
-
-  generateLocation = async (req: Request, res: Response): Promise<Response> => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(404).json({ errors: errors.array() });
-    }
-
-    let location: Location = req.body;
-    let results;
-    try {
-      results = await insertLocation(location);
+      let results = await getUserById(id);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
     }
   };
 
-  patchLocation = async (req: Request, res: Response): Promise<Response> => {
+  insertNewUser = async (req: Request, res: Response): Promise<Response> => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+
+    let user: User = req.body;
+    try {
+      let results = await insertUser(user);
+      return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
+
+  updateUser = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
     let id: number = +req.params.id;
-    let location: Location = req.body;
+    let user: User = req.body;
     try {
-      location.id = id;
-      let results = await updateLocation(location);
+      user.id = id;
+      let results = await updateUserDetails(user);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
     }
   };
 
-  deleteLocation = async (req: Request, res: Response): Promise<Response> => {
+  deleteUserById = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    let id: string = req.params.id;
+    let id: number = +req.params.id;
     try {
-      await deleteLocation(id);
-      return res.status(200).json(wrap(true));
+      let rows = await deleteUser(id);
+      return res.status(200).json(wrap({ rows }));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
     }
   };
 }
 
-export default LocationController;
+export default UserController;
