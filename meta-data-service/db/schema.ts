@@ -59,7 +59,7 @@ sensors_id INTEGER REFERENCES location(id)
 );`;
 
 export const usagesTable = `CREATE TABLE public.usages(
-sensosr_id INTEGER NOT NULL PRIMARY KEY,
+sensor_id INTEGER NOT NULL REFERENCES sensors(id),
 last_sync TIMESTAMP NOT NULL DEFAULT NOW(),
 is_entered BIT NULL
 );`;
