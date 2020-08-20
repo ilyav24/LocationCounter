@@ -24,7 +24,7 @@ const Page500 = React.lazy(() => import("./views/Pages/Page500"));
 
 const App = (props) => {
     const dispatch = useDispatch();
-    const { isLoading, token } = useSelector((state) => state.authentication);
+    const { isLoading, token } = useSelector((state) => state.auth);
 
     useEffect(() => {
         const token = localStorage.getItem("lc_token");

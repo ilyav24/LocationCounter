@@ -4,7 +4,7 @@ import locationsRootSaga from "./containers/Locations/sagas";
 import sensorsRootSaga from "./containers/Sensors/sagas";
 import locationAttachRootSaga from "./containers/LocationAttachContainer/sagas";
 import userRootSaga from "./containers/Users/sagas";
-import authenticationRootSaga from "./containers/Auth/sagas";
+import authRootSaga from "./containers/Auth/sagas";
 
 export default [
     ...rootBuildingsSaga,
@@ -13,5 +13,5 @@ export default [
     ...sensorsRootSaga,
     ...locationAttachRootSaga,
     ...userRootSaga,
-    ...authenticationRootSaga,
+    ...authRootSaga,
 ];

@@ -1,10 +1,16 @@
-import { put, takeLatest, call } from "redux-saga/effects";
-import { AUTHENTICATION_REQUEST, AUTHORIZATION_REQUEST } from "./constants";
+import { put, takeLatest, call, select } from "redux-saga/effects";
+import {
+    AUTHENTICATION_REQUEST,
+    AUTHORIZATION_REQUEST,
+    LOGOUT_REQUEST,
+} from "./constants";
 import {
     authenticationSuccess,
     authenticationFailed,
     authorizationFailed,
     authorizationSuccess,
+    logoutSuccess,
+    logoutFailed,
 } from "./actions";
 
 function* sendCredentialsSaga(action) {
@@ -22,10 +28,10 @@ function* sendCredentialsSaga(action) {
         const errorObj = {
             message: error.message,
         };
-
         yield put(authenticationFailed(errorObj));
     }
 }
+
 function* verifyTokenSaga(action) {
     try {
         const response = yield call(tokenVerificationRequest, action.token);
@@ -41,12 +47,30 @@ function* verifyTokenSaga(action) {
     }
 }
 
-function* authenticationRootSaga() {
-    yield takeLatest(AUTHENTICATION_REQUEST, sendCredentialsSaga);
-    yield takeLatest(AUTHORIZATION_REQUEST, verifyTokenSaga);
+function* logoutSaga() {
+    const token = yield select((state) => state.auth.token);
+    console.log(token);
+    try {
+        const response = yield call(logoutRequest, token);
+
+        if (response.ok) {
+            yield put(logoutSuccess());
+        } else {
+            const errorObj = yield response.json;
+            yield put(logoutFailed(errorObj));
+        }
+    } catch (error) {
+        yield put(logoutFailed({ message: error.message }));
+    }
 }
 
-export default [authenticationRootSaga];
+function* authRootSaga() {
+    yield takeLatest(AUTHENTICATION_REQUEST, sendCredentialsSaga);
+    yield takeLatest(AUTHORIZATION_REQUEST, verifyTokenSaga);
+    yield takeLatest(LOGOUT_REQUEST, logoutSaga);
+}
+
+export default [authRootSaga];
 
 function sendCredentials(credentials) {
     // const url = "http://localhost:5000/api/login";
@@ -62,6 +86,7 @@ function sendCredentials(credentials) {
 
     return fetch(url, requestOptions);
 }
+
 function tokenVerificationRequest(token) {
     // const url = "http://localhost:5000/api/login";
     const url = "";
@@ -69,6 +94,18 @@ function tokenVerificationRequest(token) {
         method: "GET",
         headers: {
             Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    return fetch(url, requestOptions);
+}
+
+function logoutRequest(token) {
+    // const url = "http://localhost:5000/api/logout";
+    const url = "https://reqres.in/api/logi";
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
             Authorization: `Bearer ${token}`,
         },
     };

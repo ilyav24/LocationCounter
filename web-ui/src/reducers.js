@@ -5,7 +5,7 @@ import buildingsCardReducer from "./containers/BuildingCardContainer/reducer";
 import locationReducer from "./containers/Locations/reducer";
 import sensorReducer from "./containers/Sensors/reducer";
 import usersReducer from "./containers/Users/reducer";
-import authenticationReducer from "./containers/Auth/reducer";
+import authReducer from "./containers/Auth/reducer";
 
 const createRootReducer = (history) =>
     combineReducers({
@@ -15,7 +15,7 @@ const createRootReducer = (history) =>
         locationList: locationReducer,
         sensorsList: sensorReducer,
         usersList: usersReducer,
-        authentication: authenticationReducer,
+        auth: authReducer,
     });
 
 export default createRootReducer;

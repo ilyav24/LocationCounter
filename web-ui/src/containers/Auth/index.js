@@ -10,7 +10,7 @@ const Login = () => {
 
     const dispatch = useDispatch();
 
-    const { error } = useSelector((state) => state.authentication);
+    const { error } = useSelector((state) => state.auth);
 
     const handleSubmit = (event) => {
         const credentials = {
