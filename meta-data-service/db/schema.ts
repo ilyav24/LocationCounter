@@ -65,8 +65,6 @@ is_entered BIT NULL
 );`;
 
 export const aggregated = `CREATE TABLE public.aggregated(
-building_id INTEGER NOT NULL REFERENCES building(id),
-location_id INTEGER REFERENCES location(id),
 sensor_id INTEGER NOT NULL REFERENCES sensors(id),
 last_sync TIMESTAMP NOT NULL DEFAULT NOW(),
 minute INTEGER DEFAULT 0,
