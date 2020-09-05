@@ -30,7 +30,8 @@ export const qInsertEvent: string = `INSERT INTO public.usages
 VALUES ($1, $2)
 RETURNING id`;
 
-
+export const qUpdateAggregate: string = `INSERT INTO public.aggregate
+()`
 
 
 

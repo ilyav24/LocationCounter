@@ -82,6 +82,7 @@ export async function insertEventDb(people: number, SensorID: number,Height:numb
       ])
     ).rows;
   } catch (err) {
+    console.log(err);
     throw err;
   }
 }
