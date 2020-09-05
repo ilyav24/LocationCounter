@@ -7,7 +7,9 @@ import {
   qGetAllSensorsEvent,
   qGetAllSensorsEventById,
   qUpdateLocationByID,
+  qInsertEvent,
 } from './sensor-queries';
+import { SensoreUsage } from '../stats/sensor-usage';
 
 dotenv.config();
 
@@ -67,6 +69,19 @@ export async function updateLocationDb(locationId: number, sensorId: number) {
     return getSensorByIdDb(sensorId.toString());
   } catch (err) {
     console.log(err);
+    throw err;
+  }
+}
+
+export async function insertEventDb(people: number, SensorID: number,Height:number,date:string) {
+  try {
+    return (
+      await pool.query(qInsertEvent, [
+        date, 
+        people
+      ])
+    ).rows;
+  } catch (err) {
     throw err;
   }
 }

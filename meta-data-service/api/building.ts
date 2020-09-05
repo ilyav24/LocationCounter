@@ -30,6 +30,12 @@ class BuildingController extends Controller {
       this.getBuildingByID
     );
 
+   /* this.router.get(
+      this.path+this.idPrefix,
+      [param('id').isNumeric()],
+      this.
+    );
+  */
     this.router.get(
       this.path + this.idPrefix + '/location',
       [param('id').isNumeric()],
