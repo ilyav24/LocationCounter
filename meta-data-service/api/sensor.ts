@@ -156,13 +156,13 @@ class SensorController extends Controller {
       return res.status(404).json({ errors: errors.array() });
     }
     
-    const people = +req.params.people;
+    const is_entered = +req.params.people;
     const SensorID = +req.params.SensorID;
     const Height = +req.params.Height;
     const date = req.params.Date;
 
     try {
-      let results = await insertEventDb(people, SensorID,Height,date);
+      let results = await insertEventDb(is_entered, SensorID,Height,date);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });

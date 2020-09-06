@@ -73,12 +73,14 @@ export async function updateLocationDb(locationId: number, sensorId: number) {
   }
 }
 
-export async function insertEventDb(people: number, SensorID: number,Height:number,date:string) {
+export async function insertEventDb(is_entered: number, SensorID: number,Height:number,date:string) {
   try {
     return (
       await pool.query(qInsertEvent, [
+        SensorID,
+        Height,
         date, 
-        people
+        is_entered
       ])
     ).rows;
   } catch (err) {
