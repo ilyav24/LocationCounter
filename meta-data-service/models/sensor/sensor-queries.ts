@@ -24,3 +24,14 @@ WHERE last_sync>= $1 AND last_sync < $2 AND sensor_id = $3;`;
 export const qUpdateLocationByID: string = `UPDATE public.sensor_location
 SET location_id=$1
 WHERE sensors_id = $2;`;
+
+export const qInsertEvent: string = `INSERT INTO public.usages
+(sensor_id, height, last_sync, is_entered)
+VALUES ($1, $2, $3, $4)
+RETURNING id`;
+
+export const qUpdateAggregate: string = `INSERT INTO public.aggregate
+()`;
+
+
+

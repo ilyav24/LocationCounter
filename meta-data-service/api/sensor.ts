@@ -11,6 +11,7 @@ import {
   getAllSensorsEventDb,
   getAllSensorsEventByIdDb,
   updateLocationDb,
+  insertEventDb,
 } from '../models/sensor/sensor-models';
 import { SensorLocation } from '../models/sensor/sensor-location';
 import { SensoreUsage } from '../models/stats/sensor-usage';
@@ -51,7 +52,15 @@ class SensorController extends Controller {
       [check('data').isArray()],
       this.updateLocation
     );
+
+    this.router.post(
+      this.path + this.idPrefix,
+      [param(this.id).isNumeric()],
+      this.insertEvent
+    );
+
   }
+ 
 
   getAllSsensors = async (req: Request, res: Response) => {
     try {
@@ -137,6 +146,30 @@ class SensorController extends Controller {
       return res.status(500).json({ errors: err.detail });
     }
   };
+
+  insertEvent = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+    
+    const is_entered = +req.params.people;
+    const SensorID = +req.params.SensorID;
+    const Height = +req.params.Height;
+    const date = req.params.Date;
+
+    try {
+      let results = await insertEventDb(is_entered, SensorID,Height,date);
+      return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
 }
+
+
 
 export default SensorController;
