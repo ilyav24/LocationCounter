@@ -58,6 +58,7 @@ class StratController extends Controller {
       [param(this.id).isNumeric()],
       this.getCountBetweenDaysByBuildingId
     );
+
   }
 
   getCountBetweenDaysBySensorId = async (
@@ -102,6 +103,7 @@ class StratController extends Controller {
       return res.status(500).json({ errors: err.detail });
     }
   };
+
 
   getCountBetweenDaysByBuildingId = async (
     req: Request,

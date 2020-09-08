@@ -9,6 +9,7 @@ import {
   updateUserDetails,
   deleteUser,
   insertUser,
+  DeleteUserByEmail,
 } from '../models/users/user-models';
 import { wrap } from '../util/wrapper';
 
@@ -42,10 +43,17 @@ class UserController extends Controller {
     );
 
     this.router.delete(
+      this.path,
+      [check('email').isEmail()],
+      this.deleteUserByEmail
+    );
+
+    this.router.delete(
       this.path + this.idPrefix,
       [param('id').isNumeric()],
       this.deleteUserById
     );
+
   }
 
   getUsers = async (req: Request, res: Response) => {
@@ -120,6 +128,21 @@ class UserController extends Controller {
       return res.status(500).json({ errors: err.detail });
     }
   };
+
+   deleteUserByEmail = async (req: Request, res: Response): Promise<Response> => {
+     console.log('in delete by email');
+     const errors = validationResult(req);
+     if (!errors.isEmpty()) {
+       return res.status(404).json({ errors: errors.array() });
+     }
+     let email: string = req.body.email;
+     try {
+       let rows = await DeleteUserByEmail(email);
+       return res.status(200).json(wrap({ rows }));
+     } catch (err) {
+       return res.status(500).json({ errors: err.detail });
+     }
+   };
 }
 
 export default UserController;
