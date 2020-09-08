@@ -50,8 +50,6 @@ async function createAllTables() {
       console.log('+++++ sensorLocationTable was successfully created');
       await pool.query(schema.usagesTable);
       console.log('+++++ usagesTable was successfully created');
-      await pool.query(schema.aggregated);
-      console.log('+++++ aggregated was successfully created');
     } catch (err) {
       console.log(err);
       console.log('----- database could not be created :(');

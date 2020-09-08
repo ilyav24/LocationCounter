@@ -3,4 +3,5 @@ export interface User {
   user_name: string;
   email: string;
   user_type: number;
+  pass: string;
 }

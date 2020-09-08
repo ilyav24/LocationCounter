@@ -60,17 +60,8 @@ sensors_id INTEGER REFERENCES location(id)
 
 export const usagesTable = `CREATE TABLE public.usages(
 sensor_id INTEGER NOT NULL REFERENCES sensors(id),
-height INTEGER NOT NULL
 last_sync TIMESTAMP NOT NULL DEFAULT NOW(),
 is_entered BIT NULL
-);`;
-
-export const aggregated = `CREATE TABLE public.aggregated(
-sensor_id INTEGER NOT NULL REFERENCES sensors(id),
-date TIMESTAMP NOT NULL,
-minute INTEGER DEFAULT 0,
-hour INTEGER DEFAULT 0,
-day INTEGER DEFAULT 0
 );`;
 
 export const dropSchema = `DROP DATABASE location_counter;`;

@@ -4,6 +4,7 @@ import BuildingController from './api/building';
 import SensorController from './api/sensor';
 import StratController from './api/stats';
 import UserController from './api/users';
+import LoginController from './api/login';
 const app = new App(
   [
     new LocationController(),
@@ -11,6 +12,7 @@ const app = new App(
     new SensorController(),
     new StratController(),
     new UserController(),
+    new LoginController(),
   ],
   5000
 );
