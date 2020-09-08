@@ -22,9 +22,8 @@ export async function createToken(user_name:string,pass:string) {
             user_name,
             pass,
         ])).rows;
-        console.log(User);
         if(!User.length){
-          console.log('no user');
+          return null;
         }
         const User1 = {name:user_name};
         let token = jwt.sign(User1, process.env.ACCESS_TOKEN, { expiresIn: '1800s' });
