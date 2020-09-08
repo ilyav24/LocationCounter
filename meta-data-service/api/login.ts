@@ -43,6 +43,7 @@ class LoginController extends Controller {
               let user_name: string = req.body.user_name;
               let pass: string = req.body.pass;
               let token = await createToken(user_name,pass);
+              if (token==null) return res.sendStatus(403);
               return res.json([{token:token}]);
             } catch (err) {
               res.status(500).json({ errors: err.detail });
