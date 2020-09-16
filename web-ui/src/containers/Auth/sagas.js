@@ -1,114 +1,102 @@
-import { put, takeLatest, call, select } from "redux-saga/effects";
+import { put, takeLatest, call } from "redux-saga/effects";
 import {
-    AUTHENTICATION_REQUEST,
-    AUTHORIZATION_REQUEST,
-    LOGOUT_REQUEST,
+  AUTHENTICATION_LOGIN_REQUEST,
+  AUTHORIZATION_REQUEST,
 } from "./constants";
 import {
-    authenticationSuccess,
-    authenticationFailed,
-    authorizationFailed,
-    authorizationSuccess,
-    logoutSuccess,
-    logoutFailed,
+  authenticationLoginSuccess,
+  authenticationLoginFailed,
+  authorizationSuccess,
+  authorizationFailed,
 } from "./actions";
+import jwt_decode from "jwt-decode";
 
 function* sendCredentialsSaga(action) {
-    try {
-        const response = yield call(sendCredentials, action.credentials);
-        const responseObj = yield response.json();
+  try {
+    const response = yield call(sendCredentials, action.credentials);
+    const responseObj = yield response.json();
 
-        if (response.ok) {
-            yield put(authenticationSuccess(responseObj));
-        } else {
-            const error = { message: responseObj.error };
-            yield put(authenticationFailed(error));
-        }
-    } catch (error) {
-        const errorObj = {
-            message: error.message,
-        };
-        yield put(authenticationFailed(errorObj));
+    if (response.ok) {
+      const { token } = responseObj[0];
+      const decodedToken = jwt_decode(token);
+
+      const payload = {
+        token,
+        userInfo: {
+          username: action.credentials.email,
+        },
+        iat: decodedToken.iat,
+        exp: decodedToken.exp,
+      };
+      yield put(authenticationLoginSuccess(payload));
+    } else {
+      const error = { message: responseObj.error };
+      yield put(authenticationLoginFailed(error));
     }
+  } catch (error) {
+    const errorObj = {
+      message: error.message,
+    };
+    yield put(authenticationLoginFailed(errorObj));
+  }
 }
 
 function* verifyTokenSaga(action) {
-    try {
-        const response = yield call(tokenVerificationRequest, action.token);
+  try {
+    const response = yield call(tokenVerificationRequest, action.token);
 
-        if (response.ok) {
-            yield put(authorizationSuccess());
-        } else {
-            yield put(authorizationFailed());
-        }
-    } catch (error) {
-        //TODO
-        yield put(authorizationFailed());
+    if (response.ok) {
+      const { name, iat, exp } = (yield response.json()).userAuth;
+
+      const payload = {
+        token: action.token,
+        userInfo: { username: name },
+        iat,
+        exp,
+      };
+
+      yield put(authorizationSuccess(payload));
+    } else {
+      yield put(authorizationFailed());
     }
-}
-
-function* logoutSaga() {
-    const token = yield select((state) => state.auth.token);
-    console.log(token);
-    try {
-        const response = yield call(logoutRequest, token);
-
-        if (response.ok) {
-            yield put(logoutSuccess());
-        } else {
-            const errorObj = yield response.json;
-            yield put(logoutFailed(errorObj));
-        }
-    } catch (error) {
-        yield put(logoutFailed({ message: error.message }));
-    }
+  } catch (error) {
+    //TODO
+    yield put(authorizationFailed());
+  }
 }
 
 function* authRootSaga() {
-    yield takeLatest(AUTHENTICATION_REQUEST, sendCredentialsSaga);
-    yield takeLatest(AUTHORIZATION_REQUEST, verifyTokenSaga);
-    yield takeLatest(LOGOUT_REQUEST, logoutSaga);
+  yield takeLatest(AUTHENTICATION_LOGIN_REQUEST, sendCredentialsSaga);
+  yield takeLatest(AUTHORIZATION_REQUEST, verifyTokenSaga);
 }
 
 export default [authRootSaga];
 
 function sendCredentials(credentials) {
-    // const url = "http://localhost:5000/api/login";
-    const url = "https://reqres.in/api/login";
-    const requestOptions = {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-    };
+  const url = "http://localhost:5000/login";
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      user_name: credentials.email,
+      pass: credentials.password,
+    }),
+  };
 
-    return fetch(url, requestOptions);
+  return fetch(url, requestOptions);
 }
 
 function tokenVerificationRequest(token) {
-    // const url = "http://localhost:5000/api/login";
-    const url = "";
-    const requestOptions = {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    return fetch(url, requestOptions);
-}
-
-function logoutRequest(token) {
-    // const url = "http://localhost:5000/api/logout";
-    const url = "https://reqres.in/api/logi";
-    const requestOptions = {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
-
-    return fetch(url, requestOptions);
+  const url = "http://localhost:5000/login/authorization";
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  };
+  return fetch(url, requestOptions);
 }
