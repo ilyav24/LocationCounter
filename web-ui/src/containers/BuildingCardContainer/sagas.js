@@ -1,7 +1,7 @@
 import { takeLatest, select, put, call } from "redux-saga/effects";
 import { BUILDING_SAVE, BUILDING_NEW_SAVE } from "./constants";
 import { buildingUpdate, loadBuildings, } from "../Buildings/actions";
-import { onSaveError,buildingClear } from "./actions";
+import { onSaveError, buildingClear } from "./actions";
 function* saveBuildingSaga() {
   const body = yield select((state) => state.buildingCard.toJS());
   const response = yield call(postBuilding, body);
@@ -48,7 +48,7 @@ function postBuilding(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch("http://localhost:5000/building/" + id, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/building/` + id, requestOptions);
 }
 
 function createBuilding(body) {
@@ -61,5 +61,5 @@ function createBuilding(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch("http://localhost:5000/building/", requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/building/`, requestOptions);
 }

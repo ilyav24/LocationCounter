@@ -40,5 +40,5 @@ function updateLocation(sensor_id, location_id) {
     },
     body: JSON.stringify({ data }),
   };
-  return fetch(`http://localhost:5000/sensor/UpdateLocation`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/UpdateLocation`, requestOptions);
 }

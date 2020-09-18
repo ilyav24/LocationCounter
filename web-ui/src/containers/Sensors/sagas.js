@@ -73,15 +73,15 @@ function* sensorsRootSaga() {
 export default [sensorsRootSaga];
 
 function getSensors() {
-  return fetch(`http://localhost:5000/sensor`);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/sensor`);
 }
 
 function getLocation(id) {
-  return fetch(`http://localhost:5000/location/${id}`);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/location/${id}`);
 }
 
 function getBuilding(id) {
-  return fetch(`http://localhost:5000/building/${id}`);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/building/${id}`);
 }
 
 function getSensorsEvents(id) {
@@ -98,5 +98,5 @@ function getSensorsEvents(id) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/sensor/event/${id}`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/sensor/event/${id}`, requestOptions);
 }

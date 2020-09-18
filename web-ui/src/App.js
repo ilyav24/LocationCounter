@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
-import { fromJS } from "immutable";
 import { ConnectedRouter } from "connected-react-router";
 import configureStore, { history } from "./configureStore";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
