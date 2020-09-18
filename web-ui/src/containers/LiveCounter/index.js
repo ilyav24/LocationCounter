@@ -15,7 +15,7 @@ async function getCount(type, id) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/stats/${type}/${id}`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/${type}/${id}`, requestOptions);
 }
 
 export const LiveCounter = ({ type, id }) => {
