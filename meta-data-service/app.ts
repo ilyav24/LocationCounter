@@ -10,6 +10,9 @@ class App {
     this.app = express();
     this.port = port;
 
+    // this is plaster because the server returns 304 instead of 200
+    // to fix this change all the controller PATCH request to be an PUT request
+    this.app.disable('etag')
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
   }
