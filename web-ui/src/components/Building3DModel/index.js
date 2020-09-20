@@ -13,7 +13,7 @@ const Building3DModel = ({ refToSet, error, isLoading }) => {
       {messageComponent}
       <iframe
         ref={refToSet}
-        src='http://localhost:3000/QgisBuildingModel'
+        src='http://localhost:3000/locationCounter/QgisBuildingModel'
         width='100%'
         height='500px'
         frameBorder='0'
