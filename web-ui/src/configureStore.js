@@ -5,12 +5,13 @@ import createRootReducer from "./reducers";
 import rootSaga from "./rootSaga";
 import createSagaMiddleware from "redux-saga";
 import { fromJS } from "immutable";
+import authorizationMiddleware from "./containers/Auth/authorizationMiddleware";
 
 export const history = createBrowserHistory();
 
 export default function configureStore(preloadedState) {
   const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [sagaMiddleware];
+  const middlewares = [sagaMiddleware, authorizationMiddleware];
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const enhancers = [middlewareEnhancer];
