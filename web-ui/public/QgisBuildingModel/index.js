@@ -1,6 +1,8 @@
 let roomsLayer;
 
-fetch("http://localhost:3000/QgisBuildingModel/data/index/scene.json")
+fetch(
+  "http://localhost:3000/locationCounter/QgisBuildingModel/data/index/scene.json"
+)
   .then((response) => response.json())
   .then((data) => {
     roomsLayer = data.layers[0];
