@@ -18,7 +18,7 @@ function* loadBuildingsSaga() {
     );
 
     const { data } = yield fetch(
-      `http://localhost:5000/building/${id}/location`
+      `${process.env.REACT_APP_BASE_API_URL}/building/${id}/location`
     ).then((response) => response.json());
     yield put(buildLocationsLoaded(data));
   } catch (error) {
@@ -89,7 +89,7 @@ function postLocation(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/location/${id}`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/location/${id}`, requestOptions);
 }
 
 function newLocation(body) {
@@ -102,5 +102,5 @@ function newLocation(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/location/`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/location/`, requestOptions);
 }

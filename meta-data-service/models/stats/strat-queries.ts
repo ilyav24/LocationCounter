@@ -75,3 +75,8 @@ WHERE u.sensor_id IN (SELECT s.sensors_id
 						WHERE l.building_id = $2
 							) AND u.last_sync < $1
 GROUP BY u.is_entered;`;
+
+/*export const qGetAllCount: string = `SELECT sensor_id, count (*) as Total
+FROM public.usages 
+WHERE  last_sync >= $1  AND sensor_id = $2
+GROUP BY sensor_id;`;*/

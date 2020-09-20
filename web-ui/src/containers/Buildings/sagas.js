@@ -5,7 +5,7 @@ import { buildingsLoaded } from "./actions";
 function* loadBuildingsSaga() {
   try {
     const { data } = yield fetch(
-      "http://localhost:5000/building"
+      `${process.env.REACT_APP_BASE_API_URL}/building`
     ).then((response) => response.json());
     yield put(buildingsLoaded(data));
   } catch (error) {

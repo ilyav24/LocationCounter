@@ -12,6 +12,8 @@ import configureStore, { history } from "./configureStore";
 import "./index.css";
 
 const store = configureStore();
+require('dotenv').config()
+console.log(process.env.REACT_APP_BASE_URL);
 
 const rootElement = (
     <Provider store={store}>

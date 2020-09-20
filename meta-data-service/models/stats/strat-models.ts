@@ -70,6 +70,45 @@ export async function getCountBetweenDaysBySensorIdDb(
   }
 }
 
+/*export async function getAllCountDb(
+  sensor: MyDate,
+) {
+  try {
+    if (sensor.from !== undefined && sensor.to !== undefined) {
+      return (
+        await pool.query(qGetAllCount, [
+          sensor.from,
+          sensor.to,
+        ])
+      ).rows;
+    }
+    if (sensor.from === undefined && sensor.to === undefined) {
+      return (
+        await pool.query(qGetCountBetweenDaysBaseByLocationId, [locationId])
+      ).rows;
+    }
+    if (sensor.from !== undefined) {
+      return (
+        await pool.query(qGetCountBetweenDaysFromByLocationId, [
+          sensor.from,
+          locationId,
+        ])
+      ).rows;
+    }
+    if (sensor.to !== undefined) {
+      return (
+        await pool.query(qGetCountBetweenDaysToByLocationId, [
+          sensor.to,
+          locationId,
+        ])
+      ).rows;
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}*/
+
 export async function getCountBetweenDaysByLocationIdDb(
   sensor: MyDate,
   locationId: number

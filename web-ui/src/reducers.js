@@ -6,6 +6,7 @@ import locationReducer from "./containers/Locations/reducer";
 import sensorReducer from "./containers/Sensors/reducer";
 import usersReducer from "./containers/Users/reducer";
 import authReducer from "./containers/Auth/reducer";
+import building3DgModelReducers from "./containers/Building3DModelContainer/reducer";
 
 const createRootReducer = (history) =>
     combineReducers({
@@ -16,6 +17,7 @@ const createRootReducer = (history) =>
         sensorsList: sensorReducer,
         usersList: usersReducer,
         auth: authReducer,
+        building3DModel: building3DgModelReducers
     });
 
 export default createRootReducer;
