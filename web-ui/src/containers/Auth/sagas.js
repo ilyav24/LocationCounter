@@ -14,9 +14,10 @@ import jwt_decode from "jwt-decode";
 function* sendCredentialsSaga(action) {
   try {
     const response = yield call(sendCredentials, action.credentials);
-    const responseObj = yield response.json();
 
     if (response.ok) {
+      const responseObj = yield response.json();
+
       const { token } = responseObj[0];
       const decodedToken = jwt_decode(token);
 
@@ -28,15 +29,15 @@ function* sendCredentialsSaga(action) {
         iat: decodedToken.iat,
         exp: decodedToken.exp,
       };
+
       yield put(authenticationLoginSuccess(payload));
     } else {
-      const error = { message: responseObj.error };
+      const error = { message: "Username or password is incorrect" };
       yield put(authenticationLoginFailed(error));
     }
   } catch (error) {
-    const errorObj = {
-      message: error.message,
-    };
+    const errorObj = { message: "Network error" };
+
     yield put(authenticationLoginFailed(errorObj));
   }
 }
@@ -60,7 +61,7 @@ function* verifyTokenSaga(action) {
       yield put(authorizationFailed());
     }
   } catch (error) {
-    //TODO
+    // Network error will delete token
     yield put(authorizationFailed());
   }
 }
@@ -73,7 +74,7 @@ function* authRootSaga() {
 export default [authRootSaga];
 
 function sendCredentials(credentials) {
-  const url = "http://localhost:5000/login";
+  const url = `${process.env.REACT_APP_BASE_API_URL}/login`;
   const requestOptions = {
     method: "POST",
     headers: {
@@ -90,7 +91,7 @@ function sendCredentials(credentials) {
 }
 
 function tokenVerificationRequest(token) {
-  const url = "http://localhost:5000/login/authorization";
+  const url = `${process.env.REACT_APP_BASE_API_URL}/login/authorization`;
   const requestOptions = {
     method: "GET",
     headers: {
