@@ -1097,7 +1097,7 @@ limitations:
         // set font size
         if (!fixedSize) {
           if (dist < 10) dist = 10;
-          fontSize = Math.min(Math.round(1000 / dist), minFontSize);
+          fontSize = Math.min(Math.round(300 / dist), minFontSize);
           e.style.fontSize = fontSize + "px";
         }
       }
