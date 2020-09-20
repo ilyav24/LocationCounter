@@ -5,7 +5,7 @@ import { usersLoaded, loadUsers, clearSelected, loadError } from "./actions";
 function* loadUsersSaga() {
   try {
     const { data } = yield fetch(
-      "http://localhost:5000/users"
+      `${process.env.REACT_APP_BASE_API_URL}/users`
     ).then((response) => response.json());
     yield put(usersLoaded(data));
   } catch (error) {
@@ -63,7 +63,7 @@ function updateUser(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/users/${id}`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/users/${id}`, requestOptions);
 }
 
 function postUser(body) {
@@ -75,5 +75,5 @@ function postUser(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/users`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/users`, requestOptions);
 }
