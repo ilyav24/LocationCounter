@@ -12,8 +12,9 @@ const Building3DModel = ({ refToSet, error, isLoading }) => {
     <React.Fragment>
       {messageComponent}
       <iframe
+        title='BuildingModelFrame'
         ref={refToSet}
-        src='http://localhost:3000/locationCounter/QgisBuildingModel'
+        src={`${window.location.origin}/locationCounter/QgisBuildingModel`}
         width='100%'
         height='500px'
         frameBorder='0'
