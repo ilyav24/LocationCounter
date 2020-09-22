@@ -43,8 +43,6 @@ function* refreshModelSaga() {
 
         yield put(modelRefreshFailed(error));
       } else {
-        yield put(modelRefreshSuccess());
-
         // send message to iframe through postMessage API to update
         const { iframeRef } = yield select((state) => state.building3DModel);
 
@@ -52,6 +50,8 @@ function* refreshModelSaga() {
           roomCountTable,
           window.location.origin
         );
+
+        yield put(modelRefreshSuccess());
       }
     }
   } catch (e) {

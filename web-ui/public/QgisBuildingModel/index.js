@@ -1,14 +1,14 @@
 let roomsLayer;
 
 fetch(
-  "http://localhost:3000/locationCounter/QgisBuildingModel/data/index/scene.json"
+  `${window.location.origin}/locationCounter/QgisBuildingModel/data/index/scene.json`
 )
   .then((response) => response.json())
   .then((data) => {
     roomsLayer = data.layers[0];
   });
 
-addEventListener("message", updateModel);
+window.addEventListener("message", updateModel);
 
 function updateModel(event) {
   if (event.origin === window.location.origin) {
