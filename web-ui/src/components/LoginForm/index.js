@@ -5,12 +5,12 @@ const LoginForm = ({ handleFieldChange, handleSubmit, error }) => {
   return (
     <form method='POST' onSubmit={handleSubmit}>
       <div className='form-group'>
-        <label htmlFor='username'>Email:</label>
+        <label htmlFor='username'>Username:</label>
         <input
-          type='email'
-          id='email'
-          name='email'
-          placeholder='Email'
+          type='text'
+          id='username'
+          name='username'
+          placeholder='Username'
           className='form-control'
           onChange={handleFieldChange}
           required

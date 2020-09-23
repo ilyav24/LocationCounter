@@ -5,7 +5,7 @@ import { authenticationLoginRequest } from "./actions";
 import "./index.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     const credentials = {
-      email,
+      username,
       password,
     };
 
@@ -25,8 +25,8 @@ const Login = () => {
   const handleFieldChange = (event) => {
     const { name, value } = event.target;
 
-    if (name === "email") {
-      setEmail(value);
+    if (name === "username") {
+      setUsername(value);
     } else {
       setPassword(value);
     }

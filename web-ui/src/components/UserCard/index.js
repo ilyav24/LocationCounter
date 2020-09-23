@@ -21,40 +21,53 @@ export const UsersCard = ({ user, onChange, onSave, onCreate }) => {
     <>
       <Row>
         <Col>
-          <div className="animated fadeIn fadeOut">
+          <div className='animated fadeIn fadeOut'>
             <Card>
               <CardHeader>
-                <i className="icon-user"></i> <b>{user.user_name}</b>
+                <i className='icon-user'></i> <b>{user.user_name}</b>
               </CardHeader>
               <CardBody>
                 <Row>
-                  <Col xs="12">
+                  <Col xs='12'>
                     <FormGroup>
-                      <Label htmlFor="name">Name</Label>
+                      <Label htmlFor='name'>Name</Label>
                       <Input
                         value={user.user_name}
-                        type="text"
-                        id="name"
+                        type='text'
+                        id='name'
                         onChange={({ target: { value } }) => {
                           onChange({ user_name: value });
                         }}
                       />
                     </FormGroup>
                   </Col>
-                  <Col xs="12">
+                  <Col xs='12'>
                     <FormGroup>
                       <Label>Email</Label>
                       <Input
                         value={user.email}
-                        type="text"
-                        id="floor"
+                        type='text'
+                        id='floor'
                         onChange={({ target: { value } }) => {
                           onChange({ email: value });
                         }}
                       />
                     </FormGroup>
                   </Col>
-                  <Col xs="12">
+                  <Col xs='12'>
+                    <FormGroup>
+                      <Label>Password</Label>
+                      <Input
+                        value={user.pass}
+                        type='password'
+                        id='password'
+                        onChange={({ target: { value } }) => {
+                          onChange({ pass: value });
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs='12'>
                     <UserTypeSelector
                       value={user.user_type}
                       onChange={({ target: { value } }) => {
@@ -64,16 +77,15 @@ export const UsersCard = ({ user, onChange, onSave, onCreate }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs="12"></Col>
+                  <Col xs='12'></Col>
                 </Row>
               </CardBody>
               <CardFooter>
                 <Button
-                  type="submit"
-                  size="sm"
-                  color="primary"
-                  onClick={onClick}
-                >
+                  type='submit'
+                  size='sm'
+                  color='primary'
+                  onClick={onClick}>
                   Save
                 </Button>
               </CardFooter>

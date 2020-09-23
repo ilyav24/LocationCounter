@@ -24,9 +24,9 @@ const App = (props) => {
   const { isLoading, token } = useSelector((state) => state.auth.toJS());
 
   useEffect(() => {
-    const token = localStorage.getItem("lc_token");
-    if (token) {
-      dispatch(authorizationRequest(token));
+    const localToken = localStorage.getItem("lc_token");
+    if (localToken) {
+      dispatch(authorizationRequest(localToken));
     }
   }, []);
 

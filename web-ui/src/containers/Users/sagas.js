@@ -63,7 +63,10 @@ function updateUser(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`${process.env.REACT_APP_BASE_API_URL}/users/${id}`, requestOptions);
+  return fetch(
+    `${process.env.REACT_APP_BASE_API_URL}/users/${id}`,
+    requestOptions
+  );
 }
 
 function postUser(body) {
