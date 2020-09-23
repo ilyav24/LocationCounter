@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-import {
-  localStorageSetToken,
-  authorizationRequest,
-} from "./containers/Auth/actions";
+import { authorizationRequest } from "./containers/Auth/actions";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import "./App.scss";
@@ -30,7 +27,6 @@ const App = (props) => {
     const token = localStorage.getItem("lc_token");
     if (token) {
       dispatch(authorizationRequest(token));
-      //   dispatch(localStorageSetToken(token));
     }
   }, []);
 

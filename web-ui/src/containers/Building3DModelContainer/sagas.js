@@ -16,9 +16,15 @@ function* buildRoomCountTableSaga(allLocations) {
       );
 
       if (response.ok) {
-        const data = yield response.json();
+        const { data } = yield response.json();
+        const peopleCount = data[0].num;
         const roomId = `${location.room_num}-${location.building_id}`;
-        roomCountTable[roomId] = data.data[0].num;
+
+        if (roomCountTable[roomId]) {
+          roomCountTable[roomId] += peopleCount;
+        } else {
+          roomCountTable[roomId] = peopleCount;
+        }
       }
     }
   } catch (error) {
