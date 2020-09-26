@@ -92,6 +92,8 @@ class UserController extends Controller {
     let user: User = req.body;
     try {
       let results = await insertUser(user);
+      if(results == null)
+        return res.sendStatus(403);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
