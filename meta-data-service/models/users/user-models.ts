@@ -6,6 +6,8 @@ import {
   deleteUserById,
   createNewUser,
   deleteUserByEmail,
+  checkUserEmail, 
+  checkUserUsername
 } from './user-queries';
 import { User } from './user';
 
@@ -42,6 +44,36 @@ export async function insertUser(user: User) {
         user.pass,
       ])
     ).rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function checkEmail(user: User) {
+  try {
+    let User2 = (await pool.query(checkUserEmail, [
+      user.email,
+  ])).rows;
+  if(User2.length)
+  {
+    return null;
+  }
+  return User2
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function checkUsername(user: User) {
+  try {
+    let User2 = (await pool.query(checkUserUsername, [
+      user.user_name,
+  ])).rows;
+  if(User2.length)
+  {
+    return null;
+  }
+  return User2
   } catch (err) {
     throw err;
   }
