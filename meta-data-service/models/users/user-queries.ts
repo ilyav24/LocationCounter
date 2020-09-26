@@ -13,4 +13,6 @@ export const deleteUserById = `DELETE FROM users where id = $1 RETURNING id`;
 
 export const deleteUserByEmail = `DELETE FROM users where email = $1 RETURNING email`;
 
-export const checkUser = `SELECT * FROM users where user_name=$1 OR email=$2`;
+export const checkUserEmail = `SELECT * FROM users where email=$1`;
+
+export const checkUserUsername = `SELECT * FROM users where user_name=$1`;
