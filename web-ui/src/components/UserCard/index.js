@@ -37,6 +37,7 @@ export const UsersCard = ({ user, onChange, onSave, onCreate }) => {
                           value={user.user_name}
                           type='text'
                           id='name'
+                          required
                           onChange={({ target: { value } }) => {
                             onChange({ user_name: value });
                           }}
@@ -50,6 +51,7 @@ export const UsersCard = ({ user, onChange, onSave, onCreate }) => {
                           value={user.email}
                           type='email'
                           id='floor'
+                          required
                           onChange={({ target: { value } }) => {
                             onChange({ email: value });
                           }}
@@ -64,6 +66,7 @@ export const UsersCard = ({ user, onChange, onSave, onCreate }) => {
                           type='password'
                           id='password'
                           minLength='8'
+                          required
                           onChange={({ target: { value } }) => {
                             onChange({ pass: value });
                           }}
