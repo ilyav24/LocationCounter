@@ -10,6 +10,8 @@ import {
   deleteUser,
   insertUser,
   DeleteUserByEmail,
+  checkEmail, 
+  checkUsername
 } from '../models/users/user-models';
 import { wrap } from '../util/wrapper';
 
@@ -91,9 +93,13 @@ class UserController extends Controller {
 
     let user: User = req.body;
     try {
+      let check = await checkEmail(user);
+      if(check==null)
+      return res.status(403).json([{error:"Email already exists"}]);;
+      let check2 = await checkUsername(user);
+      if(check2==null)
+      return res.status(403).json([{error:"Username already exists"}]);;
       let results = await insertUser(user);
-      if(results == null)
-        return res.sendStatus(403);
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
