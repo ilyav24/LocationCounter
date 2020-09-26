@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
+  Form,
   Input,
   Label,
   FormGroup,
@@ -22,74 +23,73 @@ export const UsersCard = ({ user, onChange, onSave, onCreate }) => {
       <Row>
         <Col>
           <div className='animated fadeIn fadeOut'>
-            <Card>
-              <CardHeader>
-                <i className='icon-user'></i> <b>{user.user_name}</b>
-              </CardHeader>
-              <CardBody>
-                <Row>
-                  <Col xs='12'>
-                    <FormGroup>
-                      <Label htmlFor='name'>Name</Label>
-                      <Input
-                        value={user.user_name}
-                        type='text'
-                        id='name'
+            <Form onSubmit={onClick}>
+              <Card>
+                <CardHeader>
+                  <i className='icon-user'></i> <b>{user.user_name}</b>
+                </CardHeader>
+                <CardBody>
+                  <Row>
+                    <Col xs='12'>
+                      <FormGroup>
+                        <Label htmlFor='name'>Name</Label>
+                        <Input
+                          value={user.user_name}
+                          type='text'
+                          id='name'
+                          onChange={({ target: { value } }) => {
+                            onChange({ user_name: value });
+                          }}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col xs='12'>
+                      <FormGroup>
+                        <Label>Email</Label>
+                        <Input
+                          value={user.email}
+                          type='email'
+                          id='floor'
+                          onChange={({ target: { value } }) => {
+                            onChange({ email: value });
+                          }}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col xs='12'>
+                      <FormGroup>
+                        <Label>Password</Label>
+                        <Input
+                          value={user.pass}
+                          type='password'
+                          id='password'
+                          minLength='8'
+                          onChange={({ target: { value } }) => {
+                            onChange({ pass: value });
+                          }}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col xs='12'>
+                      <UserTypeSelector
+                        value={user.user_type}
                         onChange={({ target: { value } }) => {
-                          onChange({ user_name: value });
+                          onChange({ user_type: value });
                         }}
                       />
-                    </FormGroup>
-                  </Col>
-                  <Col xs='12'>
-                    <FormGroup>
-                      <Label>Email</Label>
-                      <Input
-                        value={user.email}
-                        type='text'
-                        id='floor'
-                        onChange={({ target: { value } }) => {
-                          onChange({ email: value });
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col xs='12'>
-                    <FormGroup>
-                      <Label>Password</Label>
-                      <Input
-                        value={user.pass}
-                        type='password'
-                        id='password'
-                        onChange={({ target: { value } }) => {
-                          onChange({ pass: value });
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col xs='12'>
-                    <UserTypeSelector
-                      value={user.user_type}
-                      onChange={({ target: { value } }) => {
-                        onChange({ user_type: value });
-                      }}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs='12'></Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <Button
-                  type='submit'
-                  size='sm'
-                  color='primary'
-                  onClick={onClick}>
-                  Save
-                </Button>
-              </CardFooter>
-            </Card>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs='12'></Col>
+                  </Row>
+                </CardBody>
+                <CardFooter>
+                  <Button type='submit' size='sm' color='primary'>
+                    Save
+                  </Button>
+                </CardFooter>
+              </Card>
+            </Form>
           </div>
         </Col>
       </Row>
