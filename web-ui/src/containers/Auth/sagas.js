@@ -24,7 +24,7 @@ function* sendCredentialsSaga(action) {
       const payload = {
         token,
         userInfo: {
-          username: action.credentials.email,
+          username: action.credentials.username,
         },
         iat: decodedToken.iat,
         exp: decodedToken.exp,
@@ -82,7 +82,7 @@ function sendCredentials(credentials) {
       Accept: "application/json",
     },
     body: JSON.stringify({
-      user_name: credentials.email,
+      user_name: credentials.username,
       pass: credentials.password,
     }),
   };

@@ -17,11 +17,13 @@ function* updateUserSaga() {
   try {
     const user = yield select((state) => state.usersList.toJS().selected);
     const response = yield call(updateUser, user);
-    const { data, errors } = yield response.json();
-    if (data) {
+
+    if (response.ok) {
       yield put(loadUsers());
     } else {
-      throw errors;
+      const [error] = yield response.json();
+      const errorMessage = error.error;
+      yield put(loadError(errorMessage));
     }
   } catch (errors) {
     yield put(loadError(errors));
@@ -32,12 +34,14 @@ function* createNewUserSaga() {
   try {
     const user = yield select((state) => state.usersList.toJS().selected);
     const response = yield call(postUser, user);
-    const { data, errors } = yield response.json();
-    if (data) {
+
+    if (response.ok) {
       yield put(clearSelected());
       yield put(loadUsers());
     } else {
-      throw errors;
+      const [error] = yield response.json();
+      const errorMessage = error.error;
+      yield put(loadError(errorMessage));
     }
   } catch (errors) {
     yield put(loadError(errors));
@@ -63,7 +67,10 @@ function updateUser(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`${process.env.REACT_APP_BASE_API_URL}/users/${id}`, requestOptions);
+  return fetch(
+    `${process.env.REACT_APP_BASE_API_URL}/users/${id}`,
+    requestOptions
+  );
 }
 
 function postUser(body) {

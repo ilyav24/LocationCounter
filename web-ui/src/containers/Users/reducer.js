@@ -33,6 +33,7 @@ export default function usersReducer(state = initialState, action) {
           id: null,
           user_name: "",
           email: "",
+          pass: "",
           user_type: 1,
         },
       });
