@@ -195,4 +195,6 @@ class SensorController extends Controller {
 
 }
 
+
+
 export default SensorController;

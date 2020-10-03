@@ -52,6 +52,8 @@ export async function getAllSensorsEventDb1() {
   }
 }
 
+
+
 export async function getAllSensorsEventDb(date: MyDate, sensorId: number) {
   try {
     return (
@@ -74,22 +76,22 @@ export async function getAllSensorsEventByIdDb(date: MyDate, sensorId: number) {
   }
 }
 
-export async function updateLocationDb(locationId: number, sensorId: number) {
-  try {
-    await pool.query(qUpdateLocationByID, [locationId, sensorId]);
-    return getSensorByIdDb(sensorId.toString());
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
-
 export async function insertEventDb(is_entered:number, SensorID:number, Height:number, date:Date) {
   try {
     return(
     await pool.query(qInsertEvent, [SensorID,Height,date,is_entered])
     ).rows;
     
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function updateLocationDb(locationId: number, sensorId: number) {
+  try {
+    await pool.query(qUpdateLocationByID, [locationId, sensorId]);
+    return getSensorByIdDb(sensorId.toString());
   } catch (err) {
     console.log(err);
     throw err;

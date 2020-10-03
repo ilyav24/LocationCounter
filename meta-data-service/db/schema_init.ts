@@ -51,12 +51,15 @@ async function createAllTables() {
       await pool.query(schema.usagesTable);
       console.log('+++++ usagesTable was successfully created');
 <<<<<<< HEAD
+<<<<<<< HEAD
       await pool.query(schema.summedByMinuteTable);
       console.log('+++++ summedByMinuteTable was successfully created');
       await pool.query(schema.summedByHourTable);
       console.log('+++++ summedByHourTable was successfully created');
       await pool.query(schema.summedByDayTable);
       console.log('+++++ summedByDayTable was successfully created');
+=======
+>>>>>>> 8ea60b48279efae4928b8304b1d6a451bb68caa5
 =======
 >>>>>>> 8ea60b48279efae4928b8304b1d6a451bb68caa5
     } catch (err) {
