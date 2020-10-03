@@ -32,3 +32,5 @@ VALUES ($1, $2, $3, $4)`;
 
 
 
+export const qGetAllSensorsEvent1: string = `SELECT * 
+FROM usages`;

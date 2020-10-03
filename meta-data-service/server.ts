@@ -13,6 +13,7 @@ import {
 import pkg from 'node-cron';
 const { schedule } = pkg;
 
+import LoginController from './api/login';
 const app = new App(
   [
     new LocationController(),
@@ -20,6 +21,7 @@ const app = new App(
     new SensorController(),
     new StratController(),
     new UserController(),
+    new LoginController(),
   ],
   5000
 );
@@ -40,5 +42,6 @@ schedule(" 0 0 * * * ",function(){
 });
 
 app.listen();
+
 
 export = app;

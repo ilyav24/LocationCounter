@@ -9,8 +9,8 @@ const SensorEntry = ({ event: { last_sync, is_entered } }) => {
     ) : (
       <FaArrowDown color="#a82f11" />
     );
-  const date = moment(last_sync).fromNow();
-  const fullDate = moment().format('MMMM Do YYYY, HH:mm:ss');
+  const date = moment.utc(last_sync).fromNow();
+  const fullDate = moment(last_sync).format('MMMM Do YYYY, HH:mm:ss');
   const text =
     is_entered === "1"
       ? `Enter event detected ${date}`

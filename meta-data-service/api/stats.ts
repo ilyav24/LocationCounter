@@ -173,6 +173,7 @@ class StratController extends Controller {
     }
   };
 
+
   getCountBetweenDaysByBuildingId = async (
     req: Request,
     res: Response

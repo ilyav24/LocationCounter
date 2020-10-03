@@ -284,3 +284,7 @@ WHERE u.sensor_id IN (SELECT s.sensors_id
 AND TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI') 
 BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond';`;
+/*export const qGetAllCount: string = `SELECT sensor_id, count (*) as Total
+FROM public.usages 
+WHERE  last_sync >= $1  AND sensor_id = $2
+GROUP BY sensor_id;`;*/
