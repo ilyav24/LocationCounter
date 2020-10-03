@@ -60,16 +60,26 @@ sensors_id INTEGER REFERENCES location(id)
 
 export const usagesTable = `CREATE TABLE public.usages(
 sensor_id INTEGER NOT NULL REFERENCES sensors(id),
-height INTEGER NOT NULL
+height INTEGER NOT NULL DEFAULT 0,
 last_sync TIMESTAMP NOT NULL DEFAULT NOW(),
 is_entered BIT NULL
 );`;
 
-export const aggregated = `CREATE TABLE public.aggregated(
+export const summedByMinuteTable = `CREATE TABLE public.summedByMinute(
 sensor_id INTEGER NOT NULL REFERENCES sensors(id),
-date TIMESTAMP NOT NULL,
-minute INTEGER DEFAULT 0,
-hour INTEGER DEFAULT 0,
+date TEXT NOT NULL,
+minute INTEGER DEFAULT 0
+);`;
+
+export const summedByHourTable = `CREATE TABLE public.summedByHour(
+sensor_id INTEGER NOT NULL REFERENCES sensors(id),
+date TEXT NOT NULL,
+hour INTEGER DEFAULT 0
+);`;
+
+export const summedByDayTable = `CREATE TABLE public.summedByDay(
+sensor_id INTEGER NOT NULL REFERENCES sensors(id),
+date TEXT NOT NULL,
 day INTEGER DEFAULT 0
 );`;
 

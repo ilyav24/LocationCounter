@@ -27,11 +27,8 @@ WHERE sensors_id = $2;`;
 
 export const qInsertEvent: string = `INSERT INTO public.usages
 (sensor_id, height, last_sync, is_entered)
-VALUES ($1, $2, $3, $4)
-RETURNING id`;
+VALUES ($1, $2, $3, $4)`;
 
-export const qUpdateAggregate: string = `INSERT INTO public.aggregate
-()`;
 
 
 

@@ -68,22 +68,22 @@ async function createData() {
       );
     }
     console.log('+++++ creating usages');
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 20; i++) {
       let is_entered = Math.round(Math.random());
       await client.query(
-        `INSERT INTO public.usages(sensor_id,last_sync, is_entered) VALUES (${
+        `INSERT INTO public.usages(sensor_id,height,last_sync, is_entered) VALUES (${
           Math.floor(Math.random() * 10) + 1
-        },to_timestamp(${
+        },${100},to_timestamp(${
           Date.now() - 10000 * i
         } / 1000.0), ${is_entered}::bit);`
       );
     }
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 20; i++) {
       let is_entered = Math.round(Math.random());
       await client.query(
-        `INSERT INTO public.usages(sensor_id,last_sync, is_entered) VALUES (${
+        `INSERT INTO public.usages(sensor_id,height,last_sync, is_entered) VALUES (${
           Math.floor(Math.random() * 10) + 1
-        },to_timestamp(${
+        },${100},to_timestamp(${
           Date.now() - 10000 * i * i
         } / 1000.0), ${is_entered}::bit);`
       );

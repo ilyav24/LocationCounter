@@ -54,8 +54,7 @@ class SensorController extends Controller {
     );
 
     this.router.post(
-      this.path + this.idPrefix,
-      [param(this.id).isNumeric()],
+      this.path,
       this.insertEvent
     );
 
@@ -151,16 +150,16 @@ class SensorController extends Controller {
     req: Request,
     res: Response
   ): Promise<Response> => {
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
     
-    const is_entered = +req.params.people;
-    const SensorID = +req.params.SensorID;
-    const Height = +req.params.Height;
-    const date = req.params.Date;
-
+    const is_entered = +req.body.people;
+    const SensorID = +req.body.SensorID;
+    const Height = +req.body.Height;
+    const date = req.body.Date;
     try {
       let results = await insertEventDb(is_entered, SensorID,Height,date);
       return res.status(200).json(wrap(results));
@@ -168,6 +167,10 @@ class SensorController extends Controller {
       return res.status(500).json({ errors: err.detail });
     }
   };
+
+
+  
+
 }
 
 
