@@ -116,6 +116,12 @@ class UserController extends Controller {
     let user: User = req.body;
     try {
       user.id = id;
+      let check = await checkEmail(user);
+      if(check==null)
+      return res.status(403).json([{error:"Email already exists"}]);;
+      let check2 = await checkUsername(user);
+      if(check2==null)
+      return res.status(403).json([{error:"Username already exists"}]);;
       let results = await updateUserDetails(user);
       return res.status(200).json(wrap(results));
     } catch (err) {
