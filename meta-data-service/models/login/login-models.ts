@@ -1,4 +1,4 @@
-import { DeleteToken,checkUser,InsertUser } from "./login-queries";
+import { checkUser } from "./login-queries";
 import { Pool } from 'pg';
 const dotenv = require("dotenv");
 dotenv.config();
@@ -29,16 +29,6 @@ export async function createToken(user_name:string,pass:string) {
         let token = jwt.sign(User1, process.env.ACCESS_TOKEN, { expiresIn: '1800s' });
       return (token);
     } catch (err) {
-      throw err;
-    }
-  }
-
-export async function deleteToken(token: string) {
-    try {
-      let res = (await pool.query(DeleteToken, [token])).rows;
-      return res.length;
-    } catch (err) {
-      console.log(err);
       throw err;
     }
   }
