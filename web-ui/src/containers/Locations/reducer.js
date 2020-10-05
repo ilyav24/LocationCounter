@@ -6,6 +6,7 @@ import {
   NEW_LOCATION,
   LOCATION_SAVE_ERROR,
   LOCATION_CLEAR,
+  LOCATION_SAVED
 } from "./constants";
 import { fromJS } from "immutable";
 
@@ -15,6 +16,7 @@ const initialState = fromJS({
   selectedBuilding: null,
   selectedLocation: null,
   error: null,
+  hash: null
 });
 
 export default function locationsReducer(state = initialState, action) {
@@ -23,9 +25,10 @@ export default function locationsReducer(state = initialState, action) {
   switch (action.type) {
     case LOADED_BUILDING_LOCATIONS:
       return state.merge({ locations: payload });
-    case LOAD_BUILDING_LOCATIONS:
+    case LOAD_BUILDING_LOCATIONS: {
       const { id } = action;
-      return state.merge({ selectedBuilding: id, selectedLocation: null });
+      return state.merge({ selectedBuilding: id });
+    }
     case LOCATION_SELECTED:
       return state.merge({ selectedLocation: location });
     case FIELD_CHANGE:
@@ -46,6 +49,8 @@ export default function locationsReducer(state = initialState, action) {
     case LOCATION_SAVE_ERROR:
       const { error } = action;
       return state.merge({ error: error });
+    case LOCATION_SAVED:
+      return state.merge({ hash: Math.random() });
     default:
       return state;
   }

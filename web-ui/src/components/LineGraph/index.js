@@ -14,7 +14,6 @@ export const LineGraph = ({ data, onChange, timeRange, from, to, onFromChange, o
     const dataBySensor = groupBy(data, 'date')
     const lineData = []
     for (const date in dataBySensor) {
-        console.log(dataBySensor[date].forEach(x => console.log(x, x.num)));
         let sum = dataBySensor[date].reduce((s, a) => s + a.num, 0)
         lineData.push(sum)
     }
@@ -52,7 +51,7 @@ export const LineGraph = ({ data, onChange, timeRange, from, to, onFromChange, o
             },
         ],
     };
-    console.log(to);
+
     return (
         <div className="animated fadeIn fadeOut">
             <Card>
@@ -60,9 +59,9 @@ export const LineGraph = ({ data, onChange, timeRange, from, to, onFromChange, o
                     Occupancy
                 <div className="card-header-actions">
                         <Label>&nbsp;From:&nbsp;</Label>
-                        <DateTimePicker disableClock value={from} onChange={onFromChange} />
+                        <DateTimePicker disableClock value={from} onChange={onFromChange} clearIcon={null} />
                         <Label>&nbsp;To:&nbsp;</Label>
-                        <DateTimePicker disableClock value={to} onChange={onToChange} />
+                        <DateTimePicker disableClock value={to} onChange={onToChange} clearIcon={null} />
                     </div>
                 </CardHeader>
                 <CardBody>

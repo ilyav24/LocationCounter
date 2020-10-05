@@ -8,6 +8,7 @@ import LocationDetailsCard from "../../components/LocationDetailsCard";
 import BuildingDetailsCard from "../../components/BuildingDetailsCard";
 import { isNull } from "lodash";
 import ChooseLocation from "../LocationAttachContainer";
+import { SaveToast } from "../../components/Toast";
 
 const Sensors = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const Sensors = () => {
     selected,
     location,
     building,
+    hash
   } = useSelector((state) => state.sensorsList.toJS());
   const onSelect = (sensor) => dispatch(loadSensorsEvents(sensor));
   return (
@@ -47,6 +49,7 @@ const Sensors = () => {
         </Col>
         <SensorEventList events={events} />
         <Col>
+          <SaveToast id={hash} />
           {!isNull(location) ? (
             <>
               <LocationDetailsCard location={location} />

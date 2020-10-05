@@ -8,7 +8,7 @@ import {
   buildLocationsLoaded,
   loadBuildingLocations,
   errorSaveLocation,
-  locationClear,
+  locationClear, locationSaved
 } from "./actions";
 
 function* loadBuildingsSaga() {
@@ -41,6 +41,7 @@ function* saveNewLocationSaga() {
     if (data) {
       yield put(loadBuildingLocations(buildingId));
       yield put(locationClear());
+      yield put(locationSaved())
     } else {
       throw errors;
     }
@@ -54,11 +55,12 @@ function* updateLocationSave() {
     const location = yield select(
       (state) => state.locationList.toJS().selectedLocation
     );
-
+    const { id } = location;
     const response = yield call(postLocation, location);
     const { data, errors } = yield response.json();
     if (data) {
       yield put(loadBuildingLocations(location.building_id));
+      yield put(locationSaved())
     } else {
       throw errors;
     }
@@ -80,7 +82,6 @@ export default [locationsRootSaga];
 function postLocation(body) {
   const { id } = body;
   delete body.id;
-  console.log(body);
   let requestOptions = {
     method: "PATCH",
     headers: {

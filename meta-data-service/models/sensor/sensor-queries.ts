@@ -21,6 +21,10 @@ export const qGetAllSensorsEventById: string = `SELECT *
 FROM public.usages
 WHERE last_sync>= $1 AND last_sync < $2 AND sensor_id = $3 ORDER BY last_sync DESC;`;
 
+export const qGetAllDailySensorsEvents: string = `SELECT count(*),is_entered 
+FROM public.usages
+WHERE last_sync > NOW() - INTERVAL '24 hours' GROUP BY is_entered;`;
+
 export const qUpdateLocationByID: string = `UPDATE public.sensor_location
 SET location_id=$1
 WHERE sensors_id = $2;`;

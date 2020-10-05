@@ -5,6 +5,7 @@ import {
   CLEAR_SELECTED,
   NEW_USER,
   SAVE_ERROR,
+  USER_UPDATED
 } from "./constants";
 import { fromJS } from "immutable";
 
@@ -12,6 +13,7 @@ const initialState = fromJS({
   users: [],
   selected: null,
   error: null,
+  hash: null
 });
 
 export default function usersReducer(state = initialState, action) {
@@ -40,6 +42,9 @@ export default function usersReducer(state = initialState, action) {
     case SAVE_ERROR:
       const { error } = action;
       return state.merge({ error });
+    case USER_UPDATED: {
+      return state.merge({ hash: Math.random() })
+    }
     default:
       return state;
   }

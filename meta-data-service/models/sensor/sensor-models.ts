@@ -8,7 +8,7 @@ import {
   qGetAllSensorsEventById,
   qUpdateLocationByID,
   qGetAllSensorsEvent1,
-  qInsertEvent
+  qInsertEvent, qGetAllDailySensorsEvents
 } from './sensor-queries';
 
 dotenv.config();
@@ -52,6 +52,16 @@ export async function getAllSensorsEventDb1() {
   }
 }
 
+export async function getDailyEventsFromDatabase() {
+  try {
+    return (
+      await pool.query(qGetAllDailySensorsEvents)
+    ).rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
 
 
 export async function getAllSensorsEventDb(date: MyDate, sensorId: number) {

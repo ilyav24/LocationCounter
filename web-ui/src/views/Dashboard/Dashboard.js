@@ -15,6 +15,7 @@ import {
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
 import { getStyle } from "@coreui/coreui/dist/js/coreui-utilities";
 import Building3DModelContainer from "../../containers/Building3DModelContainer";
+import { DashboardStats } from "../../components/DashboardStats";
 
 const brandPrimary = getStyle("--primary");
 const brandInfo = getStyle("--info");
@@ -69,6 +70,9 @@ class Dashboard extends Component {
   render() {
     return (
       <div className='animated fadeIn'>
+        <Row>
+          <DashboardStats />
+        </Row>
         <Row>
           <Col>
             <Card>

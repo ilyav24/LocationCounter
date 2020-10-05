@@ -1,6 +1,6 @@
 import { put, takeLatest, call, select } from "redux-saga/effects";
 import { LOAD_USERS, UPDATE_USER, USER_SAVE } from "./constants";
-import { usersLoaded, loadUsers, clearSelected, loadError } from "./actions";
+import { usersLoaded, loadUsers, clearSelected, loadError, userUpdated } from "./actions";
 
 function* loadUsersSaga() {
   try {
@@ -20,6 +20,7 @@ function* updateUserSaga() {
 
     if (response.ok) {
       yield put(loadUsers());
+      yield put(userUpdated())
     } else {
       const [error] = yield response.json();
       const errorMessage = error.error;
@@ -38,6 +39,7 @@ function* createNewUserSaga() {
     if (response.ok) {
       yield put(clearSelected());
       yield put(loadUsers());
+      yield put(userUpdated())
     } else {
       const [error] = yield response.json();
       const errorMessage = error.error;
