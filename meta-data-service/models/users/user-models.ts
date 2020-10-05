@@ -7,7 +7,9 @@ import {
   createNewUser,
   deleteUserByEmail,
   checkUserEmail, 
-  checkUserUsername
+  checkUserUsername,
+  checkUserEmail2,
+  checkUserUsername2
 } from './user-queries';
 import { User } from './user';
 
@@ -64,10 +66,42 @@ export async function checkEmail(user: User) {
   }
 }
 
+export async function checkEmail2(user: User) {
+  try {
+    let User2 = (await pool.query(checkUserEmail2, [
+      user.email,
+      user.id,
+  ])).rows;
+  if(User2.length)
+  {
+    return null;
+  }
+  return User2
+  } catch (err) {
+    throw err;
+  }
+}
+
 export async function checkUsername(user: User) {
   try {
     let User2 = (await pool.query(checkUserUsername, [
       user.user_name,
+  ])).rows;
+  if(User2.length)
+  {
+    return null;
+  }
+  return User2
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function checkUsername2(user: User) {
+  try {
+    let User2 = (await pool.query(checkUserUsername2, [
+      user.user_name,
+      user.id,
   ])).rows;
   if(User2.length)
   {
