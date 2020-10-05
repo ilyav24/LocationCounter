@@ -16,7 +16,10 @@ import {
 import { UserTypeSelector } from "../UserType";
 
 export const UsersCard = ({ user, onChange, onSave, onCreate }) => {
-  const onClick = user?.id ? onSave : onCreate;
+  const onClick = (event) => {
+    event.preventDefault();
+    user?.id ? onSave() : onCreate();
+  };
 
   return !isNull(user) ? (
     <>
@@ -32,11 +35,11 @@ export const UsersCard = ({ user, onChange, onSave, onCreate }) => {
                   <Row>
                     <Col xs='12'>
                       <FormGroup>
-                        <Label htmlFor='name'>Name</Label>
+                        <Label htmlFor='username'>Username</Label>
                         <Input
                           value={user.user_name}
                           type='text'
-                          id='name'
+                          id='username'
                           required
                           onChange={({ target: { value } }) => {
                             onChange({ user_name: value });
