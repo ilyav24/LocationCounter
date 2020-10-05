@@ -40,8 +40,6 @@ async function createAllTables() {
       console.log('+++++ userTypeTable was successfully created');
       await pool.query(schema.usersTable);
       console.log('+++++ usersTable was successfully created');
-      await pool.query(schema.userPassTable);
-      console.log('+++++ userPassTable was successfully created');
       await pool.query(schema.buildingTable);
       console.log('+++++ buildingTable was successfully created');
       await pool.query(schema.locationTable);
@@ -50,18 +48,12 @@ async function createAllTables() {
       console.log('+++++ sensorLocationTable was successfully created');
       await pool.query(schema.usagesTable);
       console.log('+++++ usagesTable was successfully created');
-<<<<<<< HEAD
-<<<<<<< HEAD
       await pool.query(schema.summedByMinuteTable);
       console.log('+++++ summedByMinuteTable was successfully created');
       await pool.query(schema.summedByHourTable);
       console.log('+++++ summedByHourTable was successfully created');
       await pool.query(schema.summedByDayTable);
       console.log('+++++ summedByDayTable was successfully created');
-=======
->>>>>>> 8ea60b48279efae4928b8304b1d6a451bb68caa5
-=======
->>>>>>> 8ea60b48279efae4928b8304b1d6a451bb68caa5
     } catch (err) {
       console.log(err);
       console.log('----- database could not be created :(');

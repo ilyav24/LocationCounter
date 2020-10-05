@@ -18,8 +18,8 @@ import {
   AppNavbarBrand,
   AppSidebarToggler,
 } from "@coreui/react";
-import logo from "../../assets/img/brand/logo.svg";
-import sygnet from "../../assets/img/brand/sygnet.svg";
+import logo from "../../assets/img/brand/LOGO.png";
+import sygnet from "../../assets/img/brand/favicon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { authenticationLogout } from "../Auth/actions";
 
@@ -38,9 +38,10 @@ const DefaultHeader = ({ children, ...attributes }) => {
     <React.Fragment>
       <Dropdown
         id='usernameDropdown'
+        color="primary"
         isOpen={dropdownToggled}
         toggle={() => setDropdownToggled(!dropdownToggled)}>
-        <DropdownToggle className='m-2 btn btn-danger'>
+        <DropdownToggle color="primary" className='m-2'>
           {username}
         </DropdownToggle>
         <DropdownMenu right>
@@ -52,8 +53,8 @@ const DefaultHeader = ({ children, ...attributes }) => {
       <AppNavbarBrand
         full={{
           src: logo,
-          width: 89,
-          height: 25,
+          width: 150,
+          height: 50,
           alt: "CoreUI Logo",
         }}
         minimized={{

@@ -26,8 +26,17 @@ export const LiveCounter = ({ type, id }) => {
       const { num } = data ? data[0] : "Error";
       setCount(num);
     }
+    let interval;
     if (id) {
       fetchData();
+
+      // run in loops
+      interval = setInterval(() => {
+        fetchData();
+      }, 5000);
+    }
+    return () => {
+      clearInterval(interval);
     }
   }, [id]);
 

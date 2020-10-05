@@ -6,6 +6,7 @@ import {
   SENSOR_EVENTS_LOADED,
   SENSOR_LOCATION_LOADED,
   SENSOR_BUILDING_LOADED,
+  CANCEL_SENSOR_UPDATE
 } from "./constants";
 
 export const loadSensors = () => ({
@@ -40,4 +41,8 @@ export const sensorLocationLoaded = (location) => ({
 export const sensorBuildingLoaded = (building) => ({
   type: SENSOR_BUILDING_LOADED,
   building,
+});
+
+export const cancelLoadSensors = () => ({
+  type: CANCEL_SENSOR_UPDATE,
 });
