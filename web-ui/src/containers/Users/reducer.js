@@ -45,6 +45,9 @@ export default function usersReducer(state = initialState, action) {
     case USER_UPDATED: {
       return state.merge({ hash: Math.random() })
     }
+    // this is for the removing the pop up when moving between screens
+    case "@@router/LOCATION_CHANGE":
+      return state.merge({ hash: null });
     default:
       return state;
   }

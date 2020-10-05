@@ -51,6 +51,9 @@ export default function locationsReducer(state = initialState, action) {
       return state.merge({ error: error });
     case LOCATION_SAVED:
       return state.merge({ hash: Math.random() });
+    // this is for the removing the pop up when moving between screens
+    case "@@router/LOCATION_CHANGE":
+      return state.merge({ hash: null });
     default:
       return state;
   }

@@ -36,6 +36,9 @@ export default function sensorsReducer(state = initialState, action) {
       return state.merge({ building });
     case SENSOR_LOCATION_UPDATED:
       return state.merge({ hash: Math.random() });
+    // this is for the removing the pop up when moving between screens
+    case "@@router/LOCATION_CHANGE":
+      return state.merge({ hash: null });
     default:
       return state;
   }
