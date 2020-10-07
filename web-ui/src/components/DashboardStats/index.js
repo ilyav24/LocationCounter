@@ -33,8 +33,8 @@ export const DashboardStats = () => {
     }, []);
 
     const total = data.reduce((s, x) => s + +x.count, 0)
-    const outTotal = data.length != 0 ? data[0].count : '';
-    const inTotal = data.length != 0 ? data[1].count : '';
+    const outTotal = data[0] ? data[0].count : 0;
+    const inTotal = data[1] ? data[1].count : 0;
 
 
     return (
