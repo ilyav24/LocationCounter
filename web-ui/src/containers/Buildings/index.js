@@ -9,6 +9,7 @@ import {
   onCreateAction,
 } from "../BuildingCardContainer/actions";
 import { BuildingCard } from "../BuildingCardContainer";
+import { SaveToast } from "../../components/Toast";
 
 const Buildings = () => {
   const dispatch = useDispatch();
@@ -23,26 +24,27 @@ const Buildings = () => {
   const onClear = () => dispatch(buildingClear());
   const onCreate = () => dispatch(onCreateAction());
   const { buildingsList } = useSelector((state) => state);
-  const { buildings, selected } = buildingsList.toJS();
+  const { buildings, selected, hash } = buildingsList.toJS();
   return (
     <div className="animated fadeIn">
-        <Card>
-          <CardHeader>
-            <i className="fa icon-home"></i> Buildings
+      <Card>
+        <CardHeader>
+          <i className="fa icon-home"></i> Buildings
           </CardHeader>
-          <CardBody>
-            <BuildingsTable
-              buildings={buildings}
-              onClick={onBuildingSelect}
-              onClear={onClear}
-              selected={selected}
-            />
-            <Button color="primary" onClick={onCreate}>
-              Create Building
+        <CardBody>
+          <BuildingsTable
+            buildings={buildings}
+            onClick={onBuildingSelect}
+            onClear={onClear}
+            selected={selected}
+          />
+          <Button color="primary" onClick={onCreate}>
+            Create Building
             </Button>
-          </CardBody>
-        </Card>
-        <BuildingCard />
+        </CardBody>
+      </Card>
+      <SaveToast id={hash} />
+      <BuildingCard />
     </div>
   );
 };

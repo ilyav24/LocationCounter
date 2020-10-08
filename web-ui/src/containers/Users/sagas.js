@@ -1,11 +1,11 @@
 import { put, takeLatest, call, select } from "redux-saga/effects";
 import { LOAD_USERS, UPDATE_USER, USER_SAVE } from "./constants";
-import { usersLoaded, loadUsers, clearSelected, loadError } from "./actions";
+import { usersLoaded, loadUsers, clearSelected, loadError, userUpdated } from "./actions";
 
 function* loadUsersSaga() {
   try {
     const { data } = yield fetch(
-      "http://localhost:5000/users"
+      `${process.env.REACT_APP_BASE_API_URL}/users`
     ).then((response) => response.json());
     yield put(usersLoaded(data));
   } catch (error) {
@@ -17,11 +17,14 @@ function* updateUserSaga() {
   try {
     const user = yield select((state) => state.usersList.toJS().selected);
     const response = yield call(updateUser, user);
-    const { data, errors } = yield response.json();
-    if (data) {
+
+    if (response.ok) {
       yield put(loadUsers());
+      yield put(userUpdated())
     } else {
-      throw errors;
+      const [error] = yield response.json();
+      const errorMessage = error.error;
+      yield put(loadError(errorMessage));
     }
   } catch (errors) {
     yield put(loadError(errors));
@@ -32,12 +35,15 @@ function* createNewUserSaga() {
   try {
     const user = yield select((state) => state.usersList.toJS().selected);
     const response = yield call(postUser, user);
-    const { data, errors } = yield response.json();
-    if (data) {
+
+    if (response.ok) {
       yield put(clearSelected());
       yield put(loadUsers());
+      yield put(userUpdated())
     } else {
-      throw errors;
+      const [error] = yield response.json();
+      const errorMessage = error.error;
+      yield put(loadError(errorMessage));
     }
   } catch (errors) {
     yield put(loadError(errors));
@@ -63,7 +69,10 @@ function updateUser(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/users/${id}`, requestOptions);
+  return fetch(
+    `${process.env.REACT_APP_BASE_API_URL}/users/${id}`,
+    requestOptions
+  );
 }
 
 function postUser(body) {
@@ -75,5 +84,5 @@ function postUser(body) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/users`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/users`, requestOptions);
 }

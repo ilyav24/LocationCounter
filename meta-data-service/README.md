@@ -6,12 +6,13 @@ Run in command line:
 Install dependencies:  
 `npm i`
 
-Add `.env` file with your postgress credentials:  
+Add `.env` file with your postgres credentials:  
 `touch .env`
 
 File content:  
 `DB_USER="<db_user_name>"`  
-`DB_PASS="<db_user_pasee>"`
+`DB_PASS="<db_user_pass>"`  
+`ACCESS_TOKEN="<some_token>"`
 
 Run database initializer:  
 `npm run setup`  

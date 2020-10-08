@@ -15,7 +15,7 @@ async function getCount(type, id) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/stats/${type}/${id}`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/stats/${type}/${id}`, requestOptions);
 }
 
 export const LiveCounter = ({ type, id }) => {
@@ -26,8 +26,17 @@ export const LiveCounter = ({ type, id }) => {
       const { num } = data ? data[0] : "Error";
       setCount(num);
     }
+    let interval;
     if (id) {
       fetchData();
+
+      // run in loops
+      interval = setInterval(() => {
+        fetchData();
+      }, 5000);
+    }
+    return () => {
+      clearInterval(interval);
     }
   }, [id]);
 

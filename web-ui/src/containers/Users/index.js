@@ -12,6 +12,7 @@ import {
   saveUser,
 } from "./actions";
 import { UsersCard } from "../../components/UserCard";
+import { SaveToast } from "../../components/Toast";
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const Users = () => {
     dispatch(loadUsers());
   }, []);
 
-  const { users, selected, error } = useSelector((state) =>
+  const { users, selected, error, hash } = useSelector((state) =>
     state.usersList.toJS()
   );
 
@@ -44,6 +45,7 @@ const Users = () => {
           </Button>
         </CardBody>
       </Card>
+      <SaveToast id={hash} />
       <ErrorMessage error={error} />
       <UsersCard
         user={selected}

@@ -1,8 +1,9 @@
-import { put, takeLatest, call } from "redux-saga/effects";
+import { put, takeLatest, call, race, delay, take } from "redux-saga/effects";
 import {
   LOAD_SENSORS,
   LOAD_SENSOR_EVENTS,
   LOAD_SENSOR_LOCATION,
+  CANCEL_SENSOR_UPDATE
 } from "./constants";
 import {
   sensorsLoaded,
@@ -14,16 +15,19 @@ import {
 import moment from "moment";
 
 function* loadSensorSaga() {
-  try {
-    const response = yield call(getSensors);
-    const { data, errors } = yield response.json();
-    if (data) {
-      yield put(sensorsLoaded(data));
-    } else {
-      throw errors;
+  while (true) {
+    try {
+      const response = yield call(getSensors);
+      const { data, errors } = yield response.json();
+      if (data) {
+        yield put(sensorsLoaded(data));
+        yield delay(5000)
+      } else {
+        throw errors;
+      }
+    } catch (errors) {
+      //TODO
     }
-  } catch (errors) {
-    //TODO
   }
 }
 
@@ -64,24 +68,32 @@ function* loadSensorBuilding(building_id) {
   yield put(sensorBuildingLoaded(data[0]));
 }
 
+function* sensorUpdateSaga() {
+  yield take(LOAD_SENSORS)
+  yield race([
+    call(loadSensorSaga), take(CANCEL_SENSOR_UPDATE)
+  ])
+}
+
 function* sensorsRootSaga() {
-  yield takeLatest(LOAD_SENSORS, loadSensorSaga);
   yield takeLatest(LOAD_SENSOR_EVENTS, loadSensorEventSaga);
   yield takeLatest(LOAD_SENSOR_LOCATION, loadSensorLocationSaga);
 }
 
-export default [sensorsRootSaga];
+
+
+export default [sensorsRootSaga, sensorUpdateSaga];
 
 function getSensors() {
-  return fetch(`http://localhost:5000/sensor`);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/sensor`);
 }
 
 function getLocation(id) {
-  return fetch(`http://localhost:5000/location/${id}`);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/location/${id}`);
 }
 
 function getBuilding(id) {
-  return fetch(`http://localhost:5000/building/${id}`);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/building/${id}`);
 }
 
 function getSensorsEvents(id) {
@@ -98,5 +110,5 @@ function getSensorsEvents(id) {
     },
     body: JSON.stringify(body),
   };
-  return fetch(`http://localhost:5000/sensor/event/${id}`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/sensor/event/${id}`, requestOptions);
 }

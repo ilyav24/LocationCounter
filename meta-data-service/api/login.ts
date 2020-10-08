@@ -46,7 +46,7 @@ class LoginController extends Controller {
               if (token==null) return res.sendStatus(403);
               return res.json([{token:token}]);
             } catch (err) {
-              res.status(500).json({ errors: err.detail });
+              res.status(500).json({ errors: err });
             }
           };
 
@@ -62,7 +62,7 @@ class LoginController extends Controller {
             })
 
           } catch(err) {
-            res.status(500).json({errors: err.detail});
+            res.status(500).json({errors: err});
           }
         }
 

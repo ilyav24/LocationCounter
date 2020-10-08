@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
   Badge,
@@ -8,6 +8,8 @@ import {
   DropdownToggle,
   Nav,
   NavItem,
+  Button,
+  Dropdown,
 } from "reactstrap";
 import PropTypes from "prop-types";
 
@@ -16,8 +18,10 @@ import {
   AppNavbarBrand,
   AppSidebarToggler,
 } from "@coreui/react";
-import logo from "../../assets/img/brand/logo.svg";
-import sygnet from "../../assets/img/brand/sygnet.svg";
+import logo from "../../assets/img/brand/LOGO.png";
+import sygnet from "../../assets/img/brand/favicon.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { authenticationLogout } from "../Auth/actions";
 
 const propTypes = {
   children: PropTypes.node,
@@ -25,22 +29,49 @@ const propTypes = {
 
 const defaultProps = {};
 
-class DefaultHeader extends Component {
-  render() {
-    // eslint-disable-next-line
-    const { children, ...attributes } = this.props;
+const DefaultHeader = ({ children, ...attributes }) => {
+  const dispatch = useDispatch();
+  const [dropdownToggled, setDropdownToggled] = useState(false);
+  const { username } = useSelector((state) => state.auth.toJS().userInfo);
 
-    return (
-      <React.Fragment>
-        <AppNavbarBrand
-          full={{ src: logo, width: 89, height: 25, alt: "CoreUI Logo" }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: "CoreUI Logo" }}
-        />
-        
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <Dropdown
+        id='usernameDropdown'
+        color="primary"
+        isOpen={dropdownToggled}
+        toggle={() => setDropdownToggled(!dropdownToggled)}>
+        <DropdownToggle color="primary" className='m-2'>
+          {username}
+        </DropdownToggle>
+        <DropdownMenu right>
+          <DropdownItem onClick={() => dispatch(authenticationLogout())}>
+            Logout
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+      <AppNavbarBrand
+        full={{
+          src: logo,
+          width: 150,
+          height: 50,
+          alt: "CoreUI Logo",
+        }}
+        minimized={{
+          src: sygnet,
+          width: 30,
+          height: 30,
+          alt: "CoreUI Logo",
+        }}
+      />
+      {/* <button
+        className='btn btn-primary m-2'
+        onClick={() => dispatch(authenticationLogout())}>
+        Logout
+      </button> */}
+    </React.Fragment>
+  );
+};
 
 DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;

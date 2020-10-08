@@ -1,6 +1,6 @@
 import { takeLatest, call, select, put } from "redux-saga/effects";
 import { ATTACH_LOCATION } from "./constants";
-import { loadSensorLocation, loadSensors } from "../Sensors/actions";
+import { loadSensorLocation, loadSensors, sensorLocationUpdated } from "../Sensors/actions";
 
 function* attachLocationSaga() {
   try {
@@ -13,6 +13,7 @@ function* attachLocationSaga() {
     yield call(updateLocation, sensor_id, id);
     yield put(loadSensors());
     yield put(loadSensorLocation(id));
+    yield put(sensorLocationUpdated())
   } catch (errors) {
     //TODO
   }
@@ -40,5 +41,5 @@ function updateLocation(sensor_id, location_id) {
     },
     body: JSON.stringify({ data }),
   };
-  return fetch(`http://localhost:5000/sensor/UpdateLocation`, requestOptions);
+  return fetch(`${process.env.REACT_APP_BASE_API_URL}/sensor/UpdateLocation`, requestOptions);
 }
