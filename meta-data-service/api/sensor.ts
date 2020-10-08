@@ -11,9 +11,12 @@ import {
   getAllSensorsEventDb,
   getAllSensorsEventByIdDb,
   updateLocationDb,
+  getAllSensorsEventDb1,
+  insertEventDb,
+  getDailyEventsFromDatabase, insertNewSensor
 } from '../models/sensor/sensor-models';
 import { SensorLocation } from '../models/sensor/sensor-location';
-import { SensoreUsage } from '../models/strat/sensor-usage';
+import { SensoreUsage } from '../models/stats/sensor-usage';
 
 class SensorController extends Controller {
   public path = '/sensor';
@@ -22,17 +25,23 @@ class SensorController extends Controller {
   private id: string = 'id';
   constructor() {
     super();
-    this.intializeRoutes();
+    this.initializeRoutes();
   }
 
-  public intializeRoutes(): void {
+  public initializeRoutes(): void {
     // get all sensors
+    this.router.get(
+      this.path + '/event',
+      this.getAllSensorsEvent1
+    );
+
     this.router.get(this.path, this.getAllSsensors);
     this.router.get(
       this.path + this.idPrefix,
       [param(this.id).isNumeric()],
       this.getSensorById
     );
+
 
     this.router.post(
       this.path + this.idPrefix,
@@ -51,6 +60,21 @@ class SensorController extends Controller {
       [check('data').isArray()],
       this.updateLocation
     );
+
+    this.router.post(
+      '/new/event',
+      this.insertEvent
+    );
+
+    this.router.post(
+      '/new' + this.path,
+      this.insertSensor
+    );
+
+    this.router.get(
+      '/daily' + this.path,
+      this.getDailyEvents
+    );
   }
 
   getAllSsensors = async (req: Request, res: Response) => {
@@ -64,13 +88,29 @@ class SensorController extends Controller {
 
   getSensorById = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
     let id: string = req.params.id;
     try {
       let results = await getSensorByIdDb(id);
+      return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
+
+  getAllSensorsEvent1 = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const errors = validationResult(req);
+    if (!(errors.isEmpty())) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+
+    try {
+      let results = await getAllSensorsEventDb1();
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -90,6 +130,23 @@ class SensorController extends Controller {
     const id = +req.params.id;
     try {
       let results = await getAllSensorsEventDb(date, id);
+      return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
+
+  getDailyEvents = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+
+    try {
+      let results = await getDailyEventsFromDatabase();
       return res.status(200).json(wrap(results));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -137,6 +194,44 @@ class SensorController extends Controller {
       return res.status(500).json({ errors: err.detail });
     }
   };
+
+  insertEvent = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ errors: errors.array() });
+    }
+
+    const is_entered = +req.body.people;
+    const SensorID = +req.body.SensorID;
+    const Height = +req.body.Height;
+    const date = req.body.Date;
+    try {
+      let results = await insertEventDb(is_entered, SensorID, Height, date);
+      return res.status(200).json(wrap(results));
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  };
+
+  insertSensor = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const id = await insertNewSensor()
+      return res.status(200).json({ id })
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  }
+
+
 }
+
+
 
 export default SensorController;

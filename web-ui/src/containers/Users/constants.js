@@ -1,0 +1,10 @@
+export const LOAD_USERS = "LOAD_USERS";
+export const USERS_LOADED = "USERS_LOADED";
+export const UPDATE_USER = "UPDATE_USER";
+export const USER_SELECTED = "USER_SELECTED";
+export const USER_FIELD_CHANGED = "USER_FIELD_CHANGED";
+export const USER_SAVE = "USER_SAVE";
+export const CLEAR_SELECTED = "CLEAR_SELECTED";
+export const NEW_USER = "NEW_USER";
+export const SAVE_ERROR = "SAVE_ERROR";
+export const USER_UPDATED = "USER_UPDATED";

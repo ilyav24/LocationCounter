@@ -2,7 +2,7 @@ import express from 'express';
 
 abstract class Controller {
   public router = express.Router();
-  abstract intializeRoutes(): void;
+  abstract initializeRoutes(): void;
 }
 
 export default Controller;

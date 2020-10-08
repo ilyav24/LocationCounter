@@ -8,7 +8,7 @@ export const insertLocationQuery: string = `INSERT INTO location
 export const deleteLocationQuery: string = `DELETE FROM location WHERE id = $1 `;
 
 export const updateLocationQuery = `UPDATE location SET 
-building_id = $2, name = $3, floor = $5, room_num = $6, entry = $7
+name = $2, floor = $3, room_num = $4, entry = $5
 WHERE id = $1 RETURNING *`;
 
 export const getLocationByIdQuery = `SELECT * FROM location WHERE id = $1`;

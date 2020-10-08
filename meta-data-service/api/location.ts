@@ -19,10 +19,10 @@ class LocationController extends Controller {
 
   constructor() {
     super();
-    this.intializeRoutes();
+    this.initializeRoutes();
   }
 
-  public intializeRoutes(): void {
+  public initializeRoutes(): void {
     this.router.get(this.path, this.getLocations);
     
     this.router.get(
@@ -96,7 +96,7 @@ class LocationController extends Controller {
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    let id: string = req.params.id;
+    let id: number = +req.params.id;
     let location: Location = req.body;
     try {
       location.id = id;
