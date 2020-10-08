@@ -16,6 +16,7 @@ import {
 } from "./actions";
 import { LocationCard } from "../../components/LocationCard";
 import { ErrorMessage } from "../../components/ErrorMessage";
+import { SaveToast } from "../../components/Toast";
 
 const Locations = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const Locations = () => {
     selectedBuilding,
     selectedLocation,
     error,
+    hash
   } = useSelector((state) => state.locationList.toJS());
   const { buildings } = useSelector((state) => state.buildingsList.toJS());
 
@@ -64,8 +66,8 @@ const Locations = () => {
               Selected Building: <b>{name}</b>
             </span>
           ) : (
-            <span>Choose Building</span>
-          )}
+              <span>Choose Building</span>
+            )}
           <div className="card-header-actions">
             <Button size="sm" color="primary" onClick={() => setOpen(!open)}>
               Choose Building
@@ -97,8 +99,9 @@ const Locations = () => {
           </CardBody>
         </Card>
       ) : (
-        ""
-      )}
+          ""
+        )}
+      <SaveToast id={hash} />
       <ErrorMessage error={error} />
       <LocationCard
         location={selectedLocation}

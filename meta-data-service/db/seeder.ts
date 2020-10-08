@@ -22,14 +22,12 @@ async function createData() {
     console.log('+++++ creating buildings and locations');
     for (let i = 1; i < 11; i++) {
       await client.query(
-        `INSERT INTO building (name, number_of_floors, capacity) VALUES ('Seed Table ${i}', ${i}, ${
-          i * 100
+        `INSERT INTO building (name, number_of_floors, capacity) VALUES ('Seed Table ${i}', ${i}, ${i * 100
         });`
       );
       for (let j = 1; j < 6; j++) {
         await client.query(
-          `INSERT INTO location (building_id,name, floor, room_num, entry) VALUES (${i}, 'Location ${j} Building ${i}' , ${j}, ${
-            j * 10
+          `INSERT INTO location (building_id,name, floor, room_num, entry) VALUES (${i}, 'Location ${j} Building ${i}' , ${j}, ${j * 10
           }, ${i})`
         );
       }
@@ -62,35 +60,33 @@ async function createData() {
     console.log('+++++ creating sensors status');
     for (let i = 1; i < 11; i++) {
       await client.query(
-        `INSERT INTO sensors_status(sensor_id,status_id) VALUES (${i},${
-          Math.floor(Math.random() * 3) + 1
+        `INSERT INTO sensors_status(sensor_id,status_id) VALUES (${i},${Math.floor(Math.random() * 3) + 1
         })`
       );
     }
     console.log('+++++ creating usages');
-    for (let i = 0; i < 20; i++) {
-      let is_entered = Math.round(Math.random());
+    for (let i = 0; i < 100; i++) {
+      let is_entered = i < 50 ? 1 : Math.round(Math.random());
       await client.query(
-        `INSERT INTO public.usages(sensor_id,height,last_sync, is_entered) VALUES (${
-          Math.floor(Math.random() * 10) + 1
-        },${100},to_timestamp(${
-          Date.now() - 10000 * i
+        `INSERT INTO public.usages(sensor_id,height,last_sync, is_entered) VALUES (${Math.floor(Math.random() * 10) + 1
+        },${100},to_timestamp(${Date.now() - 1000 * i
         } / 1000.0), ${is_entered}::bit);`
       );
     }
-    for (let i = 0; i < 20; i++) {
-      let is_entered = Math.round(Math.random());
+    for (let i = 0; i < 100; i++) {
+      let is_entered = i < 50 ? 1 : Math.round(Math.random());
       await client.query(
-        `INSERT INTO public.usages(sensor_id,height,last_sync, is_entered) VALUES (${
-          Math.floor(Math.random() * 10) + 1
-        },${100},to_timestamp(${
-          Date.now() - 10000 * i * i
+        `INSERT INTO public.usages(sensor_id,height,last_sync, is_entered) VALUES (${Math.floor(Math.random() * 10) + 1
+        },${100},to_timestamp(${Date.now() - 1000 * i * i
         } / 1000.0), ${is_entered}::bit);`
       );
     }
     console.log('+++++ creating user types');
     await client.query(`INSERT INTO public.user_type(type) VALUES ('USER')`);
     await client.query(`INSERT INTO public.user_type(type) VALUES ('ADMIN')`);
+
+    console.log('+++++ creating user');
+    await client.query(`INSERT INTO public.users(user_name, email, pass, user_type)VALUES ('admin_user', 'admin_user@lc.com', 'locationcounter', 2);`);
   } catch (err) {
     console.log(err);
   } finally {

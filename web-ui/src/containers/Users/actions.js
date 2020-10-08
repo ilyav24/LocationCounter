@@ -8,6 +8,7 @@ import {
   CLEAR_SELECTED,
   NEW_USER,
   SAVE_ERROR,
+  USER_UPDATED
 } from "./constants";
 
 export const loadUsers = () => ({
@@ -48,4 +49,8 @@ export const clearSelected = () => ({
 export const loadError = (error) => ({
   type: SAVE_ERROR,
   error,
+});
+
+export const userUpdated = () => ({
+  type: USER_UPDATED,
 });

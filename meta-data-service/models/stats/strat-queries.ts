@@ -77,7 +77,7 @@ WHERE u.sensor_id IN (SELECT s.sensors_id
 GROUP BY u.is_entered;`;
 
 
- 
+
 export const qGetCountAggregatedMinute: string =
 
 	`INSERT INTO public.summedByMinute(sensor_id, date, minute)
@@ -89,7 +89,7 @@ export const qGetCountAggregatedMinute: string =
 			AND DATE_TRUNC('minute',NOW()) - (interval '1 millisecond'))
 	group by timestamp_minute, sensor_id
 	order by sensor_id, timestamp_minute
-	RETURNING *;`;	
+	RETURNING *;`;
 
 
 export const qGetCountAggregatedHour: string = `
@@ -199,7 +199,7 @@ BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS')
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond'
 order by sensor_id,date;`;
 
-export const qReturnCountBetweenDatesByBuildingIdHour: string =`
+export const qReturnCountBetweenDatesByBuildingIdHour: string = `
 SELECT u.sensor_id,date, hour as num
 FROM summedByHour u
 WHERE u.sensor_id IN (SELECT s.sensors_id
@@ -212,7 +212,7 @@ BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute'
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond'
 order by sensor_id,date;`;
 
-export const qReturnCountBetweenDatesByBuildingIdDay: string =`
+export const qReturnCountBetweenDatesByBuildingIdDay: string = `
 SELECT u.sensor_id,date, day as num
 FROM summedByDay u
 WHERE u.sensor_id IN (SELECT s.sensors_id
@@ -261,7 +261,7 @@ AND TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI')
 BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS')  
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond';`;
 
-export const qReturnNumOfRowsBetweenDatesByBuildingIdHour: string =`
+export const qReturnNumOfRowsBetweenDatesByBuildingIdHour: string = `
 SELECT COUNT(*)
 FROM summedByHour u
 WHERE u.sensor_id IN (SELECT s.sensors_id
@@ -273,7 +273,7 @@ AND TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI')
 BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond';`;
 
-export const qRReturnNumOfRowsBetweenDatesByBuildingIdDay: string =`
+export const qRReturnNumOfRowsBetweenDatesByBuildingIdDay: string = `
 SELECT COUNT(*)
 FROM summedByDay u
 WHERE u.sensor_id IN (SELECT s.sensors_id
@@ -284,7 +284,15 @@ WHERE u.sensor_id IN (SELECT s.sensors_id
 AND TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI') 
 BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond';`;
-/*export const qGetAllCount: string = `SELECT sensor_id, count (*) as Total
-FROM public.usages 
-WHERE  last_sync >= $1  AND sensor_id = $2
-GROUP BY sensor_id;`;*/
+
+export const qUpdateStatusQuery = `UPDATE public.sensors_status old_status
+SET status_id = new_status.status
+FROM (
+SELECT  sensor_id,max(last_sync), 
+CASE 
+WHEN (max(last_sync) is null) THEN 3	
+WHEN (max(last_sync) < NOW() - INTERVAL '5 minutes') THEN 2
+WHEN (max(last_sync) > NOW() - INTERVAL '5 minutes') THEN 1
+END status 
+FROM public.usages group by sensor_id) new_status
+WHERE old_status.sensor_id = new_status.sensor_id;`

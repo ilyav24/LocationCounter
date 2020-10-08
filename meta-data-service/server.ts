@@ -7,7 +7,8 @@ import UserController from './api/users';
 import {
   GetCountAggregatedMinuteDb,
   GetCountAggregatedHourDb,
-  GetCountAggregatedDayDb
+  GetCountAggregatedDayDb,
+  updateSensorStatus
 } from './models/stats/strat-models';
 
 import pkg from 'node-cron';
@@ -26,18 +27,23 @@ const app = new App(
   5000
 );
 
-schedule(" */1 * * * * ",function(){
-  console.log("Scheduler running. . .")
+schedule(" */1 * * * * ", function () {
+  console.log("[Minute Job] Updating people in rooms. . .")
   GetCountAggregatedMinuteDb();
 });
 
-schedule(" 0 * * * * ",function(){
-  console.log("Scheduler running. . .")
+schedule(" */1 * * * * ", function () {
+  console.log("[Sensor Status] Updating sensor statues. . .")
+  updateSensorStatus();
+});
+
+schedule(" 0 * * * * ", function () {
+  console.log("[Hour Job] Updating people in rooms. . .")
   GetCountAggregatedHourDb();
 });
 
-schedule(" 0 0 * * * ",function(){
-  console.log("Scheduler running. . .")
+schedule(" 0 0 * * * ", function () {
+  console.log("[Day Job] Updating people in rooms. . .")
   GetCountAggregatedDayDb();
 });
 

@@ -8,6 +8,7 @@ import {
   NEW_LOCATION_SAVE,
   LOCATION_SAVE_ERROR,
   LOCATION_CLEAR,
+  LOCATION_SAVED
 } from "./constants";
 
 export const loadBuildingLocations = (id) => ({
@@ -50,3 +51,8 @@ export const errorSaveLocation = (error) => ({
 export const locationClear = () => ({
   type: LOCATION_CLEAR,
 });
+
+export const locationSaved = () => ({
+  type: LOCATION_SAVED,
+});
+

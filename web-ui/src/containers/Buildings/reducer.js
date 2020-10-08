@@ -1,4 +1,4 @@
-import { LOAD_BUILDINGS, BUILDINGS_LOADED } from "./constants";
+import { LOAD_BUILDINGS, BUILDINGS_LOADED, BUILDING_UPDATED } from "./constants";
 import {
   FIELD_CHANGE,
   BUILDING_CREATE,
@@ -9,6 +9,7 @@ const initialState = fromJS({
   isLoading: true,
   buildings: [],
   selected: null,
+  hash: null
 });
 
 export default function buildingsReducer(state = initialState, action) {
@@ -25,6 +26,11 @@ export default function buildingsReducer(state = initialState, action) {
       return state.merge({ selected: id });
     case BUILDING_CREATE:
       return state.merge({ selected: null });
+    case BUILDING_UPDATED:
+      return state.merge({ hash: Math.random() });
+    // this is for the removing the pop up when moving between screens
+    case "@@router/LOCATION_CHANGE":
+        return state.merge({ hash: null });
     default:
       return state;
   }

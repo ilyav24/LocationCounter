@@ -1,6 +1,6 @@
 import { takeLatest, select, put, call } from "redux-saga/effects";
 import { BUILDING_SAVE, BUILDING_NEW_SAVE } from "./constants";
-import { buildingUpdate, loadBuildings, } from "../Buildings/actions";
+import { buildingUpdate, buildingUpdated, loadBuildings, } from "../Buildings/actions";
 import { onSaveError, buildingClear } from "./actions";
 function* saveBuildingSaga() {
   const body = yield select((state) => state.buildingCard.toJS());
@@ -9,6 +9,7 @@ function* saveBuildingSaga() {
   if (data) {
     yield put(buildingUpdate(data));
     yield put(loadBuildings());
+    yield put(buildingUpdated())
   } else {
     yield put(onSaveError(errors));
   }
@@ -21,6 +22,7 @@ function* createBuildingSaga() {
   if (data) {
     yield put(buildingClear());
     yield put(loadBuildings());
+    yield put(buildingUpdated())
   } else {
     yield put(onSaveError(errors));
   }

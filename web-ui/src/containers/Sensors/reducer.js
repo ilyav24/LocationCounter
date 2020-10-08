@@ -5,6 +5,7 @@ import {
   LOAD_SENSOR_EVENTS,
   SENSOR_LOCATION_LOADED,
   SENSOR_BUILDING_LOADED,
+  SENSOR_LOCATION_UPDATED
 } from "./constants";
 
 const initialState = fromJS({
@@ -13,6 +14,7 @@ const initialState = fromJS({
   selected: null,
   location: null,
   building: null,
+  hash: null
 });
 
 export default function sensorsReducer(state = initialState, action) {
@@ -32,6 +34,11 @@ export default function sensorsReducer(state = initialState, action) {
     case SENSOR_BUILDING_LOADED:
       const { building } = action;
       return state.merge({ building });
+    case SENSOR_LOCATION_UPDATED:
+      return state.merge({ hash: Math.random() });
+    // this is for the removing the pop up when moving between screens
+    case "@@router/LOCATION_CHANGE":
+      return state.merge({ hash: null });
     default:
       return state;
   }

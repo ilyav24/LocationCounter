@@ -3,7 +3,7 @@ export const createDatabase = `CREATE DATABASE location_counter;`;
 export const dropDataBase = `DROP DATABASE IF EXISTS location_counter;`;
 
 export const sensorTable = `CREATE TABLE public.sensors(
-    id INTEGER NOT NULL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     info TEXT NULL
     );`;
 
@@ -27,13 +27,8 @@ export const usersTable = `CREATE TABLE public.users (
 id SERIAL NOT NULL PRIMARY KEY,
 user_name TEXT NOT NULL,
 email TEXT NOT NULL,
-user_type INTEGER REFERENCES user_type(id)
-);`;
-
-export const userPassTable = `CREATE TABLE public.user_pass (
-id INTEGER REFERENCES users(id),
 pass TEXT NOT NULL,
-update_last_date timestamp NOT NULL default CURRENT_TIMESTAMP
+user_type INTEGER REFERENCES user_type(id)
 );`;
 
 export const buildingTable = `CREATE TABLE public.building(
@@ -82,5 +77,9 @@ sensor_id INTEGER NOT NULL REFERENCES sensors(id),
 date TEXT NOT NULL,
 day INTEGER DEFAULT 0
 );`;
+
+export const tokenTable = `CREATE TABLE public.Tokens(
+    token TEXT NOT NULL,user_name TEXT NOT NULL,pass TEXT NOT NULL
+    );`;
 
 export const dropSchema = `DROP DATABASE location_counter;`;

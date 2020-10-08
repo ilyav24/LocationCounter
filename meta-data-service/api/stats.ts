@@ -22,9 +22,8 @@ import {
   ReturnCountBetweenDatesByLocationIdMinuteDb
 } from '../models/stats/strat-models';
 import { SensoreUsage } from '../models/stats/sensor-usage';
-import { Console, log } from 'console';
-import {SumCount} from '../models/stats/sum-count';
-import { json } from 'body-parser';
+import { SumCount } from '../models/stats/sum-count';
+import { dateSorter } from '../util/sorter';
 
 class StratController extends Controller {
   public path = '/stats';
@@ -61,14 +60,14 @@ class StratController extends Controller {
       this.getCountBetweenDaysByLocationId
     );
 
-    
+
     this.router.post(
       this.path + '/sensor' + this.idPrefix,
       [param(this.id).isNumeric()],
       this.getCountBetweenDaysBySensorId
     );
-    
-    
+
+
 
     this.router.post(
       this.path + '/building' + this.idPrefix,
@@ -76,7 +75,7 @@ class StratController extends Controller {
       this.getCountBetweenDaysByBuildingId
     );
 
-    
+
     this.router.post(
       this.path + '/minute/sensor',
       this.ReturnCountBetweenDatesMinute
@@ -88,7 +87,7 @@ class StratController extends Controller {
     );
 
     this.router.post(
-      this.path + '/day/sensor' ,
+      this.path + '/day/sensor',
       this.ReturnCountBetweenDatesDay
     );
 
@@ -194,31 +193,30 @@ class StratController extends Controller {
     }
   };
 
-  
+
 
   ReturnCountBetweenDatesMinute = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      const data=await ReturnNumOfRowsBetweenDatesDb(from,to,'minute');
+      const from: any = req.body.from
+      const to: any = req.body.to
+      const data = await ReturnNumOfRowsBetweenDatesDb(from, to, 'minute');
       let responseArr: SumCount[] = [];
-      
+
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesMinuteDb(
-          from,to
+          from, to
         );
-        
-        console.log(result[index])
+
         responseArr.push(result[index]);
       }
-      
+
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -227,28 +225,28 @@ class StratController extends Controller {
 
   ReturnCountBetweenDatesHour = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
-    
+
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      
-      const data=await ReturnNumOfRowsBetweenDatesDb(from,to,'hour');
-      
+      const from: any = req.body.from
+      const to: any = req.body.to
+
+      const data = await ReturnNumOfRowsBetweenDatesDb(from, to, 'hour');
+
       let responseArr: SumCount[] = [];
-      
+
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesHourDb(
-          from,to
+          from, to
         );
         responseArr.push(result[index]);
       }
-      
+      responseArr.sort(dateSorter)
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -257,28 +255,28 @@ class StratController extends Controller {
 
   ReturnCountBetweenDatesDay = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
-    
+
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      
-      const data=await ReturnNumOfRowsBetweenDatesDb(from,to,'day');
-    
+      const from: any = req.body.from
+      const to: any = req.body.to
+
+      const data = await ReturnNumOfRowsBetweenDatesDb(from, to, 'day');
+
       let responseArr: SumCount[] = [];
-      
+
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesDayDb(
-          from,to
+          from, to
         );
         responseArr.push(result[index]);
       }
-      
+      responseArr.sort(dateSorter)
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -292,24 +290,22 @@ class StratController extends Controller {
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
       const id = +req.params.id;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      const data=await ReturnNumOfRowsBetweenDatesByLocationIdDb(from,to,'minute',id);
+      const from: any = req.body.from
+      const to: any = req.body.to
+      const data = await ReturnNumOfRowsBetweenDatesByLocationIdDb(from, to, 'minute', id);
       let responseArr: SumCount[] = [];
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesByLocationIdMinuteDb(
-          from,to,id
+          from, to, id
         );
-        
-        console.log(result[index])
         responseArr.push(result[index]);
       }
-      
+      responseArr.sort(dateSorter)
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -318,29 +314,29 @@ class StratController extends Controller {
 
   ReturnCountBetweenDatesByLocationIdHour = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
-    
+
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
       const id = +req.params.id;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      
-      const data=await ReturnNumOfRowsBetweenDatesByLocationIdDb(from,to,'hour',id);
-      
+      const from: any = req.body.from
+      const to: any = req.body.to
+
+      const data = await ReturnNumOfRowsBetweenDatesByLocationIdDb(from, to, 'hour', id);
+
       let responseArr: SumCount[] = [];
-      
+
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesByLocationIdHourDb(
-          from,to,id
+          from, to, id
         );
         responseArr.push(result[index]);
       }
-      
+      responseArr.sort(dateSorter)
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -349,29 +345,29 @@ class StratController extends Controller {
 
   ReturnCountBetweenDatesByLocationIdDay = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
-    
+
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
       const id = +req.params.id;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      
-      const data=await ReturnNumOfRowsBetweenDatesByLocationIdDb(from,to,'day',id);
-    
+      const from: any = req.body.from
+      const to: any = req.body.to
+
+      const data = await ReturnNumOfRowsBetweenDatesByLocationIdDb(from, to, 'day', id);
+
       let responseArr: SumCount[] = [];
-      
+
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesByLocationIdDayDb(
-          from,to,id
+          from, to, id
         );
         responseArr.push(result[index]);
       }
-      
+      responseArr.sort(dateSorter)
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -386,25 +382,24 @@ class StratController extends Controller {
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
       const id = +req.params.id;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      const data=await ReturnNumOfRowsBetweenDatesByBuildingIdDb(from,to,'minute',id);
+      const from: any = req.body.from
+      const to: any = req.body.to
+      const data = await ReturnNumOfRowsBetweenDatesByBuildingIdDb(from, to, 'minute', id);
       let responseArr: SumCount[] = [];
-      
+
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesByBuildingIdMinuteDb(
-          from,to,id
+          from, to, id
         );
-        
-        console.log(result[index])
+
         responseArr.push(result[index]);
       }
-      
+      responseArr.sort(dateSorter)
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -413,29 +408,29 @@ class StratController extends Controller {
 
   ReturnCountBetweenDatesByBuildingIdHour = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
-    
+
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
       const id = +req.params.id;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      
-      const data=await ReturnNumOfRowsBetweenDatesByBuildingIdDb(from,to,'hour',id);
-      
+      const from: any = req.body.from
+      const to: any = req.body.to
+
+      const data = await ReturnNumOfRowsBetweenDatesByBuildingIdDb(from, to, 'hour', id);
+
       let responseArr: SumCount[] = [];
-      
+
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesByBuildingIdHourDb(
-          from,to,id
+          from, to, id
         );
         responseArr.push(result[index]);
       }
-      
+      responseArr.sort(dateSorter)
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });
@@ -444,29 +439,28 @@ class StratController extends Controller {
 
   ReturnCountBetweenDatesByBuildingIdDay = async (req: Request, res: Response): Promise<Response> => {
     const errors = validationResult(req);
-    
+
     if (!errors.isEmpty()) {
       return res.status(404).json({ errors: errors.array() });
     }
-    
+
     try {
       //const date: MyDate = req.body;
       const id = +req.params.id;
-      const from: any=req.body.from
-      const to: any=req.body.to
-      
-      const data=await ReturnNumOfRowsBetweenDatesByBuildingIdDb(from,to,'day',id);
-    
+      const from: any = req.body.from
+      const to: any = req.body.to
+
+      const data = await ReturnNumOfRowsBetweenDatesByBuildingIdDb(from, to, 'day', id);
+
       let responseArr: SumCount[] = [];
-      
+
       for (let index = 0; index < data[0].count; index++) {
-        
+
         const result = await ReturnCountBetweenDatesByBuildingIdDayDb(
-          from,to,id
+          from, to, id
         );
         responseArr.push(result[index]);
       }
-      
       return res.status(200).json(wrap(responseArr));
     } catch (err) {
       return res.status(500).json({ errors: err.detail });

@@ -1,13 +1,14 @@
 import { takeLatest, select, put, call } from "redux-saga/effects";
 import { REFRESH_MODEL_REQUEST } from "./constants";
 import { modelRefreshFailed, modelRefreshSuccess } from "./actions";
+import moment from "moment"
 import _ from "lodash";
 
 function* buildRoomCountTableSaga(allLocations) {
   const roomCountTable = {};
 
   try {
-    const ISODate = new Date().toISOString();
+    const ISODate = moment().add(3, "days");
     for (let location of allLocations) {
       const response = yield call(
         fetchLocationPeopleCount,
