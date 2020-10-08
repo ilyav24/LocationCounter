@@ -19,7 +19,7 @@ function* buildRoomCountTableSaga(allLocations) {
       if (response.ok) {
         const { data } = yield response.json();
         const peopleCount = data[0].num;
-        const roomId = `${location.room_num}-${location.building_id}`;
+        const roomId = `${location.name}`;
 
         if (roomCountTable[roomId]) {
           roomCountTable[roomId] += peopleCount;
