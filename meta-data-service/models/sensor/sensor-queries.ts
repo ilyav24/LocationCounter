@@ -33,8 +33,17 @@ export const qInsertEvent: string = `INSERT INTO public.usages
 (sensor_id, height, last_sync, is_entered)
 VALUES ($1, $2, $3, $4)`;
 
+export const qInsertSensor: string = `
+INSERT INTO public.sensors (info) VALUES ($1) RETURNING id;
+`
 
+export const qInsertSensorStatus: string = `
+INSERT INTO public.sensors_status (sensor_id,status_id) VALUES ($1,1);
+`
 
+export const qInsertNullLocation: string = `
+INSERT INTO public.sensor_location (sensors_id,location_id) VALUES ($1,null);
+`
 
 export const qGetAllSensorsEvent1: string = `SELECT * 
 FROM usages`;

@@ -13,7 +13,7 @@ import {
   updateLocationDb,
   getAllSensorsEventDb1,
   insertEventDb,
-  getDailyEventsFromDatabase
+  getDailyEventsFromDatabase, insertNewSensor
 } from '../models/sensor/sensor-models';
 import { SensorLocation } from '../models/sensor/sensor-location';
 import { SensoreUsage } from '../models/stats/sensor-usage';
@@ -62,12 +62,17 @@ class SensorController extends Controller {
     );
 
     this.router.post(
-      '/new/' + this.path,
+      '/new/event',
       this.insertEvent
     );
 
+    this.router.post(
+      '/new' + this.path,
+      this.insertSensor
+    );
+
     this.router.get(
-      '/daily' + this.path ,
+      '/daily' + this.path,
       this.getDailyEvents
     );
   }
@@ -212,7 +217,17 @@ class SensorController extends Controller {
     }
   };
 
-
+  insertSensor = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const id = await insertNewSensor()
+      return res.status(200).json({ id })
+    } catch (err) {
+      return res.status(500).json({ errors: err.detail });
+    }
+  }
 
 
 }

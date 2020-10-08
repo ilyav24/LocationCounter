@@ -3,7 +3,7 @@ export const createDatabase = `CREATE DATABASE location_counter;`;
 export const dropDataBase = `DROP DATABASE IF EXISTS location_counter;`;
 
 export const sensorTable = `CREATE TABLE public.sensors(
-    id INTEGER NOT NULL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     info TEXT NULL
     );`;
 
