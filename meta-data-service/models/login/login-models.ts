@@ -1,4 +1,4 @@
-import { DeleteToken, checkUser, InsertUser } from "./login-queries";
+
 import { Pool } from 'pg';
 const dotenv = require("dotenv");
 dotenv.config();
@@ -32,14 +32,4 @@ export async function createToken(user_name: string, pass: string) {
   } catch (err) {
     throw err;
   }
-}
 
-export async function deleteToken(token: string) {
-  try {
-    let res = (await pool.query(DeleteToken, [token])).rows;
-    return res.length;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
