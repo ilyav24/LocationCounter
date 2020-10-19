@@ -1,6 +1,7 @@
 
-import { Pool } from 'pg';
-const dotenv = require("dotenv");
+import {Pool} from 'pg';
+import {checkUser} from './login-queries';
+const dotenv = require('dotenv');
 dotenv.config();
 process.env.ACCESS_TOKEN;
 const jwt = require('jsonwebtoken');
@@ -18,18 +19,18 @@ const pool = new Pool({
 
 export async function createToken(user_name: string, pass: string) {
   try {
-    let user = (await pool.query(checkUser, [
+    const user = (await pool.query(checkUser, [
       user_name,
       pass,
     ])).rows;
-    
+
     if (user.length === 0) {
       return null;
     }
-    
-    let token = jwt.sign({ name: user_name }, process.env.ACCESS_TOKEN, { expiresIn: '1800s' });
+
+    const token = jwt.sign({name: user_name}, process.env.ACCESS_TOKEN, {expiresIn: '1800s'});
     return (token);
   } catch (err) {
     throw err;
   }
-
+}
