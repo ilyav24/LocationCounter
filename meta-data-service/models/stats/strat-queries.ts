@@ -118,7 +118,7 @@ export const qReturnNumOfRowsBetweenDatesMinute: string = `
 SELECT COUNT (*)
 FROM summedByMinute 
 WHERE TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI')
-BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
+BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') 
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond';`;
 
 export const qReturnNumOfRowsBetweenDatesHour: string = `
@@ -139,7 +139,7 @@ export const qReturnCountBetweenDatesMinute: string = `
 SELECT date, minute as num
 FROM summedByMinute 
 WHERE TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI')
-BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
+BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS')  
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond'
 order by date;`;
 
@@ -164,7 +164,7 @@ SELECT u.sensor_id,date, minute as num
 FROM public.sensor_location l JOIN public.summedByMinute AS u
 ON l.sensors_id=u.sensor_id 
 WHERE l.location_id=$3 AND TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI') 
-BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
+BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') 
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond'
 order by sensor_id,date;`;
 
@@ -195,7 +195,7 @@ WHERE u.sensor_id IN (SELECT s.sensors_id
 	WHERE l.building_id = $3
 		)
 AND TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI') 
-BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
+BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') 
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond'
 order by sensor_id,date;`;
 
@@ -230,7 +230,7 @@ SELECT COUNT(*)
 FROM public.sensor_location l JOIN public.summedByMinute AS u
 ON l.sensors_id=u.sensor_id 
 WHERE l.location_id=$3 AND TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI') 
-BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
+BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') 
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond';`;
 
 export const qReturnNumOfRowsBetweenDatesByLocationIdHour: string = `
@@ -258,7 +258,7 @@ WHERE u.sensor_id IN (SELECT s.sensors_id
 	WHERE l.building_id = $3
 		)
 AND TO_TIMESTAMP(date,'YYYY/MM/DD HH24:MI') 
-BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS') - interval '1 minute' 
+BETWEEN  TO_TIMESTAMP($1,'YYYY/MM/DD HH24:MI:SS')  
 AND TO_TIMESTAMP($2,'YYYY/MM/DD HH24:MI:SS')- interval '1 millisecond';`;
 
 export const qReturnNumOfRowsBetweenDatesByBuildingIdHour: string = `

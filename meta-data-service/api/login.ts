@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Request } from 'express';
 import { param,check, validationResult, cookie } from 'express-validator';
 import { wrap } from '../util/wrapper';
-import { deleteToken,createToken } from '../models/login/login-models';
+import { createToken } from '../models/login/login-models';
 import { Login } from './../models/login/login';
 // const bcrypt = require('bcrypt');
 const express = require('express');
